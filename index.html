@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIYYA Command Center — Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{
+  --bg:#050402; --panel:#12100C; --panel-2:#1C1811; --panel-3:#241E14; --border:#332B1C; --border-soft:#241F15;
+  --gold:#D4AF37; --gold-2:#E8C766; --champagne:#F2DFA7; --deep-gold:#8A6C2A; --bronze:#B07A3A; --platinum:#B9B6AE;
+  --text:#F5EEDE; --muted:#9A907E; --muted-2:#726A58; --gain:#9CCB9F; --loss:#D8674F; --warn:#E6BE5A;
+  --radius:16px; --radius-sm:10px;
+  --shadow-card:0 1px 0 rgba(255,255,255,.03) inset, 0 10px 30px -14px rgba(0,0,0,.7);
+  --shadow-card-hover:0 1px 0 rgba(255,255,255,.04) inset, 0 18px 44px -16px rgba(0,0,0,.85), 0 0 0 1px rgba(212,175,55,.18);
+  --gold-text:linear-gradient(180deg,var(--champagne) 0%, var(--gold) 55%, var(--deep-gold) 100%);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(1100px 620px at 12% -8%, rgba(138,108,42,.16), transparent 60%),
+    radial-gradient(900px 520px at 90% 0%, rgba(212,175,55,.10), transparent 55%),
+    radial-gradient(1400px 900px at 50% 115%, rgba(176,122,58,.08), transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+  color:var(--text);
+  font-family:'Manrope',sans-serif; font-variant-numeric:tabular-nums;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.figure{font-family:'Cormorant Garamond',serif;}
+::selection{background:var(--gold);color:#0A0801;}
+a{color:var(--gold);}
+button{font-family:inherit;}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+::-webkit-scrollbar{width:11px;height:11px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--border),var(--deep-gold));border-radius:8px;border:2px solid var(--bg);}
+::-webkit-scrollbar-thumb:hover{background:var(--gold);}
+@media (prefers-reduced-motion:no-preference){
+  #tabBody{animation:fadeUp .38s cubic-bezier(.2,.7,.2,1);}
+}
+@keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+@keyframes modalIn{from{opacity:0; transform:translateY(14px) scale(.97);} to{opacity:1; transform:translateY(0) scale(1);}}
+@keyframes shimmer{0%{background-position:-200% 0;} 100%{background-position:200% 0;}}
+
+/* ---------- demo banner ---------- */
+.demo-banner{
+  background:linear-gradient(90deg,#171208,#1E1810 45%,#171208);
+  border-bottom:1px solid var(--border);
+  color:var(--champagne); font-size:12.5px; font-weight:600;
+  padding:8px 20px; text-align:center; letter-spacing:.02em;
+  box-shadow:0 1px 0 rgba(212,175,55,.08);
+}
+.demo-banner b{color:var(--gold);}
+
+/* ---------- header ---------- */
+header.app{
+  position:sticky; top:0; z-index:40;
+  background:rgba(6,5,3,.86); backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid var(--border-soft);
+  padding:15px 24px;
+  position:relative;
+}
+header.app::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(212,175,55,.55), transparent);
+}
+.header-row{display:flex; align-items:center; gap:20px; flex-wrap:wrap; max-width:1480px; margin:0 auto;}
+.brand{display:flex; align-items:center; gap:12px; margin-right:auto;}
+.brand-mark{
+  width:42px;height:42px;border-radius:11px;
+  background:linear-gradient(145deg,var(--champagne),var(--gold) 55%,var(--deep-gold));
+  display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;
+  font-weight:700;color:#0A0801;font-size:21px;
+  box-shadow:0 0 0 1px rgba(212,175,55,.35) inset, 0 8px 20px -6px rgba(212,175,55,.55), 0 0 0 1px rgba(255,255,255,.06);
+}
+.brand-name{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:23px;letter-spacing:.015em;color:var(--text);}
+.brand-sub{font-size:10.5px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:-1px;}
+
+.control{display:flex;flex-direction:column;gap:4px;}
+.control label{font-size:10px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.1em;font-weight:700;}
+select.hy{
+  appearance:none;background:linear-gradient(180deg,var(--panel-3),var(--panel-2));
+  border:1px solid var(--border);color:var(--text);
+  padding:9px 34px 9px 13px;border-radius:10px;font-size:13.5px;font-weight:600;min-width:200px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%23D4AF37'/></svg>");
+  background-repeat:no-repeat;background-position:right 13px center;cursor:pointer;
+  box-shadow:var(--shadow-card);
+  transition:border-color .15s, box-shadow .15s, transform .1s;
+}
+select.hy:hover{border-color:var(--bronze); transform:translateY(-1px);}
+select.hy:focus{outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,.18), var(--shadow-card);}
+
+.persona-chip{display:flex;align-items:center;gap:9px;padding:6px 14px 6px 6px;border:1px solid var(--border);border-radius:99px;
+  background:linear-gradient(180deg,var(--panel-3),var(--panel-2)); box-shadow:var(--shadow-card);}
+.persona-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(150deg,var(--champagne),var(--gold) 60%,var(--deep-gold));
+  color:#0A0801;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 2px var(--panel-2), 0 0 0 3px rgba(212,175,55,.5), 0 4px 10px -3px rgba(212,175,55,.6);}
+.persona-meta{line-height:1.2;}
+.persona-name{font-size:12.5px;font-weight:700;}
+.persona-role{font-size:10.5px;color:var(--muted);}
+
+.freshness{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:7px;white-space:nowrap;
+  padding:7px 12px;border:1px solid var(--border-soft);border-radius:99px;background:rgba(255,255,255,.015);}
+.freshness .dot{width:7px;height:7px;border-radius:50%;background:var(--gain);box-shadow:0 0 8px 1px var(--gain);}
+
+/* ---------- tabs ---------- */
+nav.tabs{max-width:1480px;margin:0 auto;padding:8px 24px;display:flex;gap:6px;overflow-x:auto;
+  border-bottom:1px solid var(--border-soft);background:rgba(6,5,3,.86);backdrop-filter:blur(16px);
+  position:sticky;top:76px;z-index:39;}
+nav.tabs button{
+  background:transparent;border:1px solid transparent;color:var(--muted);padding:9px 17px;font-size:13.5px;font-weight:700;
+  cursor:pointer;white-space:nowrap;letter-spacing:.01em;border-radius:99px;
+  transition:color .15s, background .18s, border-color .18s, transform .12s;
+}
+nav.tabs button:hover{color:var(--champagne); background:rgba(255,255,255,.035);}
+nav.tabs button.active{
+  color:#12100A; background:linear-gradient(135deg,var(--champagne),var(--gold) 65%);
+  border-color:rgba(212,175,55,.6); box-shadow:0 6px 18px -8px rgba(212,175,55,.7);
+}
+
+/* ---------- layout ---------- */
+main{max-width:1480px;margin:0 auto;padding:18px 24px 50px;}
+.crumb{font-size:11px;color:var(--muted);margin-bottom:12px;display:flex;gap:6px;align-items:center;}
+.crumb .cur{color:var(--gold);font-weight:700;}
+.crumb button{background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:11px;padding:0;}
+
+.section-title{display:flex;align-items:baseline;justify-content:space-between;margin:20px 0 10px;flex-wrap:wrap;gap:8px;}
+.section-title h2{font-size:15px;font-weight:700;margin:0;color:var(--champagne);padding-left:11px;position:relative;letter-spacing:.005em;}
+.section-title h2::before{
+  content:""; position:absolute; left:0; top:.12em; bottom:.1em; width:3px; border-radius:3px;
+  background:linear-gradient(180deg,var(--gold),var(--deep-gold));
+  box-shadow:0 0 8px rgba(212,175,55,.5);
+}
+.section-title .hint{font-size:11px;color:var(--muted);}
+
+.grid{display:grid;gap:14px;}
+.grid.kpi-4{grid-template-columns:repeat(4,1fr);}
+.grid.kpi-3{grid-template-columns:repeat(3,1fr);}
+.grid.cols-2{grid-template-columns:1.4fr 1fr;}
+.grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.grid.themes-4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:1100px){.grid.kpi-4{grid-template-columns:repeat(2,1fr);} .grid.cols-2{grid-template-columns:1fr;} .grid.cols-3{grid-template-columns:1fr;} .grid.themes-4{grid-template-columns:repeat(2,1fr);} .grid.kpi-3{grid-template-columns:repeat(1,1fr);}}
+@media(max-width:640px){.grid.kpi-4{grid-template-columns:1fr;}}
+
+.card{
+  background:linear-gradient(160deg,var(--panel-3) 0%, var(--panel) 60%);
+  border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;
+  box-shadow:var(--shadow-card);
+  transition:box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+  position:relative;
+}
+.card:hover{box-shadow:var(--shadow-card-hover); transform:translateY(-1px); border-color:rgba(212,175,55,.28);}
+.card h3{margin:0 0 4px;font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.07em;font-family:'Manrope',sans-serif;}
+.card .value{
+  font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:700;margin:1px 0 5px;line-height:1.1;
+  background:var(--gold-text); -webkit-background-clip:text; background-clip:text; color:transparent;
+  letter-spacing:.01em;
+}
+.card .delta{font-size:10.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.04);}
+.delta.up{color:var(--gain); background:rgba(156,203,159,.1);} .delta.down{color:var(--loss); background:rgba(216,103,79,.1);}
+.card .foot{font-size:10.5px;color:var(--muted);margin-top:6px;}
+
+.kpi-hero{position:relative;overflow:hidden;border-color:rgba(212,175,55,.4);
+  background:linear-gradient(160deg,#241C0F 0%, var(--panel) 65%);}
+.kpi-hero::before{
+  content:"";position:absolute;inset:0;opacity:.16;pointer-events:none;
+  background:repeating-linear-gradient(90deg,var(--gold) 0 3px, transparent 3px 14px);
+  -webkit-mask-image:linear-gradient(180deg, black, transparent 85%);
+          mask-image:linear-gradient(180deg, black, transparent 85%);
+}
+.kpi-hero::after{
+  content:""; position:absolute; top:-40%; right:-20%; width:220px; height:220px; border-radius:50%;
+  background:radial-gradient(circle, rgba(212,175,55,.35), transparent 65%); pointer-events:none;
+}
+.kpi-hero .value{
+  background:linear-gradient(180deg,var(--warn),var(--gold) 70%); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+.status-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:4px 11px;border-radius:99px;border:1px solid var(--border);}
+.status-pill.ok{color:var(--gain);border-color:rgba(156,203,159,.4);background:rgba(156,203,159,.08);}
+.status-pill.watch{color:var(--warn);border-color:rgba(230,190,90,.4);background:rgba(230,190,90,.08);}
+.status-pill.investigate{color:var(--loss);border-color:rgba(216,103,79,.45);background:rgba(216,103,79,.1); box-shadow:0 0 12px -4px rgba(216,103,79,.6);}
+
+table.hy{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;}
+table.hy th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-2);padding:10px 12px;
+  border-bottom:1px solid var(--border);font-weight:800;position:sticky;top:0;background:var(--panel);}
+table.hy td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.035);transition:background .12s;}
+table.hy tr:nth-child(even) td{background:rgba(255,255,255,.014);}
+table.hy tr:hover td{background:rgba(212,175,55,.065);}
+table.hy tr.clickable{cursor:pointer;}
+table.hy td.num{text-align:right;font-variant-numeric:tabular-nums;}
+
+.chart{width:100%;height:260px;}
+.chart.sm{height:190px;}
+.chart.lg{height:320px;}
+
+.theme-card{border-radius:var(--radius-sm);border:1px solid var(--border);padding:13px 14px;
+  background:linear-gradient(160deg,var(--panel-3),var(--panel));cursor:pointer;
+  transition:border-color .2s, transform .2s, box-shadow .2s; box-shadow:var(--shadow-card);}
+.theme-card:hover{border-color:var(--gold); transform:translateY(-2px); box-shadow:var(--shadow-card-hover);}
+.theme-swatch{width:100%;height:4px;border-radius:4px;margin-bottom:9px; box-shadow:0 0 10px -2px currentColor;}
+.theme-card .tname{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;}
+.theme-card .tloc{font-size:10.5px;color:var(--muted);margin-bottom:8px;}
+.theme-stat{display:flex;justify-content:space-between;font-size:11.5px;padding:5px 0;border-top:1px dashed var(--border-soft);}
+
+.insight-list{display:flex;flex-direction:column;gap:8px;}
+.insight-item{display:flex;gap:9px;padding:9px 11px;border-radius:9px;background:var(--panel-2);border:1px solid var(--border);
+  border-left:3px solid var(--border); font-size:12px;line-height:1.4; transition:transform .15s, border-color .15s;}
+.insight-item:hover{transform:translateX(2px);}
+.insight-item .ic{font-size:13px;}
+.insight-item.bad{border-color:rgba(216,103,79,.3); border-left-color:var(--loss);}
+.insight-item.warn{border-color:rgba(230,190,90,.3); border-left-color:var(--warn);}
+
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;}
+.seg{display:flex;border:1px solid var(--border);border-radius:9px;overflow:hidden; background:var(--panel-2); box-shadow:var(--shadow-card);}
+.seg button{background:transparent;color:var(--muted);border:none;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer;
+  border-right:1px solid var(--border); transition:background .15s, color .15s;}
+.seg button:last-child{border-right:none;}
+.seg button:hover{color:var(--champagne);}
+.seg button.active{background:linear-gradient(135deg,var(--champagne),var(--gold) 70%);color:#0A0801;}
+
+.badge{display:inline-block;padding:3px 9px;border-radius:6px;font-size:10.5px;font-weight:700;background:var(--panel-2);border:1px solid var(--border);color:var(--platinum);}
+.legend-row{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:8px;}
+.legend-row span{display:inline-flex;align-items:center;gap:5px;}
+.dotsw{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+.footnote{font-size:11.5px;color:var(--muted);text-align:center;margin-top:40px;padding-top:18px;border-top:1px solid var(--border-soft);}
+
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+.form-field label{display:block;font-size:10.5px;color:var(--muted-2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;}
+.form-field input{width:100%;background:var(--panel-2);border:1px solid var(--border);color:var(--text);padding:9px 11px;border-radius:9px;font-size:13px;
+  transition:border-color .15s, box-shadow .15s;}
+.form-field input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.15);}
+.btn-gold{background:linear-gradient(135deg,var(--champagne),var(--gold) 70%);color:#0A0801;border:none;padding:11px 20px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;
+  box-shadow:0 8px 20px -8px rgba(212,175,55,.6); transition:transform .12s, box-shadow .12s;}
+.btn-gold:hover{transform:translateY(-1px); box-shadow:0 12px 26px -8px rgba(212,175,55,.75);}
+.btn-ghost{background:rgba(255,255,255,.02);border:1px solid var(--border);color:var(--text);padding:11px 18px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;
+  transition:border-color .15s, background .15s;}
+.btn-ghost:hover{border-color:var(--gold); background:rgba(212,175,55,.06);}
+
+/* modal drill-down */
+.overlay{position:fixed;inset:0;background:rgba(3,2,1,.72); backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;z-index:80;padding:20px;}
+.overlay.show{display:flex;}
+.modal{background:linear-gradient(160deg,var(--panel-3),var(--panel));border:1px solid var(--gold);border-radius:18px;
+  max-width:640px;width:100%;max-height:85vh;overflow:auto;padding:24px;
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(212,175,55,.15);
+  animation:modalIn .22s cubic-bezier(.2,.8,.2,1);}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.modal-head h3{margin:0;font-family:'Cormorant Garamond',serif;font-size:23px;color:var(--gold);}
+.modal-close{background:var(--panel-2);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:15px;
+  transition:border-color .15s, color .15s;}
+.modal-close:hover{border-color:var(--gold); color:var(--gold);}
+
+@media(max-width:900px){
+  nav.tabs{top:66px;}
+  .header-row{gap:10px;}
+  select.hy{min-width:150px;}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">🎭 <b>Demo mockup</b> — fabricated data, no login or authorisation enforced. Use “View as” below to preview every role. Real build starts after work order.</div>
+
+<header class="app">
+  <div class="header-row">
+    <div class="brand">
+      <div class="brand-mark">H</div>
+      <div>
+        <div class="brand-name">HIYYA Command Center</div>
+        <div class="brand-sub">Get arrested by taste</div>
+      </div>
+    </div>
+
+    <div class="control">
+      <label for="personaSel">View as</label>
+      <select id="personaSel" class="hy"></select>
+    </div>
+
+    <div class="control" id="scopeControlWrap">
+      <label for="scopeSel">Scope</label>
+      <select id="scopeSel" class="hy"></select>
+    </div>
+
+    <div class="persona-chip">
+      <div class="persona-avatar" id="pAvatar">GC</div>
+      <div class="persona-meta">
+        <div class="persona-name" id="pName">Gautamy Chowdary</div>
+        <div class="persona-role" id="pRole">Brand Owner</div>
+      </div>
+    </div>
+
+    <div class="freshness"><span class="dot"></span> Demo data · September 2026 · IST</div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabsNav"></nav>
+
+<main id="mainRoot"></main>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head"><h3 id="modalTitle">Drill-down</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   HIYYA COMMAND CENTER — CLICKABLE DEMO
+   Fabricated data. No auth. "View as" drives everything.
+   ========================================================= */
+
+/* ---------- reference data ---------- */
+const THEMES = [
+  {id:'chrono', name:'Chrono Jail', color:'#D4AF37', branchId:'B01'},
+  {id:'dino', name:'Dino', color:'#F2DFA7', branchId:'B02'},
+  {id:'jail', name:'Jail', color:'#B07A3A', branchId:'B03'},
+  {id:'space', name:'Space', color:'#B9B6AE', branchId:'B04'},
+];
+
+const BRANCHES = [
+  { id:'B01', name:'Chrono Jail Mandi', location:'Madhapur, Hyderabad, TS', theme:'Chrono Jail', themeColor:'#D4AF37',
+    ownership:'Brand-owned flagship', ownerName:'Brand (Gautamy, Gautham, Vikranth)', status:'Live', opened:'Dec 2025',
+    sales:5083441, profit:819919, foodCostSOP:1525032, sopDeviationValue:62000, wastageValue:28000,
+    aggregatorCommission:508344, royaltyFund:0, fixedCosts:2140146, targetSales:5300000 },
+  { id:'B02', name:'Dino Mandi', location:'Kukatpally (GPR Multiplex), Hyderabad, TS', theme:'Dino', themeColor:'#F2DFA7',
+    ownership:'Franchise', ownerName:'Suresh Reddy', status:'Live', opened:'May 2026',
+    sales:3611918, profit:505669, foodCostSOP:1083575, sopDeviationValue:41000, wastageValue:19000,
+    aggregatorCommission:361192, royaltyFund:252834, fixedCosts:1348648, targetSales:3750000 },
+  { id:'B03', name:'Jail Mandi', location:'Dwaraka Nagar, Visakhapatnam, AP', theme:'Jail', themeColor:'#B07A3A',
+    ownership:'Franchise', ownerName:'Suresh Reddy', status:'Live', opened:'Jun 2026',
+    sales:2943045, profit:353165, foodCostSOP:882914, sopDeviationValue:58000, wastageValue:24000,
+    aggregatorCommission:294305, royaltyFund:206013, fixedCosts:1124648, targetSales:3050000 },
+  { id:'B04', name:'Space Mandi', location:'Ameerpet, Hyderabad, TS', theme:'Space', themeColor:'#B9B6AE',
+    ownership:'Franchise', ownerName:'Anil Kumar', status:'Live', opened:'Jul 2026',
+    sales:1739071, profit:139126, foodCostSOP:521721, sopDeviationValue:37000, wastageValue:15000,
+    aggregatorCommission:173907, royaltyFund:121735, fixedCosts:730582, targetSales:2000000 },
+];
+
+const FIXED_COST_SPLIT = [
+  {head:'Salaries', pct:.40}, {head:'Rent', pct:.30}, {head:'Electricity', pct:.10},
+  {head:'Gas', pct:.05}, {head:'Maintenance', pct:.05}, {head:'Marketing', pct:.03},
+  {head:'Water', pct:.03}, {head:'Software', pct:.02}, {head:'Security / valet', pct:.02},
+];
+
+const SOP_ROWS = {
+  B01: [
+    {ing:'Refined oil', unit:'L', rate:140, sop:1350, actual:1620, wastage:30, unexplained:240, value:33600, flag:'investigate'},
+    {ing:'Ghee', unit:'kg', rate:550, sop:485, actual:522, wastage:8, unexplained:29, value:15950, flag:'watch'},
+    {ing:'Basmati rice', unit:'kg', rate:65, sop:6150, actual:6385, wastage:50, unexplained:185, value:12025, flag:'watch'},
+    {ing:'Chicken (bone-in)', unit:'kg', rate:210, sop:2960, actual:3020, wastage:35, unexplained:25, value:5250, flag:'ok'},
+    {ing:'Mayonnaise', unit:'kg', rate:220, sop:610, actual:622, wastage:9, unexplained:3, value:660, flag:'ok'},
+  ],
+  B02: [
+    {ing:'Chicken (bone-in)', unit:'kg', rate:210, sop:2540, actual:2679, wastage:25, unexplained:114, value:23940, flag:'watch'},
+    {ing:'Refined oil', unit:'L', rate:140, sop:2449, actual:2555, wastage:20, unexplained:86, value:12040, flag:'watch'},
+    {ing:'Paneer', unit:'kg', rate:180, sop:1544, actual:1582, wastage:10, unexplained:28, value:5040, flag:'ok'},
+    {ing:'Basmati rice', unit:'kg', rate:65, sop:4380, actual:4430, wastage:35, unexplained:15, value:975, flag:'ok'},
+    {ing:'Ghee', unit:'kg', rate:550, sop:340, actual:349, wastage:6, unexplained:3, value:1650, flag:'ok'},
+  ],
+  B03: [
+    {ing:'Fish (Rohu)', unit:'kg', rate:320, sop:742, actual:876, wastage:15, unexplained:119, value:38080, flag:'investigate'},
+    {ing:'Mutton', unit:'kg', rate:680, sop:441, actual:469, wastage:10, unexplained:18, value:12240, flag:'watch'},
+    {ing:'Mayonnaise', unit:'kg', rate:220, sop:1040, actual:1096, wastage:20, unexplained:36, value:7920, flag:'watch'},
+    {ing:'Refined oil', unit:'L', rate:140, sop:1890, actual:1940, wastage:22, unexplained:28, value:3920, flag:'ok'},
+    {ing:'Basmati rice', unit:'kg', rate:65, sop:3560, actual:3605, wastage:30, unexplained:15, value:975, flag:'ok'},
+  ],
+  B04: [
+    {ing:'Mayonnaise', unit:'kg', rate:220, sop:714, actual:829, wastage:15, unexplained:100, value:22000, flag:'investigate'},
+    {ing:'Refined oil', unit:'L', rate:140, sop:1607, actual:1691, wastage:20, unexplained:64, value:8960, flag:'watch'},
+    {ing:'Cheese', unit:'kg', rate:450, sop:444, actual:465, wastage:8, unexplained:13, value:5850, flag:'watch'},
+    {ing:'Chicken (bone-in)', unit:'kg', rate:210, sop:1210, actual:1232, wastage:14, unexplained:8, value:1680, flag:'ok'},
+    {ing:'Basmati rice', unit:'kg', rate:65, sop:2140, actual:2168, wastage:20, unexplained:8, value:520, flag:'ok'},
+  ],
+};
+
+const MENU_ITEMS = [
+  {name:'Chicken Juicy Mandi (Large)', category:'Mandi', foodCostPct:29.5, linkedIng:['Refined oil','Chicken (bone-in)','Ghee']},
+  {name:'Crispy Fried + Juicy Chicken Mandi', category:'Mandi', foodCostPct:32.1, linkedIng:['Refined oil','Chicken (bone-in)']},
+  {name:'Fish + Juicy Chicken Mandi', category:'Mandi', foodCostPct:34.8, linkedIng:['Fish (Rohu)','Chicken (bone-in)']},
+  {name:'Mutton Mandi', category:'Mandi', foodCostPct:37.2, linkedIng:['Mutton','Basmati rice']},
+  {name:'Paneer Mini Mandi', category:'Mandi', foodCostPct:26.4, linkedIng:['Paneer','Basmati rice']},
+  {name:'Street Style Chicken Pakoda', category:'Starters', foodCostPct:24.0, linkedIng:['Chicken (bone-in)','Refined oil','Mayonnaise']},
+  {name:'Cheesy Kurkure Mushroom', category:'Starters', foodCostPct:28.9, linkedIng:['Cheese','Refined oil']},
+  {name:'Chicken Chekkalu', category:'Starters', foodCostPct:22.1, linkedIng:['Basmati rice','Refined oil']},
+  {name:'Kaddu Ka Kheer', category:'Desserts', foodCostPct:18.5, linkedIng:['Ghee']},
+  {name:'Apricot Delight', category:'Desserts', foodCostPct:17.2, linkedIng:['Ghee']},
+];
+
+const WASTAGE_REASONS = ['Over-portioning','Spillage / handling','Expiry','Prep waste'];
+
+const PERSONAS = [
+  {id:'gautamy', name:'Gautamy Chowdary', role:'brand_owner', roleLabel:'Brand Owner', branchIds:'all', initials:'GC'},
+  {id:'ravi', name:'Ravi Teja (demo)', role:'brand_manager', roleLabel:'Brand Manager', branchIds:'all', initials:'RT'},
+  {id:'suresh', name:'Suresh Reddy (demo)', role:'branch_owner', roleLabel:'Branch Owner · Dino & Vizag', branchIds:['B02','B03'], initials:'SR'},
+  {id:'anil', name:'Anil Kumar (demo)', role:'branch_owner', roleLabel:'Branch Owner · Space Mandi', branchIds:['B04'], initials:'AK'},
+  {id:'kiran', name:'Kiran (demo)', role:'branch_manager', roleLabel:'Branch Manager · Dino Mandi', branchIds:['B02'], initials:'K'},
+  {id:'farhan', name:'Farhan (demo)', role:'branch_manager', roleLabel:'Branch Manager · Chrono Jail Mandi', branchIds:['B01'], initials:'F'},
+];
+
+const TAB_SETS = {
+  brand_owner:   [['overview','Overview'],['sales','Sales'],['expenses','Expenses & profit'],['sop','SOP & wastage'],['branches','Branches'],['revshare','Revenue share']],
+  brand_manager: [['overview','Brand analytics'],['sales','Sales'],['expenses','Expenses & profit'],['sop','SOP & wastage'],['branches','Branches'],['revshare','Revenue share']],
+  branch_owner:  [['glance','At a glance'],['sales','Sales'],['expenses','Expenses & profit'],['sop','SOP & wastage']],
+  branch_manager:[['today','Today'],['purchases','Purchases'],['stock','Stock'],['sopactual','SOP vs actual'],['wastage','Wastage']],
+};
+
+/* ---------- state ---------- */
+let state = { personaId:'gautamy', scope:'all', tab:'overview' };
+
+/* ---------- helpers ---------- */
+function inr(n, opts={}){
+  n = Math.round(n);
+  const neg = n<0; n=Math.abs(n);
+  if(opts.compact){
+    if(n>=10000000) return (neg?'-':'')+'₹'+(n/10000000).toFixed(2)+' Cr';
+    if(n>=100000) return (neg?'-':'')+'₹'+(n/100000).toFixed(1)+' L';
+  }
+  let s = n.toString();
+  let last3 = s.slice(-3), rest = s.slice(0,-3);
+  if(rest) last3 = ','+last3;
+  rest = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+  return (neg?'-':'')+'₹'+rest+last3;
+}
+function pct(n,d=1){ return (n>=0?'+':'') + n.toFixed(d)+'%'; }
+function persona(){ return PERSONAS.find(p=>p.id===state.personaId); }
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function genDaily(total, seed){
+  const rnd = mulberry32(seed); const days=30; let weights=[];
+  for(let d=1; d<=days; d++){
+    const dow = new Date(2026,8,d).getDay(); // Sep 2026
+    let w = 1 + (dow===5||dow===6?0.45:0) + (dow===0?0.25:0);
+    w *= 0.85 + rnd()*0.3;
+    weights.push(w);
+  }
+  const sum = weights.reduce((a,b)=>a+b,0);
+  return weights.map(w => Math.round(total * w/sum));
+}
+function branchesForContext(){
+  const p = persona();
+  if(p.role==='brand_owner' || p.role==='brand_manager'){
+    if(state.scope==='all') return BRANCHES.map(b=>b.id);
+    if(state.scope.startsWith('theme:')){ const t=state.scope.split(':')[1]; return BRANCHES.filter(b=>b.theme===t).map(b=>b.id); }
+    if(state.scope.startsWith('owner:')){ const o=state.scope.split(':')[1]; return BRANCHES.filter(b=>b.ownerName===o).map(b=>b.id); }
+    if(state.scope.startsWith('branch:')) return [state.scope.split(':')[1]];
+    return BRANCHES.map(b=>b.id);
+  }
+  if(p.role==='branch_owner'){
+    if(state.scope==='rollup') return p.branchIds;
+    return [state.scope];
+  }
+  return p.branchIds; // branch_manager
+}
+function branchObjs(){ const ids = branchesForContext(); return BRANCHES.filter(b=>ids.includes(b.id)); }
+function scopeLabel(){
+  const p = persona();
+  if(p.role==='brand_owner'||p.role==='brand_manager'){
+    if(state.scope==='all') return 'All branches';
+    if(state.scope.startsWith('theme:')) return state.scope.split(':')[1]+' theme';
+    if(state.scope.startsWith('owner:')) return state.scope.split(':')[1]+' portfolio';
+    if(state.scope.startsWith('branch:')) return BRANCHES.find(b=>b.id===state.scope.split(':')[1]).name;
+  }
+  if(p.role==='branch_owner'){
+    if(state.scope==='rollup') return 'My branches (roll-up)';
+    return BRANCHES.find(b=>b.id===state.scope).name;
+  }
+  return BRANCHES.find(b=>b.id===p.branchIds[0]).name;
+}
+function sum(arr,fn){ return arr.reduce((a,b)=>a+fn(b),0); }
+
+/* ---------- header controls ---------- */
+const personaSel = document.getElementById('personaSel');
+PERSONAS.forEach(p=>{
+  const o=document.createElement('option'); o.value=p.id; o.textContent = p.name+' — '+p.roleLabel; personaSel.appendChild(o);
+});
+personaSel.addEventListener('change', e=>{
+  state.personaId = e.target.value;
+  const p = persona();
+  state.scope = (p.role==='brand_owner'||p.role==='brand_manager') ? 'all' : (p.role==='branch_owner' ? (Array.isArray(p.branchIds)&&p.branchIds.length>1?'rollup':p.branchIds[0]) : p.branchIds[0]);
+  state.tab = TAB_SETS[p.role][0][0];
+  renderAll();
+});
+
+const scopeSel = document.getElementById('scopeSel');
+scopeSel.addEventListener('change', e=>{ state.scope = e.target.value; renderTabs(); renderTab(); });
+
+function renderHeader(){
+  const p = persona();
+  personaSel.value = p.id;
+  document.getElementById('pAvatar').textContent = p.initials;
+  document.getElementById('pName').textContent = p.name;
+  document.getElementById('pRole').textContent = p.roleLabel;
+
+  const wrap = document.getElementById('scopeControlWrap');
+  scopeSel.innerHTML = '';
+  if(p.role==='brand_owner' || p.role==='brand_manager'){
+    wrap.style.display='';
+    const groups = [
+      {label:'Brand-wide', opts:[['all','All branches']]},
+      {label:'Single branch', opts:BRANCHES.map(b=>['branch:'+b.id, b.name])},
+      {label:'Theme', opts:THEMES.map(t=>['theme:'+t.name,t.name])},
+      {label:'Owner portfolio', opts:[...new Set(BRANCHES.map(b=>b.ownerName))].map(o=>['owner:'+o,o])},
+    ];
+    groups.forEach(g=>{
+      const og = document.createElement('optgroup'); og.label=g.label;
+      g.opts.forEach(([v,l])=>{ const o=document.createElement('option'); o.value=v; o.textContent=l; og.appendChild(o); });
+      scopeSel.appendChild(og);
+    });
+    scopeSel.value = state.scope;
+  } else if(p.role==='branch_owner' && Array.isArray(p.branchIds) && p.branchIds.length>1){
+    wrap.style.display='';
+    const o1=document.createElement('option'); o1.value='rollup'; o1.textContent='My branches (roll-up)'; scopeSel.appendChild(o1);
+    p.branchIds.forEach(id=>{ const b=BRANCHES.find(x=>x.id===id); const o=document.createElement('option'); o.value=id; o.textContent=b.name; scopeSel.appendChild(o); });
+    scopeSel.value = state.scope;
+  } else {
+    wrap.style.display='none';
+  }
+}
+
+/* ---------- tabs ---------- */
+function renderTabs(){
+  const p = persona();
+  const nav = document.getElementById('tabsNav');
+  nav.innerHTML='';
+  const tabs = TAB_SETS[p.role];
+  if(!tabs.find(t=>t[0]===state.tab)) state.tab = tabs[0][0];
+  tabs.forEach(([id,label])=>{
+    const btn = document.createElement('button');
+    btn.textContent = label; btn.className = id===state.tab?'active':'';
+    btn.onclick = ()=>{ state.tab=id; renderTabs(); renderTab(); };
+    nav.appendChild(btn);
+  });
+}
+
+/* ---------- chart helper ---------- */
+const chartInstances = [];
+function mkChart(id, height='320px'){
+  const el = document.getElementById(id);
+  const ch = echarts.init(el);
+  chartInstances.push(ch);
+  return ch;
+}
+function disposeCharts(){ chartInstances.forEach(c=>{ try{c.dispose();}catch(e){} }); chartInstances.length=0; }
+const goldRamp = ['#D4AF37','#F2DFA7','#B07A3A','#B9B6AE','#8A6C2A'];
+function baseTooltip(){ return { backgroundColor:'#1B1813', borderColor:'#2A2419', textStyle:{color:'#F3ECDC'} }; }
+function axisStyle(){ return { axisLine:{lineColor:'#2A2419'}, axisLabel:{color:'#9A907E'}, splitLine:{lineStyle:{color:'#1B1813'}} }; }
+
+/* ---------- modal ---------- */
+function openModal(title, html){
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('overlay').classList.add('show');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('show'); }
+document.getElementById('overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeModal(); });
+
+function ingredientDrill(ingName, branchIds){
+  const items = MENU_ITEMS.filter(m=>m.linkedIng.includes(ingName));
+  let rows = items.map(m=>`<tr><td>${m.name}</td><td>${m.category}</td><td class="num">${m.foodCostPct.toFixed(1)}%</td></tr>`).join('');
+  const branchNames = branchIds.map(id=>BRANCHES.find(b=>b.id===id).name).join(', ');
+  openModal(ingName+' — likely source', `
+    <p style="font-size:13px;color:var(--muted);margin-top:0">Branches in view: ${branchNames}. Menu items that use ${ingName} in their SOP recipe — check these first for over-portioning.</p>
+    <table class="hy"><thead><tr><th>Menu item</th><th>Category</th><th>SOP food cost %</th></tr></thead><tbody>${rows||'<tr><td colspan=3>No linked items in seed data</td></tr>'}</tbody></table>
+  `);
+}
+function branchDrill(id){
+  const b = BRANCHES.find(x=>x.id===id);
+  const rows = SOP_ROWS[id].map(r=>`<tr><td>${r.ing}</td><td class="num">${(r.unexplained/r.sop*100).toFixed(1)}%</td><td class="num">${inr(r.value)}</td><td>${flagPill(r.flag)}</td></tr>`).join('');
+  openModal(b.name+' — quick view', `
+    <div class="grid kpi-3" style="margin-bottom:14px">
+      <div class="card"><h3>Net sales</h3><div class="value" style="font-size:22px">${inr(b.sales,{compact:true})}</div></div>
+      <div class="card"><h3>Net profit</h3><div class="value" style="font-size:22px">${inr(b.profit,{compact:true})}</div></div>
+      <div class="card"><h3>Margin</h3><div class="value" style="font-size:22px">${(b.profit/b.sales*100).toFixed(1)}%</div></div>
+    </div>
+    <table class="hy"><thead><tr><th>Ingredient</th><th>Deviation %</th><th>Value</th><th>Flag</th></tr></thead><tbody>${rows}</tbody></table>
+  `);
+}
+function flagPill(flag){
+  if(flag==='investigate') return '<span class="status-pill investigate">● Investigate</span>';
+  if(flag==='watch') return '<span class="status-pill watch">● Watch</span>';
+  return '<span class="status-pill ok">● OK</span>';
+}
+
+/* ---------- render dispatcher ---------- */
+function renderAll(){ renderHeader(); renderTabs(); renderTab(); }
+function renderTab(){
+  disposeCharts();
+  const root = document.getElementById('mainRoot');
+  const p = persona();
+  root.innerHTML = `<div class="crumb"><span>Viewing as</span><span class="cur">${p.name}</span><span>·</span><span class="cur">${scopeLabel()}</span></div><div id="tabBody"></div>`;
+  const body = document.getElementById('tabBody');
+
+  const routes = {
+    brand_owner:{ overview:renderOverview, sales:renderSales, expenses:renderExpenses, sop:renderSOP, branches:renderBranchesTab, revshare:renderRevShare },
+    brand_manager:{ overview:renderOverview, sales:renderSales, expenses:renderExpenses, sop:renderSOP, branches:renderBranchesTab, revshare:renderRevShare },
+    branch_owner:{ glance:renderGlance, sales:renderSales, expenses:renderExpenses, sop:renderSOP },
+    branch_manager:{ today:renderToday, purchases:renderPurchases, stock:renderStock, sopactual:renderSopActual, wastage:renderWastageTab },
+  };
+  const fn = routes[p.role][state.tab];
+  fn(body);
+}
+
+/* =========================================================
+   BRAND OWNER / BRAND MANAGER — OVERVIEW / COMMAND CENTER
+   ========================================================= */
+function renderOverview(root){
+  const bs = branchObjs();
+  const totalSales = sum(bs,b=>b.sales), totalProfit = sum(bs,b=>b.profit);
+  const totalExp = totalSales-totalProfit;
+  const totalDev = sum(bs,b=>b.sopDeviationValue);
+  const margin = totalProfit/totalSales*100;
+
+  root.innerHTML = `
+  <div class="grid kpi-4">
+    <div class="card"><h3>Net sales</h3><div class="value">${inr(totalSales,{compact:true})}</div><span class="delta up">▲ 6.4% vs Aug</span><div class="foot">${inr(totalSales)}</div></div>
+    <div class="card"><h3>Total expenses</h3><div class="value">${inr(totalExp,{compact:true})}</div><span class="delta down">▲ 3.1% vs Aug</span><div class="foot">${(totalExp/totalSales*100).toFixed(1)}% of sales</div></div>
+    <div class="card"><h3>Net profit · margin</h3><div class="value">${inr(totalProfit,{compact:true})}</div><span class="delta up">${margin.toFixed(1)}% margin</span><div class="foot">Target 15.0%</div></div>
+    <div class="card kpi-hero"><h3>Lost to SOP deviation</h3><div class="value">${inr(totalDev,{compact:true})}</div><span class="delta down">▲ flag: 3 ingredients above 5%</span><div class="foot">Unexplained usage vs recipe, Sep 2026</div></div>
+  </div>
+
+  <div class="section-title"><h2>Sales, expenses & profit trend</h2>
+    <div class="seg" id="trendSeg"><button class="active" data-g="daily">Daily</button><button data-g="weekly">Weekly</button><button data-g="monthly">Monthly</button></div>
+  </div>
+  <div class="card"><div id="trendChart" class="chart lg"></div></div>
+
+  <div class="grid cols-2" style="margin-top:22px">
+    <div class="card">
+      <div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Branch ranking</h2></div>
+      <div class="toolbar"><div class="seg" id="rankSeg">
+        <button class="active" data-m="sales">Net sales</button><button data-m="profit">Net profit</button>
+        <button data-m="margin">Margin</button><button data-m="dev">SOP deviation %</button>
+      </div></div>
+      <div id="rankChart" class="chart"></div>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Needs your attention</h2></div>
+      <div class="insight-list" id="attnList"></div>
+    </div>
+  </div>
+
+  <div class="grid cols-2" style="margin-top:22px">
+    <div class="card"><div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Revenue contribution</h2></div><div id="donutChart" class="chart"></div></div>
+    <div class="card"><div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">SOP deviation heatmap</h2></div><div id="heatChart" class="chart"></div></div>
+  </div>
+
+  <div class="section-title"><h2>Performance by theme</h2></div>
+  <div class="grid themes-4" id="themeCards"></div>
+  `;
+
+  // trend chart
+  const trend = mkChart('trendChart');
+  function drawTrend(grain){
+    const days = Array.from({length:30},(_,i)=>i+1);
+    let salesSeries = days.map(()=>0), expSeries = days.map(()=>0);
+    bs.forEach(b=>{
+      const daily = genDaily(b.sales, b.id.charCodeAt(1)*97+b.id.charCodeAt(2));
+      const expDaily = genDaily(b.sales-b.profit, b.id.charCodeAt(1)*53+7);
+      daily.forEach((v,i)=>salesSeries[i]+=v);
+      expDaily.forEach((v,i)=>expSeries[i]+=v);
+    });
+    let xData, sData, eData, pData;
+    if(grain==='daily'){ xData=days.map(d=>'Sep '+d); sData=salesSeries; eData=expSeries; }
+    else if(grain==='weekly'){
+      xData=['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5'];
+      sData=[0,0,0,0,0]; eData=[0,0,0,0,0];
+      salesSeries.forEach((v,i)=>sData[Math.min(4,Math.floor(i/7))]+=v);
+      expSeries.forEach((v,i)=>eData[Math.min(4,Math.floor(i/7))]+=v);
+    } else {
+      xData=['Apr','May','Jun','Jul','Aug','Sep'];
+      const totalS = salesSeries.reduce((a,b)=>a+b,0), totalE=expSeries.reduce((a,b)=>a+b,0);
+      sData=[0.6,0.7,0.8,0.88,0.95,1].map(f=>Math.round(totalS*f*0.8));
+      eData=[0.6,0.7,0.8,0.88,0.95,1].map(f=>Math.round(totalE*f*0.8));
+    }
+    pData = sData.map((v,i)=>v-eData[i]);
+    trend.setOption({
+      tooltip:{trigger:'axis',...baseTooltip(),valueFormatter:v=>inr(v)},
+      legend:{data:['Sales','Expenses','Profit'],textStyle:{color:'#9A907E'},top:0},
+      grid:{left:60,right:20,top:36,bottom:30},
+      xAxis:{type:'category',data:xData,...axisStyle()},
+      yAxis:{type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:v=>inr(v,{compact:true})}},
+      series:[
+        {name:'Sales',type:'line',data:sData,smooth:true,itemStyle:{color:'#D4AF37'},lineStyle:{width:2.5}},
+        {name:'Expenses',type:'line',data:eData,smooth:true,itemStyle:{color:'#B07A3A'},lineStyle:{width:2}},
+        {name:'Profit',type:'bar',data:pData,itemStyle:{color:'#F2DFA7',opacity:.65,borderRadius:[3,3,0,0]}},
+      ]
+    });
+  }
+  drawTrend('daily');
+  document.querySelectorAll('#trendSeg button').forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll('#trendSeg button').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+    drawTrend(btn.dataset.g);
+  });
+
+  // rank chart
+  const rank = mkChart('rankChart');
+  function drawRank(metric){
+    const data = BRANCHES.map(b=>{
+      let v;
+      if(metric==='sales') v=b.sales;
+      else if(metric==='profit') v=b.profit;
+      else if(metric==='margin') v=+(b.profit/b.sales*100).toFixed(1);
+      else v=+(b.sopDeviationValue/b.foodCostSOP*100).toFixed(1);
+      return {name:b.name.replace(' Mandi',''), value:v, id:b.id, color:b.themeColor};
+    }).sort((a,b)=>metric==='dev'? b.value-a.value : b.value-a.value);
+    rank.setOption({
+      tooltip:{...baseTooltip(),formatter:p=>{
+        const suffix = (metric==='margin'||metric==='dev') ? '%' : '';
+        const val = (metric==='margin'||metric==='dev') ? p.value+suffix : inr(p.value);
+        return p.name+': '+val;
+      }},
+      grid:{left:110,right:30,top:10,bottom:20},
+      xAxis:{type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:v=> (metric==='margin'||metric==='dev') ? v+'%' : inr(v,{compact:true})}},
+      yAxis:{type:'category',data:data.map(d=>d.name),...axisStyle()},
+      series:[{type:'bar',data:data.map(d=>({value:d.value,itemStyle:{color:d.color,borderRadius:[0,4,4,0]},branchId:d.id})),barWidth:22,label:{show:true,position:'right',color:'#9A907E',formatter:p=> (metric==='margin'||metric==='dev') ? p.value+'%' : inr(p.value,{compact:true})}}]
+    });
+    rank.off('click'); rank.on('click', p=> branchDrill(p.data.branchId));
+  }
+  drawRank('sales');
+  document.querySelectorAll('#rankSeg button').forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll('#rankSeg button').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+    drawRank(btn.dataset.m);
+  });
+
+  // attention list
+  const flagged = [];
+  BRANCHES.forEach(b=>{
+    SOP_ROWS[b.id].filter(r=>r.flag==='investigate').forEach(r=>{
+      flagged.push(`<div class="insight-item bad"><span class="ic">🔴</span><span><b>${b.name}</b> used ${(r.unexplained/r.sop*100).toFixed(0)}% more ${r.ing.toLowerCase()} than SOP this month — ${inr(r.value)} beyond logged wastage.</span></div>`);
+    });
+    if(b.profit<0) flagged.push(`<div class="insight-item bad"><span class="ic">🔴</span><span><b>${b.name}</b> is loss-making this month.</span></div>`);
+  });
+  const lowMargin = BRANCHES.filter(b=>b.profit/b.sales<0.10).sort((a,c)=>a.profit/a.sales-c.profit/c.sales);
+  lowMargin.forEach(b=>flagged.push(`<div class="insight-item warn"><span class="ic">🟡</span><span><b>${b.name}</b> margin is ${(b.profit/b.sales*100).toFixed(1)}%, below the 15% brand target.</span></div>`));
+  document.getElementById('attnList').innerHTML = flagged.slice(0,5).join('') || '<div class="insight-item">Nothing needs attention today.</div>';
+
+  // donut
+  const donut = mkChart('donutChart');
+  donut.setOption({
+    tooltip:{...baseTooltip(),formatter:p=>p.name+': '+inr(p.value)+' ('+p.percent+'%)'},
+    legend:{bottom:0,textStyle:{color:'#9A907E'}},
+    series:[{type:'pie',radius:['45%','72%'],avoidLabelOverlap:true,
+      label:{color:'#F3ECDC',formatter:'{d}%'},
+      data:BRANCHES.map(b=>({name:b.name.replace(' Mandi',''),value:b.sales,itemStyle:{color:b.themeColor}, id:b.id}))
+    }]
+  });
+  donut.on('click', p=>branchDrill(p.data.id));
+
+  // heatmap
+  const heat = mkChart('heatChart');
+  const ings = [...new Set(BRANCHES.flatMap(b=>SOP_ROWS[b.id].map(r=>r.ing)))];
+  const heatData = [];
+  BRANCHES.forEach((b,bi)=>{
+    ings.forEach((ing,ii)=>{
+      const row = SOP_ROWS[b.id].find(r=>r.ing===ing);
+      const v = row ? +(row.unexplained/row.sop*100).toFixed(1) : null;
+      if(v!==null) heatData.push([ii,bi,v]);
+    });
+  });
+  heat.setOption({
+    tooltip:{...baseTooltip(),formatter:p=>ings[p.data[0]]+' · '+BRANCHES[p.data[1]].name+': '+p.data[2]+'%'},
+    grid:{left:130,right:20,top:10,bottom:60},
+    xAxis:{type:'category',data:ings,...axisStyle(),axisLabel:{color:'#9A907E',rotate:35}},
+    yAxis:{type:'category',data:BRANCHES.map(b=>b.name.replace(' Mandi','')),...axisStyle()},
+    visualMap:{min:0,max:20,calculable:false,orient:'horizontal',left:'center',bottom:0,show:false,
+      inRange:{color:['#1B1813','#8A6C2A','#D8674F']}},
+    series:[{type:'heatmap',data:heatData,label:{show:true,color:'#F3ECDC',fontSize:10,formatter:p=>p.data[2]+'%'}}]
+  });
+  heat.on('click', p=>ingredientDrill(ings[p.data[0]], [BRANCHES[p.data[1]].id]));
+
+  // theme cards
+  document.getElementById('themeCards').innerHTML = THEMES.map(t=>{
+    const b = BRANCHES.find(x=>x.id===t.branchId);
+    return `<div class="theme-card" onclick="branchDrill('${b.id}')">
+      <div class="theme-swatch" style="background:${t.color}"></div>
+      <div class="tname">${t.name}</div>
+      <div class="tloc">${b.name} · ${b.location.split(',')[0]}</div>
+      <div class="theme-stat"><span>Net sales</span><b>${inr(b.sales,{compact:true})}</b></div>
+      <div class="theme-stat"><span>Margin</span><b>${(b.profit/b.sales*100).toFixed(1)}%</b></div>
+      <div class="theme-stat"><span>SOP deviation loss</span><b style="color:var(--loss)">${inr(b.sopDeviationValue,{compact:true})}</b></div>
+    </div>`;
+  }).join('');
+}
+
+/* =========================================================
+   SALES tab — shared across brand_owner/brand_manager/branch_owner
+   ========================================================= */
+function renderSales(root){
+  const bs = branchObjs();
+  const totalSales = sum(bs,b=>b.sales);
+  const target = sum(bs,b=>b.targetSales);
+
+  root.innerHTML = `
+  <div class="grid kpi-3">
+    <div class="card"><h3>Net sales</h3><div class="value">${inr(totalSales,{compact:true})}</div><span class="delta up">${pct((totalSales/target-1)*100)} vs target</span></div>
+    <div class="card"><h3>Orders (est.)</h3><div class="value">${Math.round(totalSales/620).toLocaleString('en-IN')}</div><div class="foot">Avg ticket ₹620</div></div>
+    <div class="card"><h3>Best day</h3><div class="value" style="font-size:24px">Saturdays</div><div class="foot">+38% vs weekday average</div></div>
+  </div>
+
+  <div class="section-title"><h2>Daily sales — September 2026</h2></div>
+  <div class="card"><div id="dailySalesChart" class="chart"></div></div>
+
+  <div class="grid cols-2" style="margin-top:22px">
+    <div class="card"><div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Weekday pattern</h2></div><div id="weekdayChart" class="chart sm"></div></div>
+    <div class="card"><div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Channel mix</h2></div><div id="channelChart" class="chart sm"></div></div>
+  </div>
+
+  <div class="section-title"><h2>Top items</h2></div>
+  <div class="card">
+    <table class="hy"><thead><tr><th>Item</th><th>Category</th><th class="num">Est. qty sold</th><th class="num">Est. sales</th><th class="num">SOP food cost %</th></tr></thead>
+    <tbody id="topItemsBody"></tbody></table>
+  </div>
+  `;
+
+  const daily = mkChart('dailySalesChart');
+  let combined = Array.from({length:30},()=>0);
+  bs.forEach(b=> genDaily(b.sales, b.id.charCodeAt(1)*97+b.id.charCodeAt(2)).forEach((v,i)=>combined[i]+=v));
+  daily.setOption({
+    tooltip:{trigger:'axis',...baseTooltip(),valueFormatter:v=>inr(v)},
+    grid:{left:60,right:20,top:16,bottom:30},
+    xAxis:{type:'category',data:Array.from({length:30},(_,i)=>'Sep '+(i+1)),...axisStyle()},
+    yAxis:{type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:v=>inr(v,{compact:true})}},
+    series:[{type:'bar',data:combined,itemStyle:{color:'#D4AF37',borderRadius:[3,3,0,0]}}]
+  });
+
+  const weekday = mkChart('weekdayChart');
+  const wdNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const wdTotals = new Array(7).fill(0), wdCount=new Array(7).fill(0);
+  combined.forEach((v,i)=>{ const dow=new Date(2026,8,i+1).getDay(); wdTotals[dow]+=v; wdCount[dow]++; });
+  const wdAvg = wdTotals.map((v,i)=>Math.round(v/wdCount[i]));
+  weekday.setOption({
+    tooltip:{...baseTooltip(),valueFormatter:v=>inr(v)},
+    grid:{left:60,right:16,top:10,bottom:26},
+    xAxis:{type:'category',data:wdNames,...axisStyle()},
+    yAxis:{type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:v=>inr(v,{compact:true})}},
+    series:[{type:'bar',data:wdAvg,itemStyle:{color:(p)=> (p.dataIndex===5||p.dataIndex===6) ? '#F2DFA7':'#8A6C2A', borderRadius:[3,3,0,0]}}]
+  });
+
+  const channel = mkChart('channelChart');
+  channel.setOption({
+    tooltip:{...baseTooltip(),formatter:p=>p.name+': '+p.percent+'%'},
+    legend:{bottom:0,textStyle:{color:'#9A907E'}},
+    series:[{type:'pie',radius:['40%','70%'],label:{color:'#F3ECDC'},
+      data:[{name:'Dine-in',value:55,itemStyle:{color:'#D4AF37'}},{name:'Swiggy',value:25,itemStyle:{color:'#B07A3A'}},{name:'Zomato',value:20,itemStyle:{color:'#B9B6AE'}}]}]
+  });
+
+  document.getElementById('topItemsBody').innerHTML = MENU_ITEMS.slice(0,7).map((m,i)=>{
+    const qty = Math.round((totalSales*0.06*(1-i*0.08))/450);
+    const salesv = qty*450;
+    return `<tr><td>${m.name}</td><td>${m.category}</td><td class="num">${qty.toLocaleString('en-IN')}</td><td class="num">${inr(salesv,{compact:true})}</td><td class="num">${m.foodCostPct.toFixed(1)}%</td></tr>`;
+  }).join('');
+}
+
+/* =========================================================
+   EXPENSES & PROFIT tab
+   ========================================================= */
+function renderExpenses(root){
+  const bs = branchObjs();
+  const totalSales = sum(bs,b=>b.sales);
+  const foodCost = sum(bs,b=>b.foodCostSOP), dev = sum(bs,b=>b.sopDeviationValue), wastage = sum(bs,b=>b.wastageValue);
+  const agg = sum(bs,b=>b.aggregatorCommission), fixed = sum(bs,b=>b.fixedCosts), roy = sum(bs,b=>b.royaltyFund);
+  const profit = sum(bs,b=>b.profit);
+
+  root.innerHTML = `
+  <div class="grid kpi-3">
+    <div class="card"><h3>Actual food cost %</h3><div class="value">${((foodCost+dev)/totalSales*100).toFixed(1)}%</div><div class="foot">SOP target ${(foodCost/totalSales*100).toFixed(1)}%</div></div>
+    <div class="card"><h3>Fixed costs</h3><div class="value">${inr(fixed,{compact:true})}</div><div class="foot">${(fixed/totalSales*100).toFixed(1)}% of sales · ${inr(fixed/30)}/day</div></div>
+    <div class="card"><h3>Royalty + marketing fund</h3><div class="value">${inr(roy,{compact:true})}</div><div class="foot">To brand, franchise branches only</div></div>
+  </div>
+
+  <div class="section-title"><h2>Sales → profit waterfall</h2></div>
+  <div class="card"><div id="waterfallChart" class="chart lg"></div></div>
+
+  <div class="grid cols-2" style="margin-top:22px">
+    <div class="card"><div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Fixed costs by head</h2></div><div id="fixedCostChart" class="chart"></div></div>
+    <div class="card">
+      <div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Monthly profit & margin</h2></div>
+      <div id="profitTrendChart" class="chart"></div>
+    </div>
+  </div>
+  `;
+
+  const wf = mkChart('waterfallChart');
+  const steps = [
+    {name:'Net sales', v:totalSales},
+    {name:'Food cost (SOP)', v:-foodCost},
+    {name:'SOP deviation', v:-dev},
+    {name:'Wastage', v:-wastage},
+    {name:'Aggregator commission', v:-agg},
+    {name:'Fixed costs', v:-fixed},
+    {name:'Royalty + fund', v:-roy},
+    {name:'Net profit', v:profit, isTotal:true},
+  ];
+  let running=0; const base=[], pos=[], neg=[], tot=[];
+  steps.forEach(s=>{
+    if(s.isTotal){ base.push(0); pos.push(0); neg.push(0); tot.push(s.v); }
+    else {
+      const start = s.v>=0 ? running : running+s.v;
+      base.push(start);
+      pos.push(s.v>=0?s.v:0);
+      neg.push(s.v<0?-s.v:0);
+      tot.push(0);
+      running += s.v;
+    }
+  });
+  wf.setOption({
+    tooltip:{...baseTooltip(),formatter:p=>{ const s=steps[p[0].dataIndex]; return s.name+': '+inr(Math.abs(s.v)); }},
+    grid:{left:60,right:20,top:10,bottom:70},
+    xAxis:{type:'category',data:steps.map(s=>s.name),...axisStyle(),axisLabel:{color:'#9A907E',rotate:28}},
+    yAxis:{type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:v=>inr(v,{compact:true})}},
+    series:[
+      {name:'base',type:'bar',stack:'wf',itemStyle:{color:'transparent'},data:base,silent:true},
+      {name:'increase',type:'bar',stack:'wf',itemStyle:{color:'#9CCB9F'},data:pos},
+      {name:'decrease',type:'bar',stack:'wf',itemStyle:{color:'#D8674F'},data:neg},
+      {name:'total',type:'bar',stack:'wf',itemStyle:{color:'#D4AF37'},data:tot},
+    ]
+  });
+
+  const fc = mkChart('fixedCostChart');
+  const heads = FIXED_COST_SPLIT.map(h=>({name:h.head, value:Math.round(fixed*h.pct)}));
+  fc.setOption({
+    tooltip:{...baseTooltip(),formatter:p=>p.name+': '+inr(p.value)+' ('+p.percent+'%)'},
+    legend:{bottom:0,textStyle:{color:'#9A907E'},type:'scroll'},
+    series:[{type:'pie',radius:['40%','70%'],label:{color:'#F3ECDC',formatter:'{d}%'},
+      data:heads.map((h,i)=>({...h,itemStyle:{color:goldRamp[i%goldRamp.length]}}))}]
+  });
+
+  const pt = mkChart('profitTrendChart');
+  const months=['Apr','May','Jun','Jul','Aug','Sep'];
+  const marginNow = profit/totalSales*100;
+  const marginSeries = [marginNow-4.2,marginNow-3.1,marginNow-2.0,marginNow-1.1,marginNow-0.4,marginNow].map(v=>+v.toFixed(1));
+  const profitSeries = [0.55,0.66,0.76,0.85,0.93,1].map(f=>Math.round(profit*f*0.75));
+  pt.setOption({
+    tooltip:{trigger:'axis',...baseTooltip()},
+    grid:{left:60,right:50,top:16,bottom:26},
+    xAxis:{type:'category',data:months,...axisStyle()},
+    yAxis:[{type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:v=>inr(v,{compact:true})}},
+           {type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:'{value}%'}}],
+    series:[
+      {name:'Profit',type:'bar',data:profitSeries,itemStyle:{color:'#8A6C2A',borderRadius:[3,3,0,0]}},
+      {name:'Margin %',type:'line',yAxisIndex:1,data:marginSeries,itemStyle:{color:'#D4AF37'},lineStyle:{width:2.5},symbol:'circle'},
+    ]
+  });
+}
+
+/* =========================================================
+   SOP & WASTAGE tab
+   ========================================================= */
+function renderSOP(root){
+  const bs = branchObjs();
+  const rows = bs.flatMap(b=>SOP_ROWS[b.id].map(r=>({...r, branch:b.name, branchId:b.id})));
+  const totalDev = sum(bs,b=>b.sopDeviationValue);
+  const totalWaste = sum(bs,b=>b.wastageValue);
+  const investigateCount = rows.filter(r=>r.flag==='investigate').length;
+
+  root.innerHTML = `
+  <div class="grid kpi-3">
+    <div class="card kpi-hero"><h3>Unexplained deviation value</h3><div class="value">${inr(totalDev,{compact:true})}</div><div class="foot">${investigateCount} ingredient(s) flagged Investigate</div></div>
+    <div class="card"><h3>Recorded wastage</h3><div class="value">${inr(totalWaste,{compact:true})}</div><div class="foot">${WASTAGE_REASONS[0]} is the top reason</div></div>
+    <div class="card"><h3>Period used</h3><div class="value" style="font-size:22px">1 Sep → 30 Sep</div><div class="foot">Snapped to available stock counts</div></div>
+  </div>
+
+  <div class="section-title"><h2>Ingredient variance</h2><span class="hint">Click a row to see which menu items likely drove it</span></div>
+  <div class="card"><table class="hy" id="sopTable"><thead><tr>
+    <th>Ingredient</th>${bs.length>1?'<th>Branch</th>':''}<th class="num">SOP usage</th><th class="num">Actual</th><th class="num">Wastage</th><th class="num">Unexplained</th><th class="num">Deviation %</th><th class="num">Value</th><th>Flag</th>
+  </tr></thead><tbody></tbody></table></div>
+
+  <div class="grid cols-2" style="margin-top:22px">
+    <div class="card"><div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Biggest leaks (by value)</h2></div><div id="leaksChart" class="chart"></div></div>
+    <div class="card"><div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Wastage by reason</h2></div><div id="wasteReasonChart" class="chart"></div></div>
+  </div>
+
+  <div class="section-title"><h2>Purchase price variance</h2></div>
+  <div class="card"><table class="hy"><thead><tr><th>Ingredient</th><th class="num">Standard rate</th><th class="num">Avg rate paid</th><th class="num">Variance</th></tr></thead><tbody id="ppvBody"></tbody></table></div>
+  `;
+
+  const tbody = document.querySelector('#sopTable tbody');
+  tbody.innerHTML = rows.map(r=>`<tr class="clickable" onclick='ingredientDrill("${r.ing}", ${JSON.stringify(bs.map(b=>b.id))})'>
+    <td>${r.ing}</td>${bs.length>1?`<td>${r.branch}</td>`:''}
+    <td class="num">${r.sop.toLocaleString('en-IN')} ${r.unit}</td>
+    <td class="num">${r.actual.toLocaleString('en-IN')} ${r.unit}</td>
+    <td class="num">${r.wastage.toLocaleString('en-IN')} ${r.unit}</td>
+    <td class="num">${r.unexplained.toLocaleString('en-IN')} ${r.unit}</td>
+    <td class="num">${(r.unexplained/r.sop*100).toFixed(1)}%</td>
+    <td class="num">${inr(r.value)}</td>
+    <td>${flagPill(r.flag)}</td>
+  </tr>`).join('');
+
+  const leaks = mkChart('leaksChart');
+  const top = [...rows].sort((a,b)=>b.value-a.value).slice(0,6);
+  leaks.setOption({
+    tooltip:{...baseTooltip(),valueFormatter:v=>inr(v)},
+    grid:{left:130,right:30,top:10,bottom:20},
+    xAxis:{type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:v=>inr(v,{compact:true})}},
+    yAxis:{type:'category',data:top.map(r=>r.ing+(bs.length>1?' · '+r.branch.replace(' Mandi',''):'')),...axisStyle()},
+    series:[{type:'bar',data:top.map(r=>({value:r.value,itemStyle:{color:r.flag==='investigate'?'#D8674F':r.flag==='watch'?'#E6BE5A':'#8A6C2A',borderRadius:[0,4,4,0]}})),barWidth:20,
+      label:{show:true,position:'right',color:'#9A907E',formatter:p=>inr(p.value,{compact:true})}}]
+  });
+
+  const wr = mkChart('wasteReasonChart');
+  const reasonSplit = [0.42,0.28,0.18,0.12];
+  wr.setOption({
+    tooltip:{...baseTooltip(),formatter:p=>p.name+': '+inr(p.value)+' ('+p.percent+'%)'},
+    legend:{bottom:0,textStyle:{color:'#9A907E'}},
+    series:[{type:'pie',radius:['40%','70%'],label:{color:'#F3ECDC'},
+      data:WASTAGE_REASONS.map((r,i)=>({name:r,value:Math.round(totalWaste*reasonSplit[i]),itemStyle:{color:goldRamp[i]}}))}]
+  });
+
+  document.getElementById('ppvBody').innerHTML = rows.slice(0,5).map(r=>{
+    const paid = r.rate * (1 + (r.flag==='investigate'?0.03:r.flag==='watch'?0.012:0));
+    const variance = paid - r.rate;
+    return `<tr><td>${r.ing}</td><td class="num">₹${r.rate}/${r.unit}</td><td class="num">₹${paid.toFixed(1)}/${r.unit}</td><td class="num" style="color:${variance>0?'var(--loss)':'var(--gain)'}">${variance>0?'+':''}₹${variance.toFixed(1)}</td></tr>`;
+  }).join('');
+}
+
+/* =========================================================
+   BRANCHES tab (brand-level)
+   ========================================================= */
+function renderBranchesTab(root){
+  root.innerHTML = `
+  <div class="section-title"><h2>Branch directory</h2><span class="hint">Click a row for a quick view</span></div>
+  <div class="card"><table class="hy"><thead><tr>
+    <th>Branch</th><th>Location</th><th>Theme</th><th>Ownership</th><th>Status</th><th class="num">Net sales</th><th class="num">Margin</th>
+  </tr></thead><tbody>
+  ${BRANCHES.map(b=>`<tr class="clickable" onclick="branchDrill('${b.id}')">
+    <td><b>${b.name}</b><br><span class="badge">${b.id}</span></td>
+    <td>${b.location}</td>
+    <td><span style="display:inline-flex;align-items:center;gap:6px"><span class="dotsw" style="background:${b.themeColor}"></span>${b.theme}</span></td>
+    <td>${b.ownership}${b.ownership==='Franchise'?' · '+b.ownerName:''}</td>
+    <td><span class="status-pill ok">● ${b.status}</span> <span class="foot" style="color:var(--muted)">since ${b.opened}</span></td>
+    <td class="num">${inr(b.sales,{compact:true})}</td>
+    <td class="num">${(b.profit/b.sales*100).toFixed(1)}%</td>
+  </tr>`).join('')}
+  </tbody></table></div>
+
+  <div class="section-title"><h2>Upcoming branches</h2></div>
+  <div class="grid cols-3">
+    <div class="card"><h3>Planned</h3><div class="value" style="font-size:22px">2 sites</div><div class="foot">Under evaluation — Vijayawada, Bengaluru</div></div>
+    <div class="card"><h3>Signed franchise LOIs</h3><div class="value" style="font-size:22px">1</div><div class="foot">Pending SOP training & launch date</div></div>
+    <div class="card"><h3>Avg. ramp to breakeven</h3><div class="value" style="font-size:22px">~4 months</div><div class="foot">Based on B02–B04 trend</div></div>
+  </div>
+  `;
+}
+
+/* =========================================================
+   REVENUE SHARE tab
+   ========================================================= */
+function renderRevShare(root){
+  const franchises = BRANCHES.filter(b=>b.ownership==='Franchise');
+  const totalRoy = sum(franchises,b=>b.royaltyFund);
+  root.innerHTML = `
+  <div class="grid kpi-3">
+    <div class="card"><h3>Royalty + marketing fund received</h3><div class="value">${inr(totalRoy,{compact:true})}</div><div class="foot">From ${franchises.length} franchise branches, Sep 2026</div></div>
+    <div class="card"><h3>Standard royalty</h3><div class="value" style="font-size:26px">5.0%</div><div class="foot">Of net sales, franchise branches</div></div>
+    <div class="card"><h3>Marketing fund</h3><div class="value" style="font-size:26px">2.0%</div><div class="foot">Of net sales, pooled brand-wide</div></div>
+  </div>
+
+  <div class="section-title"><h2>What the brand receives vs what each branch keeps</h2></div>
+  <div class="card"><div id="revShareChart" class="chart lg"></div></div>
+
+  <div class="section-title"><h2>Terms by branch</h2><span class="hint">Configurable per branch — open client query Q06</span></div>
+  <div class="card"><table class="hy"><thead><tr><th>Branch</th><th>Ownership</th><th class="num">Royalty %</th><th class="num">Marketing fund %</th><th class="num">Aggregator commission (blended)</th><th class="num">Brand receives</th></tr></thead><tbody>
+  ${BRANCHES.map(b=>`<tr>
+    <td>${b.name}</td><td>${b.ownership}</td>
+    <td class="num">${b.ownership==='Franchise'?'5.0%':'—'}</td>
+    <td class="num">${b.ownership==='Franchise'?'2.0%':'—'}</td>
+    <td class="num">${(b.aggregatorCommission/b.sales*100).toFixed(1)}%</td>
+    <td class="num">${inr(b.royaltyFund,{compact:true})}</td>
+  </tr>`).join('')}
+  </tbody></table></div>
+  `;
+  const rs = mkChart('revShareChart');
+  rs.setOption({
+    tooltip:{trigger:'axis',...baseTooltip(),valueFormatter:v=>inr(v)},
+    legend:{data:['Brand receives','Branch keeps'],textStyle:{color:'#9A907E'}},
+    grid:{left:60,right:20,top:36,bottom:30},
+    xAxis:{type:'category',data:BRANCHES.map(b=>b.name.replace(' Mandi','')),...axisStyle()},
+    yAxis:{type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:v=>inr(v,{compact:true})}},
+    series:[
+      {name:'Brand receives',type:'bar',stack:'s',data:BRANCHES.map(b=>b.royaltyFund),itemStyle:{color:'#D4AF37'}},
+      {name:'Branch keeps',type:'bar',stack:'s',data:BRANCHES.map(b=>b.sales-b.royaltyFund),itemStyle:{color:'#2A2419'}},
+    ]
+  });
+}
+
+/* =========================================================
+   BRANCH OWNER — At a glance
+   ========================================================= */
+function renderGlance(root){
+  const bs = branchObjs();
+  const totalSales = sum(bs,b=>b.sales), totalProfit = sum(bs,b=>b.profit);
+  const dev = sum(bs,b=>b.sopDeviationValue);
+  const margin = totalProfit/totalSales*100;
+  const p = persona();
+  const isMulti = Array.isArray(p.branchIds) && p.branchIds.length>1;
+
+  const rankOnMargin = [...BRANCHES].sort((a,b)=>(b.profit/b.sales)-(a.profit/a.sales));
+  const myRank = isMulti ? null : rankOnMargin.findIndex(b=>b.id===bs[0].id)+1;
+
+  root.innerHTML = `
+  <div class="grid kpi-4">
+    <div class="card"><h3>Net sales</h3><div class="value">${inr(totalSales,{compact:true})}</div><span class="delta up">▲ 6.1% vs Aug</span></div>
+    <div class="card"><h3>Total expenses</h3><div class="value">${inr(totalSales-totalProfit,{compact:true})}</div><span class="delta down">▲ 2.8% vs Aug</span></div>
+    <div class="card"><h3>Net profit · margin</h3><div class="value">${inr(totalProfit,{compact:true})}</div><span class="delta ${margin>12?'up':'down'}">${margin.toFixed(1)}% margin</span></div>
+    <div class="card kpi-hero"><h3>Lost to SOP deviation</h3><div class="value">${inr(dev,{compact:true})}</div><div class="foot">See SOP & wastage tab for detail</div></div>
+  </div>
+
+  ${isMulti ? `
+  <div class="section-title"><h2>My branches</h2></div>
+  <div class="grid cols-2">
+    ${bs.map(b=>`<div class="card clickable" style="cursor:pointer" onclick="branchDrill('${b.id}')">
+      <h3>${b.name}</h3><div class="value" style="font-size:24px">${inr(b.sales,{compact:true})}</div>
+      <div class="foot">Margin ${(b.profit/b.sales*100).toFixed(1)}% · ${inr(b.sopDeviationValue,{compact:true})} lost to deviation</div>
+    </div>`).join('')}
+  </div>` : `
+  <div class="section-title"><h2>Where I stand vs the network</h2></div>
+  <div class="card"><h3>Anonymised benchmark</h3><div class="value">Rank ${myRank} of ${BRANCHES.length}</div><div class="foot">On net margin — other branch names and values are not shown to you</div></div>
+  `}
+
+  <div class="section-title"><h2>Daily break-even</h2></div>
+  <div class="card"><div id="breakEvenChart" class="chart"></div></div>
+  `;
+
+  const be = mkChart('breakEvenChart');
+  const fixedDaily = sum(bs,b=>b.fixedCosts)/30;
+  const days = Array.from({length:30},(_,i)=>i+1);
+  let grossMarginDaily = Array.from({length:30},()=>0);
+  bs.forEach(b=>{
+    const daily = genDaily(b.sales, b.id.charCodeAt(1)*97+b.id.charCodeAt(2));
+    const foodPct = (b.foodCostSOP+b.sopDeviationValue)/b.sales;
+    daily.forEach((v,i)=>grossMarginDaily[i]+= v*(1-foodPct));
+  });
+  be.setOption({
+    tooltip:{trigger:'axis',...baseTooltip(),valueFormatter:v=>inr(v)},
+    legend:{data:['Gross margin','Daily fixed cost'],textStyle:{color:'#9A907E'}},
+    grid:{left:60,right:20,top:36,bottom:30},
+    xAxis:{type:'category',data:days.map(d=>'Sep '+d),...axisStyle()},
+    yAxis:{type:'value',...axisStyle(),axisLabel:{color:'#9A907E',formatter:v=>inr(v,{compact:true})}},
+    series:[
+      {name:'Gross margin',type:'bar',data:grossMarginDaily.map(v=>Math.round(v)),itemStyle:{color:(p)=>p.value>=fixedDaily?'#9CCB9F':'#D8674F',borderRadius:[3,3,0,0]}},
+      {name:'Daily fixed cost',type:'line',data:days.map(()=>Math.round(fixedDaily)),itemStyle:{color:'#D4AF37'},lineStyle:{width:2,type:'dashed'},symbol:'none'},
+    ]
+  });
+}
+
+/* =========================================================
+   BRANCH MANAGER — Today
+   ========================================================= */
+function renderToday(root){
+  const b = BRANCHES.find(x=>x.id===persona().branchIds[0]);
+  const todaySales = Math.round(b.sales/30*1.08);
+  const target = Math.round(b.targetSales/30);
+  root.innerHTML = `
+  <div class="section-title"><h2>${b.name} — today</h2><span class="hint">${b.location}</span></div>
+  <div class="grid kpi-3">
+    <div class="card"><h3>Sales vs target</h3><div class="value">${inr(todaySales,{compact:true})}</div><div class="foot">Target ${inr(target,{compact:true})} · ${(todaySales/target*100).toFixed(0)}% achieved</div></div>
+    <div class="card"><h3>Orders today</h3><div class="value">${Math.round(todaySales/610)}</div><div class="foot">Avg ticket ₹610</div></div>
+    <div class="card"><h3>Channel split</h3><div class="value" style="font-size:22px">55 / 25 / 20</div><div class="foot">Dine-in / Swiggy / Zomato</div></div>
+  </div>
+
+  <div class="grid cols-2" style="margin-top:22px">
+    <div class="card">
+      <div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Top items today</h2></div>
+      <table class="hy"><thead><tr><th>Item</th><th class="num">Qty</th></tr></thead><tbody>
+        ${MENU_ITEMS.slice(0,5).map((m,i)=>`<tr><td>${m.name}</td><td class="num">${28-i*4}</td></tr>`).join('')}
+      </tbody></table>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin:0 0 10px"><h2 style="font-size:16px">Low stock & near-expiry alerts</h2></div>
+      <div class="insight-list">
+        <div class="insight-item warn"><span class="ic">🟡</span><span>Refined oil — 1.2 days of cover left, reorder now.</span></div>
+        <div class="insight-item warn"><span class="ic">🟡</span><span>Paneer — near-expiry, use within 24h.</span></div>
+        <div class="insight-item"><span class="ic">🟢</span><span>Basmati rice — 9 days of cover, healthy.</span></div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+function renderPurchases(root){
+  const b = BRANCHES.find(x=>x.id===persona().branchIds[0]);
+  const rows = SOP_ROWS[b.id];
+  root.innerHTML = `
+  <div class="section-title"><h2>Record a purchase</h2></div>
+  <div class="card">
+    <div class="form-grid">
+      <div class="form-field"><label>Ingredient</label><input placeholder="e.g. Refined oil"></div>
+      <div class="form-field"><label>Qty</label><input placeholder="0"></div>
+      <div class="form-field"><label>Rate paid (₹)</label><input placeholder="0.00"></div>
+      <div class="form-field"><label>Supplier</label><input placeholder="Supplier name"></div>
+      <div class="form-field"><label>Invoice ref</label><input placeholder="INV-####"></div>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px"><button class="btn-gold" onclick="alert('Demo only — no data is saved.')">Save purchase</button><button class="btn-ghost">Upload Excel</button></div>
+  </div>
+
+  <div class="section-title"><h2>Purchases this month, by ingredient</h2></div>
+  <div class="card"><table class="hy"><thead><tr><th>Ingredient</th><th class="num">Qty purchased</th><th class="num">Standard rate</th><th class="num">Avg rate paid</th></tr></thead><tbody>
+  ${rows.map(r=>`<tr><td>${r.ing}</td><td class="num">${r.actual.toLocaleString('en-IN')} ${r.unit}</td><td class="num">₹${r.rate}/${r.unit}</td><td class="num">₹${(r.rate*1.01).toFixed(1)}/${r.unit}</td></tr>`).join('')}
+  </tbody></table></div>
+  `;
+}
+function renderStock(root){
+  const b = BRANCHES.find(x=>x.id===persona().branchIds[0]);
+  const rows = SOP_ROWS[b.id];
+  root.innerHTML = `
+  <div class="section-title"><h2>Stock on hand</h2></div>
+  <div class="card"><table class="hy"><thead><tr><th>Ingredient</th><th class="num">On hand</th><th class="num">Days of cover</th><th>Status</th></tr></thead><tbody>
+  ${rows.map((r,i)=>{
+    const cover = [1.2,4.5,9.1,6.0,3.2][i%5];
+    const status = cover<2?'investigate':cover<4?'watch':'ok';
+    return `<tr><td>${r.ing}</td><td class="num">${Math.round(r.actual*0.05).toLocaleString('en-IN')} ${r.unit}</td><td class="num">${cover.toFixed(1)}</td><td>${flagPill(status)}</td></tr>`;
+  }).join('')}
+  </tbody></table></div>
+
+  <div class="section-title"><h2>Record a stock count</h2></div>
+  <div class="card">
+    <div class="form-grid">
+      <div class="form-field"><label>Ingredient</label><input placeholder="e.g. Ghee"></div>
+      <div class="form-field"><label>Counted qty</label><input placeholder="0"></div>
+      <div class="form-field"><label>Count type</label><input placeholder="Opening / Closing / Spot"></div>
+    </div>
+    <div style="margin-top:14px;"><button class="btn-gold" onclick="alert('Demo only — no data is saved.')">Save count</button></div>
+  </div>
+  `;
+}
+function renderSopActual(root){
+  const b = BRANCHES.find(x=>x.id===persona().branchIds[0]);
+  const rows = SOP_ROWS[b.id];
+  root.innerHTML = `
+  <div class="section-title"><h2>SOP usage vs actual — top ingredients</h2></div>
+  <div class="card"><table class="hy"><thead><tr><th>Ingredient</th><th class="num">SOP usage</th><th class="num">Actual</th><th class="num">Unexplained</th><th class="num">Deviation %</th><th>Flag</th></tr></thead><tbody>
+  ${rows.map(r=>`<tr class="clickable" onclick='ingredientDrill("${r.ing}", ["${b.id}"])'>
+    <td>${r.ing}</td><td class="num">${r.sop.toLocaleString('en-IN')} ${r.unit}</td><td class="num">${r.actual.toLocaleString('en-IN')} ${r.unit}</td>
+    <td class="num">${r.unexplained.toLocaleString('en-IN')} ${r.unit}</td><td class="num">${(r.unexplained/r.sop*100).toFixed(1)}%</td><td>${flagPill(r.flag)}</td>
+  </tr>`).join('')}
+  </tbody></table></div>
+  `;
+}
+function renderWastageTab(root){
+  const b = BRANCHES.find(x=>x.id===persona().branchIds[0]);
+  root.innerHTML = `
+  <div class="section-title"><h2>Quick wastage entry</h2></div>
+  <div class="card">
+    <div class="form-grid">
+      <div class="form-field"><label>Ingredient / item</label><input placeholder="e.g. Chicken (bone-in)"></div>
+      <div class="form-field"><label>Qty</label><input placeholder="0"></div>
+      <div class="form-field"><label>Reason</label><input placeholder="Over-portioning / Spillage / Expiry / Prep waste"></div>
+      <div class="form-field"><label>Note</label><input placeholder="Optional"></div>
+    </div>
+    <div style="margin-top:14px"><button class="btn-gold" onclick="alert('Demo only — no data is saved.')">Log wastage</button></div>
+  </div>
+
+  <div class="section-title"><h2>Wastage this month</h2></div>
+  <div class="grid cols-2">
+    <div class="card"><h3>Total wastage value</h3><div class="value">${inr(b.wastageValue,{compact:true})}</div></div>
+    <div class="card"><h3>Top reason</h3><div class="value" style="font-size:22px">${WASTAGE_REASONS[0]}</div><div class="foot">42% of logged wastage</div></div>
+  </div>
+  `;
+}
+
+/* ---------- init ---------- */
+renderAll();
+window.addEventListener('resize', ()=>chartInstances.forEach(c=>c.resize()));
+</script>
+</body>
+</html>
