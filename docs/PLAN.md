@@ -1,6 +1,9 @@
 # HIYYA Command Center — build plan
 
-Status: **draft, awaiting "go"**. Nothing in Stage A has been scaffolded yet. This plan follows the Phase build prompt (pasted into chat on 2026-09-17; the earlier v3 spec is preserved at `reference/hiyya-analytics-platform-prompt-v3.md` for brand/context background, and is superseded wherever the two differ).
+Status: **Phase 1 complete, awaiting "go" for Phase 2**. This plan follows the Phase build prompt (pasted into chat on 2026-09-17; the earlier v3 spec is preserved at `reference/hiyya-analytics-platform-prompt-v3.md` for brand/context background, and is superseded wherever the two differ).
+
+- Phase 0 (scaffold) — done, commit `38f7c32`.
+- Phase 1 (data layer + calc engine) — done, see the Phase 1 report. All 41 Vitest cases pass, including the full Section 10 acceptance table and the exact 10 "Investigate" flags.
 
 ## 0. What exists today, and what doesn't carry over
 

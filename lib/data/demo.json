@@ -1,0 +1,2312 @@
+{
+  "branches": [
+    {
+      "code": "B01",
+      "name": "Chrono Jail Mandi",
+      "location": "Madhapur, Hyderabad, TS",
+      "theme": "Chrono Jail",
+      "ownership": "brand",
+      "ownerName": "Brand (Gautamy Chowdary, Gautham, Vikranth)",
+      "openedOn": "2025-12-01"
+    },
+    {
+      "code": "B02",
+      "name": "Dino Mandi",
+      "location": "Kukatpally (GPR Multiplex), Hyderabad, TS",
+      "theme": "Dino",
+      "ownership": "franchise",
+      "ownerName": "Suresh Reddy",
+      "openedOn": "2026-05-08"
+    },
+    {
+      "code": "B03",
+      "name": "Jail Mandi Vizag",
+      "location": "Dwaraka Nagar, Visakhapatnam, AP",
+      "theme": "Jail",
+      "ownership": "franchise",
+      "ownerName": "Suresh Reddy",
+      "openedOn": "2026-03-18"
+    },
+    {
+      "code": "B04",
+      "name": "Space Mandi",
+      "location": "Ameerpet, Hyderabad, TS",
+      "theme": "Space",
+      "ownership": "franchise",
+      "ownerName": "Anil Kumar",
+      "openedOn": "2026-07-04"
+    }
+  ],
+  "themes": [
+    {
+      "name": "Chrono Jail",
+      "branchCode": "B01",
+      "colorToken": "gold"
+    },
+    {
+      "name": "Dino",
+      "branchCode": "B02",
+      "colorToken": "champagne"
+    },
+    {
+      "name": "Jail",
+      "branchCode": "B03",
+      "colorToken": "bronze"
+    },
+    {
+      "name": "Space",
+      "branchCode": "B04",
+      "colorToken": "platinum"
+    }
+  ],
+  "personas": [
+    {
+      "id": "owner",
+      "label": "Brand Owner: Gautamy Chowdary",
+      "role": "brand_owner",
+      "branchCodes": "all"
+    },
+    {
+      "id": "bm",
+      "label": "Brand Manager: Ravi Teja (demo)",
+      "role": "brand_manager",
+      "branchCodes": "all"
+    },
+    {
+      "id": "bo1",
+      "label": "Branch Owner: Suresh Reddy (demo)",
+      "role": "branch_owner",
+      "branchCodes": ["B02", "B03"]
+    },
+    {
+      "id": "bo2",
+      "label": "Branch Owner: Anil Kumar (demo)",
+      "role": "branch_owner",
+      "branchCodes": ["B04"]
+    },
+    {
+      "id": "mg1",
+      "label": "Branch Manager: Kiran (demo)",
+      "role": "branch_manager",
+      "branchCodes": ["B02"]
+    },
+    {
+      "id": "mg2",
+      "label": "Branch Manager: Farhan (demo)",
+      "role": "branch_manager",
+      "branchCodes": ["B01"]
+    }
+  ],
+  "ingredients": [
+    {
+      "key": "chicken",
+      "name": "Chicken (dressed)",
+      "unit": "kg",
+      "standardRate": 210
+    },
+    {
+      "key": "mutton",
+      "name": "Mutton",
+      "unit": "kg",
+      "standardRate": 680
+    },
+    {
+      "key": "fish",
+      "name": "Fish",
+      "unit": "kg",
+      "standardRate": 320
+    },
+    {
+      "key": "rice",
+      "name": "Basmati rice",
+      "unit": "kg",
+      "standardRate": 65
+    },
+    {
+      "key": "ghee",
+      "name": "Ghee",
+      "unit": "kg",
+      "standardRate": 550
+    },
+    {
+      "key": "oil",
+      "name": "Refined oil",
+      "unit": "L",
+      "standardRate": 140
+    },
+    {
+      "key": "mayo",
+      "name": "Mayonnaise",
+      "unit": "kg",
+      "standardRate": 220
+    },
+    {
+      "key": "milk",
+      "name": "Milk",
+      "unit": "L",
+      "standardRate": 58
+    },
+    {
+      "key": "cheese",
+      "name": "Cheese",
+      "unit": "kg",
+      "standardRate": 450
+    }
+  ],
+  "menuItems": [
+    {
+      "code": "M01",
+      "name": "Chicken Juicy Mandi (Large)",
+      "category": "Mandi",
+      "price": 320,
+      "linkedIngredients": ["chicken", "rice", "ghee", "oil"]
+    },
+    {
+      "code": "M02",
+      "name": "Mutton Mandi",
+      "category": "Mandi",
+      "price": 380,
+      "linkedIngredients": ["mutton", "rice", "ghee"]
+    },
+    {
+      "code": "M03",
+      "name": "Fish Mandi",
+      "category": "Mandi",
+      "price": 340,
+      "linkedIngredients": ["fish", "rice", "oil"]
+    },
+    {
+      "code": "M04",
+      "name": "Chicken Chekkalu",
+      "category": "Starters",
+      "price": 180,
+      "linkedIngredients": ["chicken", "rice", "oil"]
+    },
+    {
+      "code": "M05",
+      "name": "Street Style Chicken Pakoda",
+      "category": "Starters",
+      "price": 190,
+      "linkedIngredients": ["chicken", "oil", "mayo"]
+    },
+    {
+      "code": "M06",
+      "name": "Cheesy Kurkure Mushroom",
+      "category": "Starters",
+      "price": 210,
+      "linkedIngredients": ["cheese", "oil"]
+    },
+    {
+      "code": "M07",
+      "name": "Kaddu Ka Kheer",
+      "category": "Desserts",
+      "price": 120,
+      "linkedIngredients": ["milk", "ghee"]
+    },
+    {
+      "code": "M08",
+      "name": "Apricot Delight",
+      "category": "Desserts",
+      "price": 140,
+      "linkedIngredients": ["milk", "ghee"]
+    }
+  ],
+  "sopLines": [
+    {
+      "menuItemCode": "M01",
+      "ingredientKey": "chicken",
+      "qtyPerPortion": 0.35,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M01",
+      "ingredientKey": "rice",
+      "qtyPerPortion": 0.28,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M01",
+      "ingredientKey": "ghee",
+      "qtyPerPortion": 0.03,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M01",
+      "ingredientKey": "oil",
+      "qtyPerPortion": 0.02,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M02",
+      "ingredientKey": "mutton",
+      "qtyPerPortion": 0.32,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M02",
+      "ingredientKey": "rice",
+      "qtyPerPortion": 0.28,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M02",
+      "ingredientKey": "ghee",
+      "qtyPerPortion": 0.03,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M03",
+      "ingredientKey": "fish",
+      "qtyPerPortion": 0.3,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M03",
+      "ingredientKey": "rice",
+      "qtyPerPortion": 0.28,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M03",
+      "ingredientKey": "oil",
+      "qtyPerPortion": 0.02,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M04",
+      "ingredientKey": "chicken",
+      "qtyPerPortion": 0.12,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M04",
+      "ingredientKey": "rice",
+      "qtyPerPortion": 0.05,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M04",
+      "ingredientKey": "oil",
+      "qtyPerPortion": 0.03,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M05",
+      "ingredientKey": "chicken",
+      "qtyPerPortion": 0.15,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M05",
+      "ingredientKey": "oil",
+      "qtyPerPortion": 0.04,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M05",
+      "ingredientKey": "mayo",
+      "qtyPerPortion": 0.02,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M06",
+      "ingredientKey": "cheese",
+      "qtyPerPortion": 0.08,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M06",
+      "ingredientKey": "oil",
+      "qtyPerPortion": 0.03,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M07",
+      "ingredientKey": "milk",
+      "qtyPerPortion": 0.15,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M07",
+      "ingredientKey": "ghee",
+      "qtyPerPortion": 0.01,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M08",
+      "ingredientKey": "milk",
+      "qtyPerPortion": 0.12,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M08",
+      "ingredientKey": "ghee",
+      "qtyPerPortion": 0.01,
+      "yieldPct": 100,
+      "appliesTo": "ALL",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    },
+    {
+      "menuItemCode": "M01",
+      "ingredientKey": "chicken",
+      "qtyPerPortion": 0.38,
+      "yieldPct": 100,
+      "appliesTo": "B01",
+      "effectiveFrom": "2025-12-01",
+      "effectiveTo": null,
+      "version": 1
+    }
+  ],
+  "monthlyPnl": [
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "netSales": 4020400,
+      "actualFoodCost": 1515670,
+      "foodCostAtSop": 1422705,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "netSales": 3668433,
+      "actualFoodCost": 1341969,
+      "foodCostAtSop": 1296424,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "netSales": 3229436,
+      "actualFoodCost": 1231632,
+      "foodCostAtSop": 1166705,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "netSales": 2459206,
+      "actualFoodCost": 932133,
+      "foodCostAtSop": 863391,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B01",
+      "month": "2025-12",
+      "netSales": 2655590,
+      "actualFoodCost": 1001144,
+      "foodCostAtSop": 939738,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-01",
+      "netSales": 2793973,
+      "actualFoodCost": 1053313,
+      "foodCostAtSop": 988707,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-02",
+      "netSales": 3041154,
+      "actualFoodCost": 1146499,
+      "foodCostAtSop": 1076178,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-03",
+      "netSales": 3169244,
+      "actualFoodCost": 1194789,
+      "foodCostAtSop": 1121505,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-04",
+      "netSales": 3357898,
+      "actualFoodCost": 1265910,
+      "foodCostAtSop": 1188264,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-05",
+      "netSales": 3619699,
+      "actualFoodCost": 1364608,
+      "foodCostAtSop": 1280908,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-06",
+      "netSales": 3817487,
+      "actualFoodCost": 1439173,
+      "foodCostAtSop": 1350900,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-07",
+      "netSales": 3874542,
+      "actualFoodCost": 1460682,
+      "foodCostAtSop": 1371090,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-05",
+      "netSales": 2621866,
+      "actualFoodCost": 959119,
+      "foodCostAtSop": 926567,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-06",
+      "netSales": 2959109,
+      "actualFoodCost": 1082487,
+      "foodCostAtSop": 1045749,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-07",
+      "netSales": 3290551,
+      "actualFoodCost": 1203734,
+      "foodCostAtSop": 1162881,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-03",
+      "netSales": 2194975,
+      "actualFoodCost": 837113,
+      "foodCostAtSop": 792983,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-04",
+      "netSales": 2466364,
+      "actualFoodCost": 940614,
+      "foodCostAtSop": 891028,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-05",
+      "netSales": 2656834,
+      "actualFoodCost": 1013255,
+      "foodCostAtSop": 959840,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-06",
+      "netSales": 2798983,
+      "actualFoodCost": 1067467,
+      "foodCostAtSop": 1011194,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-07",
+      "netSales": 3025511,
+      "actualFoodCost": 1153860,
+      "foodCostAtSop": 1093033,
+      "onlineSalesShare": 0.4
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-07",
+      "netSales": 2063169,
+      "actualFoodCost": 782020,
+      "foodCostAtSop": 724348,
+      "onlineSalesShare": 0.4
+    }
+  ],
+  "dailySalesAug": [
+    {
+      "branchCode": "B01",
+      "date": "2026-08-01",
+      "netSales": 161996
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-02",
+      "netSales": 119303
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-03",
+      "netSales": 115681
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-04",
+      "netSales": 124709
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-05",
+      "netSales": 121708
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-06",
+      "netSales": 121127
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-07",
+      "netSales": 165586
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-08",
+      "netSales": 183438
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-09",
+      "netSales": 145540
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-10",
+      "netSales": 127264
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-11",
+      "netSales": 108021
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-12",
+      "netSales": 121331
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-13",
+      "netSales": 125240
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-14",
+      "netSales": 159096
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-15",
+      "netSales": 142699
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-16",
+      "netSales": 144564
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-17",
+      "netSales": 122740
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-18",
+      "netSales": 111966
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-19",
+      "netSales": 97842
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-20",
+      "netSales": 106506
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-21",
+      "netSales": 164540
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-22",
+      "netSales": 166194
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-23",
+      "netSales": 157673
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-24",
+      "netSales": 121392
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-25",
+      "netSales": 99918
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-26",
+      "netSales": 111772
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-27",
+      "netSales": 127170
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-28",
+      "netSales": 149757
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-29",
+      "netSales": 154510
+    },
+    {
+      "branchCode": "B01",
+      "date": "2026-08-30",
+      "netSales": 141117
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-01",
+      "netSales": 158534
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-02",
+      "netSales": 137822
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-03",
+      "netSales": 103663
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-04",
+      "netSales": 114846
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-05",
+      "netSales": 98129
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-06",
+      "netSales": 108703
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-07",
+      "netSales": 166458
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-08",
+      "netSales": 141411
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-09",
+      "netSales": 145501
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-10",
+      "netSales": 91847
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-11",
+      "netSales": 98510
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-12",
+      "netSales": 86828
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-13",
+      "netSales": 115867
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-14",
+      "netSales": 134099
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-15",
+      "netSales": 148467
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-16",
+      "netSales": 108751
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-17",
+      "netSales": 113322
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-18",
+      "netSales": 102223
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-19",
+      "netSales": 94097
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-20",
+      "netSales": 91795
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-21",
+      "netSales": 165244
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-22",
+      "netSales": 161979
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-23",
+      "netSales": 109511
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-24",
+      "netSales": 101765
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-25",
+      "netSales": 103659
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-26",
+      "netSales": 114161
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-27",
+      "netSales": 108540
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-28",
+      "netSales": 147625
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-29",
+      "netSales": 151750
+    },
+    {
+      "branchCode": "B02",
+      "date": "2026-08-30",
+      "netSales": 143326
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-01",
+      "netSales": 144533
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-02",
+      "netSales": 129306
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-03",
+      "netSales": 81163
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-04",
+      "netSales": 78923
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-05",
+      "netSales": 103822
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-06",
+      "netSales": 100311
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-07",
+      "netSales": 123853
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-08",
+      "netSales": 149198
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-09",
+      "netSales": 123625
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-10",
+      "netSales": 101747
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-11",
+      "netSales": 94890
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-12",
+      "netSales": 88435
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-13",
+      "netSales": 92485
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-14",
+      "netSales": 141850
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-15",
+      "netSales": 123530
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-16",
+      "netSales": 103852
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-17",
+      "netSales": 89905
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-18",
+      "netSales": 79734
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-19",
+      "netSales": 79328
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-20",
+      "netSales": 91026
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-21",
+      "netSales": 134842
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-22",
+      "netSales": 139375
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-23",
+      "netSales": 113673
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-24",
+      "netSales": 101694
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-25",
+      "netSales": 82259
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-26",
+      "netSales": 93527
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-27",
+      "netSales": 79152
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-28",
+      "netSales": 144544
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-29",
+      "netSales": 117772
+    },
+    {
+      "branchCode": "B03",
+      "date": "2026-08-30",
+      "netSales": 101082
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-01",
+      "netSales": 110722
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-02",
+      "netSales": 94439
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-03",
+      "netSales": 62162
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-04",
+      "netSales": 60066
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-05",
+      "netSales": 73979
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-06",
+      "netSales": 75904
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-07",
+      "netSales": 109715
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-08",
+      "netSales": 104375
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-09",
+      "netSales": 97872
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-10",
+      "netSales": 76759
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-11",
+      "netSales": 76122
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-12",
+      "netSales": 70357
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-13",
+      "netSales": 64890
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-14",
+      "netSales": 112654
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-15",
+      "netSales": 102778
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-16",
+      "netSales": 84730
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-17",
+      "netSales": 59066
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-18",
+      "netSales": 71586
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-19",
+      "netSales": 65441
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-20",
+      "netSales": 58791
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-21",
+      "netSales": 99275
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-22",
+      "netSales": 106613
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-23",
+      "netSales": 81046
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-24",
+      "netSales": 65058
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-25",
+      "netSales": 65661
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-26",
+      "netSales": 78425
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-27",
+      "netSales": 71002
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-28",
+      "netSales": 94548
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-29",
+      "netSales": 87021
+    },
+    {
+      "branchCode": "B04",
+      "date": "2026-08-30",
+      "netSales": 78149
+    }
+  ],
+  "ingredientUsageAug": [
+    {
+      "branchCode": "B01",
+      "period": "2026-08",
+      "ingredientKey": "chicken",
+      "sopUsageQty": 3000,
+      "actualUsageQty": 3031.8,
+      "wastageQty": 23.81
+    },
+    {
+      "branchCode": "B01",
+      "period": "2026-08",
+      "ingredientKey": "mutton",
+      "sopUsageQty": 200,
+      "actualUsageQty": 200.97,
+      "wastageQty": 0.44
+    },
+    {
+      "branchCode": "B01",
+      "period": "2026-08",
+      "ingredientKey": "fish",
+      "sopUsageQty": 150,
+      "actualUsageQty": 156.03,
+      "wastageQty": 5.63
+    },
+    {
+      "branchCode": "B01",
+      "period": "2026-08",
+      "ingredientKey": "rice",
+      "sopUsageQty": 6200,
+      "actualUsageQty": 6651.68,
+      "wastageQty": 123.08
+    },
+    {
+      "branchCode": "B01",
+      "period": "2026-08",
+      "ingredientKey": "ghee",
+      "sopUsageQty": 490,
+      "actualUsageQty": 526.81,
+      "wastageQty": 5.45
+    },
+    {
+      "branchCode": "B01",
+      "period": "2026-08",
+      "ingredientKey": "oil",
+      "sopUsageQty": 1400,
+      "actualUsageQty": 1602.46,
+      "wastageQty": 42.86
+    },
+    {
+      "branchCode": "B01",
+      "period": "2026-08",
+      "ingredientKey": "mayo",
+      "sopUsageQty": 620,
+      "actualUsageQty": 633.01,
+      "wastageQty": 11.36
+    },
+    {
+      "branchCode": "B01",
+      "period": "2026-08",
+      "ingredientKey": "milk",
+      "sopUsageQty": 800,
+      "actualUsageQty": 828,
+      "wastageQty": 25.86
+    },
+    {
+      "branchCode": "B01",
+      "period": "2026-08",
+      "ingredientKey": "cheese",
+      "sopUsageQty": 300,
+      "actualUsageQty": 302.8,
+      "wastageQty": 2
+    },
+    {
+      "branchCode": "B02",
+      "period": "2026-08",
+      "ingredientKey": "chicken",
+      "sopUsageQty": 2600,
+      "actualUsageQty": 2661.57,
+      "wastageQty": 23.81
+    },
+    {
+      "branchCode": "B02",
+      "period": "2026-08",
+      "ingredientKey": "mutton",
+      "sopUsageQty": 150,
+      "actualUsageQty": 152.91,
+      "wastageQty": 0.74
+    },
+    {
+      "branchCode": "B02",
+      "period": "2026-08",
+      "ingredientKey": "fish",
+      "sopUsageQty": 120,
+      "actualUsageQty": 124.87,
+      "wastageQty": 3.13
+    },
+    {
+      "branchCode": "B02",
+      "period": "2026-08",
+      "ingredientKey": "rice",
+      "sopUsageQty": 4400,
+      "actualUsageQty": 4510.06,
+      "wastageQty": 46.15
+    },
+    {
+      "branchCode": "B02",
+      "period": "2026-08",
+      "ingredientKey": "ghee",
+      "sopUsageQty": 340,
+      "actualUsageQty": 347.67,
+      "wastageQty": 2.73
+    },
+    {
+      "branchCode": "B02",
+      "period": "2026-08",
+      "ingredientKey": "oil",
+      "sopUsageQty": 2450,
+      "actualUsageQty": 2514.15,
+      "wastageQty": 28.57
+    },
+    {
+      "branchCode": "B02",
+      "period": "2026-08",
+      "ingredientKey": "mayo",
+      "sopUsageQty": 600,
+      "actualUsageQty": 617.8,
+      "wastageQty": 9.09
+    },
+    {
+      "branchCode": "B02",
+      "period": "2026-08",
+      "ingredientKey": "milk",
+      "sopUsageQty": 500,
+      "actualUsageQty": 540.95,
+      "wastageQty": 3.45
+    },
+    {
+      "branchCode": "B02",
+      "period": "2026-08",
+      "ingredientKey": "cheese",
+      "sopUsageQty": 250,
+      "actualUsageQty": 255.41,
+      "wastageQty": 1.78
+    },
+    {
+      "branchCode": "B03",
+      "period": "2026-08",
+      "ingredientKey": "chicken",
+      "sopUsageQty": 2800,
+      "actualUsageQty": 2973.11,
+      "wastageQty": 21.91
+    },
+    {
+      "branchCode": "B03",
+      "period": "2026-08",
+      "ingredientKey": "mutton",
+      "sopUsageQty": 450,
+      "actualUsageQty": 451.75,
+      "wastageQty": 4.61
+    },
+    {
+      "branchCode": "B03",
+      "period": "2026-08",
+      "ingredientKey": "fish",
+      "sopUsageQty": 750,
+      "actualUsageQty": 823.07,
+      "wastageQty": 13.07
+    },
+    {
+      "branchCode": "B03",
+      "period": "2026-08",
+      "ingredientKey": "rice",
+      "sopUsageQty": 3600,
+      "actualUsageQty": 3625.32,
+      "wastageQty": 48.25
+    },
+    {
+      "branchCode": "B03",
+      "period": "2026-08",
+      "ingredientKey": "ghee",
+      "sopUsageQty": 400,
+      "actualUsageQty": 400.31,
+      "wastageQty": 2.85
+    },
+    {
+      "branchCode": "B03",
+      "period": "2026-08",
+      "ingredientKey": "oil",
+      "sopUsageQty": 1900,
+      "actualUsageQty": 1906.58,
+      "wastageQty": 18.67
+    },
+    {
+      "branchCode": "B03",
+      "period": "2026-08",
+      "ingredientKey": "mayo",
+      "sopUsageQty": 1050,
+      "actualUsageQty": 1052.82,
+      "wastageQty": 9.5
+    },
+    {
+      "branchCode": "B03",
+      "period": "2026-08",
+      "ingredientKey": "milk",
+      "sopUsageQty": 600,
+      "actualUsageQty": 614.19,
+      "wastageQty": 18.02
+    },
+    {
+      "branchCode": "B03",
+      "period": "2026-08",
+      "ingredientKey": "cheese",
+      "sopUsageQty": 280,
+      "actualUsageQty": 279.61,
+      "wastageQty": 1.39
+    },
+    {
+      "branchCode": "B04",
+      "period": "2026-08",
+      "ingredientKey": "chicken",
+      "sopUsageQty": 1200,
+      "actualUsageQty": 1283.56,
+      "wastageQty": 21.16
+    },
+    {
+      "branchCode": "B04",
+      "period": "2026-08",
+      "ingredientKey": "mutton",
+      "sopUsageQty": 90,
+      "actualUsageQty": 89.02,
+      "wastageQty": 0.49
+    },
+    {
+      "branchCode": "B04",
+      "period": "2026-08",
+      "ingredientKey": "fish",
+      "sopUsageQty": 100,
+      "actualUsageQty": 100.8,
+      "wastageQty": 2.43
+    },
+    {
+      "branchCode": "B04",
+      "period": "2026-08",
+      "ingredientKey": "rice",
+      "sopUsageQty": 2150,
+      "actualUsageQty": 2149.11,
+      "wastageQty": 34.18
+    },
+    {
+      "branchCode": "B04",
+      "period": "2026-08",
+      "ingredientKey": "ghee",
+      "sopUsageQty": 180,
+      "actualUsageQty": 180.09,
+      "wastageQty": 3.03
+    },
+    {
+      "branchCode": "B04",
+      "period": "2026-08",
+      "ingredientKey": "oil",
+      "sopUsageQty": 1600,
+      "actualUsageQty": 1727.67,
+      "wastageQty": 39.67
+    },
+    {
+      "branchCode": "B04",
+      "period": "2026-08",
+      "ingredientKey": "mayo",
+      "sopUsageQty": 720,
+      "actualUsageQty": 792.75,
+      "wastageQty": 15.15
+    },
+    {
+      "branchCode": "B04",
+      "period": "2026-08",
+      "ingredientKey": "milk",
+      "sopUsageQty": 350,
+      "actualUsageQty": 363.45,
+      "wastageQty": 19.16
+    },
+    {
+      "branchCode": "B04",
+      "period": "2026-08",
+      "ingredientKey": "cheese",
+      "sopUsageQty": 450,
+      "actualUsageQty": 487.67,
+      "wastageQty": 6.17
+    }
+  ],
+  "fixedCosts": [
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "head": "Salaries",
+      "amount": 510807,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "head": "Rent",
+      "amount": 383105,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "head": "Electricity",
+      "amount": 127702,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "head": "Gas",
+      "amount": 63851,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "head": "Maintenance",
+      "amount": 63851,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "head": "Marketing",
+      "amount": 38311,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "head": "Water",
+      "amount": 38311,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "head": "Software",
+      "amount": 25540,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "head": "Security",
+      "amount": 25539,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "head": "Salaries",
+      "amount": 446748,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "head": "Rent",
+      "amount": 335061,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "head": "Electricity",
+      "amount": 111687,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "head": "Gas",
+      "amount": 55844,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "head": "Maintenance",
+      "amount": 55844,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "head": "Marketing",
+      "amount": 33506,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "head": "Water",
+      "amount": 33506,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "head": "Software",
+      "amount": 22337,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "head": "Security",
+      "amount": 22338,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "head": "Salaries",
+      "amount": 448865,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "head": "Rent",
+      "amount": 336649,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "head": "Electricity",
+      "amount": 112216,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "head": "Gas",
+      "amount": 56108,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "head": "Maintenance",
+      "amount": 56108,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "head": "Marketing",
+      "amount": 33665,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "head": "Water",
+      "amount": 33665,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "head": "Software",
+      "amount": 22443,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "head": "Security",
+      "amount": 22443,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "head": "Salaries",
+      "amount": 438544,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "head": "Rent",
+      "amount": 328908,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "head": "Electricity",
+      "amount": 109636,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "head": "Gas",
+      "amount": 54818,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "head": "Maintenance",
+      "amount": 54818,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "head": "Marketing",
+      "amount": 32891,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "head": "Water",
+      "amount": 32891,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "head": "Software",
+      "amount": 21927,
+      "enteredBy": "demo"
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "head": "Security",
+      "amount": 21926,
+      "enteredBy": "demo"
+    }
+  ],
+  "revenueShareTerms": [
+    {
+      "branchCode": "B01",
+      "royaltyPct": 0,
+      "marketingFundPct": 0,
+      "effectiveFrom": "2025-12-01"
+    },
+    {
+      "branchCode": "B02",
+      "royaltyPct": 0.06,
+      "marketingFundPct": 0.02,
+      "effectiveFrom": "2025-12-01"
+    },
+    {
+      "branchCode": "B03",
+      "royaltyPct": 0.06,
+      "marketingFundPct": 0.02,
+      "effectiveFrom": "2025-12-01"
+    },
+    {
+      "branchCode": "B04",
+      "royaltyPct": 0.06,
+      "marketingFundPct": 0.02,
+      "effectiveFrom": "2025-12-01"
+    }
+  ],
+  "aggregatorTerms": [
+    {
+      "channel": "Swiggy",
+      "commissionPct": 0.22
+    },
+    {
+      "channel": "Zomato",
+      "commissionPct": 0.22
+    }
+  ],
+  "channelShares": [
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "channel": "Dine-in",
+      "pct": 0.6
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "channel": "Swiggy",
+      "pct": 0.22000000000000003
+    },
+    {
+      "branchCode": "B01",
+      "month": "2026-08",
+      "channel": "Zomato",
+      "pct": 0.18000000000000002
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "channel": "Dine-in",
+      "pct": 0.6
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "channel": "Swiggy",
+      "pct": 0.22000000000000003
+    },
+    {
+      "branchCode": "B02",
+      "month": "2026-08",
+      "channel": "Zomato",
+      "pct": 0.18000000000000002
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "channel": "Dine-in",
+      "pct": 0.6
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "channel": "Swiggy",
+      "pct": 0.22000000000000003
+    },
+    {
+      "branchCode": "B03",
+      "month": "2026-08",
+      "channel": "Zomato",
+      "pct": 0.18000000000000002
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "channel": "Dine-in",
+      "pct": 0.6
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "channel": "Swiggy",
+      "pct": 0.22000000000000003
+    },
+    {
+      "branchCode": "B04",
+      "month": "2026-08",
+      "channel": "Zomato",
+      "pct": 0.18000000000000002
+    }
+  ],
+  "wastageEntries": [
+    {
+      "id": "B01-W1",
+      "branchCode": "B01",
+      "date": "2026-08-03",
+      "ingredientKey": "chicken",
+      "qty": 7.14,
+      "reason": "Over-portioning"
+    },
+    {
+      "id": "B01-W2",
+      "branchCode": "B01",
+      "date": "2026-08-12",
+      "ingredientKey": "mutton",
+      "qty": 0.13,
+      "reason": "Spillage / handling"
+    },
+    {
+      "id": "B01-W3",
+      "branchCode": "B01",
+      "date": "2026-08-21",
+      "ingredientKey": "fish",
+      "qty": 1.69,
+      "reason": "Expiry"
+    },
+    {
+      "id": "B02-W1",
+      "branchCode": "B02",
+      "date": "2026-08-03",
+      "ingredientKey": "chicken",
+      "qty": 7.14,
+      "reason": "Over-portioning"
+    },
+    {
+      "id": "B02-W2",
+      "branchCode": "B02",
+      "date": "2026-08-12",
+      "ingredientKey": "mutton",
+      "qty": 0.22,
+      "reason": "Spillage / handling"
+    },
+    {
+      "id": "B02-W3",
+      "branchCode": "B02",
+      "date": "2026-08-21",
+      "ingredientKey": "fish",
+      "qty": 0.94,
+      "reason": "Expiry"
+    },
+    {
+      "id": "B03-W1",
+      "branchCode": "B03",
+      "date": "2026-08-03",
+      "ingredientKey": "chicken",
+      "qty": 6.57,
+      "reason": "Over-portioning"
+    },
+    {
+      "id": "B03-W2",
+      "branchCode": "B03",
+      "date": "2026-08-12",
+      "ingredientKey": "mutton",
+      "qty": 1.38,
+      "reason": "Spillage / handling"
+    },
+    {
+      "id": "B03-W3",
+      "branchCode": "B03",
+      "date": "2026-08-21",
+      "ingredientKey": "fish",
+      "qty": 3.92,
+      "reason": "Expiry"
+    },
+    {
+      "id": "B04-W1",
+      "branchCode": "B04",
+      "date": "2026-08-03",
+      "ingredientKey": "chicken",
+      "qty": 6.35,
+      "reason": "Over-portioning"
+    },
+    {
+      "id": "B04-W2",
+      "branchCode": "B04",
+      "date": "2026-08-12",
+      "ingredientKey": "mutton",
+      "qty": 0.15,
+      "reason": "Spillage / handling"
+    },
+    {
+      "id": "B04-W3",
+      "branchCode": "B04",
+      "date": "2026-08-21",
+      "ingredientKey": "fish",
+      "qty": 0.73,
+      "reason": "Expiry"
+    }
+  ],
+  "purchases": [
+    {
+      "id": "B01-P1",
+      "branchCode": "B01",
+      "date": "2026-08-05",
+      "ingredientKey": "chicken",
+      "qty": 1061.13,
+      "ratePaid": 211.9,
+      "supplier": "Sri Lakshmi Traders",
+      "invoiceRef": "INV-B01-1000"
+    },
+    {
+      "id": "B01-P2",
+      "branchCode": "B01",
+      "date": "2026-08-13",
+      "ingredientKey": "mutton",
+      "qty": 70.34,
+      "ratePaid": 688.7,
+      "supplier": "Godavari Fresh Foods",
+      "invoiceRef": "INV-B01-1001"
+    },
+    {
+      "id": "B01-P3",
+      "branchCode": "B01",
+      "date": "2026-08-21",
+      "ingredientKey": "fish",
+      "qty": 54.61,
+      "ratePaid": 324.2,
+      "supplier": "Krishna Wholesale Mart",
+      "invoiceRef": "INV-B01-1002"
+    },
+    {
+      "id": "B02-P1",
+      "branchCode": "B02",
+      "date": "2026-08-05",
+      "ingredientKey": "chicken",
+      "qty": 931.55,
+      "ratePaid": 213.4,
+      "supplier": "Sri Lakshmi Traders",
+      "invoiceRef": "INV-B02-1000"
+    },
+    {
+      "id": "B02-P2",
+      "branchCode": "B02",
+      "date": "2026-08-13",
+      "ingredientKey": "mutton",
+      "qty": 53.52,
+      "ratePaid": 674.6,
+      "supplier": "Godavari Fresh Foods",
+      "invoiceRef": "INV-B02-1001"
+    },
+    {
+      "id": "B02-P3",
+      "branchCode": "B02",
+      "date": "2026-08-21",
+      "ingredientKey": "fish",
+      "qty": 43.7,
+      "ratePaid": 321.5,
+      "supplier": "Krishna Wholesale Mart",
+      "invoiceRef": "INV-B02-1002"
+    },
+    {
+      "id": "B03-P1",
+      "branchCode": "B03",
+      "date": "2026-08-05",
+      "ingredientKey": "chicken",
+      "qty": 1040.59,
+      "ratePaid": 210.4,
+      "supplier": "Sri Lakshmi Traders",
+      "invoiceRef": "INV-B03-1000"
+    },
+    {
+      "id": "B03-P2",
+      "branchCode": "B03",
+      "date": "2026-08-13",
+      "ingredientKey": "mutton",
+      "qty": 158.11,
+      "ratePaid": 688.4,
+      "supplier": "Godavari Fresh Foods",
+      "invoiceRef": "INV-B03-1001"
+    },
+    {
+      "id": "B03-P3",
+      "branchCode": "B03",
+      "date": "2026-08-21",
+      "ingredientKey": "fish",
+      "qty": 288.07,
+      "ratePaid": 326,
+      "supplier": "Krishna Wholesale Mart",
+      "invoiceRef": "INV-B03-1002"
+    },
+    {
+      "id": "B04-P1",
+      "branchCode": "B04",
+      "date": "2026-08-05",
+      "ingredientKey": "chicken",
+      "qty": 449.25,
+      "ratePaid": 208.3,
+      "supplier": "Sri Lakshmi Traders",
+      "invoiceRef": "INV-B04-1000"
+    },
+    {
+      "id": "B04-P2",
+      "branchCode": "B04",
+      "date": "2026-08-13",
+      "ingredientKey": "mutton",
+      "qty": 31.16,
+      "ratePaid": 677.7,
+      "supplier": "Godavari Fresh Foods",
+      "invoiceRef": "INV-B04-1001"
+    },
+    {
+      "id": "B04-P3",
+      "branchCode": "B04",
+      "date": "2026-08-21",
+      "ingredientKey": "fish",
+      "qty": 35.28,
+      "ratePaid": 325.9,
+      "supplier": "Krishna Wholesale Mart",
+      "invoiceRef": "INV-B04-1002"
+    }
+  ],
+  "stockCounts": [],
+  "stockOnHand": [
+    {
+      "branchCode": "B01",
+      "ingredientKey": "chicken",
+      "qtyOnHand": 843.66,
+      "avgDailyUsage": 101.06
+    },
+    {
+      "branchCode": "B01",
+      "ingredientKey": "mutton",
+      "qtyOnHand": 10.62,
+      "avgDailyUsage": 6.7
+    },
+    {
+      "branchCode": "B01",
+      "ingredientKey": "fish",
+      "qtyOnHand": 31.07,
+      "avgDailyUsage": 5.2
+    },
+    {
+      "branchCode": "B01",
+      "ingredientKey": "rice",
+      "qtyOnHand": 1734.6,
+      "avgDailyUsage": 221.72
+    },
+    {
+      "branchCode": "B01",
+      "ingredientKey": "ghee",
+      "qtyOnHand": 114.39,
+      "avgDailyUsage": 17.56
+    },
+    {
+      "branchCode": "B01",
+      "ingredientKey": "oil",
+      "qtyOnHand": 198.29,
+      "avgDailyUsage": 53.42
+    },
+    {
+      "branchCode": "B01",
+      "ingredientKey": "mayo",
+      "qtyOnHand": 118.43,
+      "avgDailyUsage": 21.1
+    },
+    {
+      "branchCode": "B01",
+      "ingredientKey": "milk",
+      "qtyOnHand": 175.03,
+      "avgDailyUsage": 27.6
+    },
+    {
+      "branchCode": "B01",
+      "ingredientKey": "cheese",
+      "qtyOnHand": 84.12,
+      "avgDailyUsage": 10.09
+    },
+    {
+      "branchCode": "B02",
+      "ingredientKey": "chicken",
+      "qtyOnHand": 595.27,
+      "avgDailyUsage": 88.72
+    },
+    {
+      "branchCode": "B02",
+      "ingredientKey": "mutton",
+      "qtyOnHand": 26.61,
+      "avgDailyUsage": 5.1
+    },
+    {
+      "branchCode": "B02",
+      "ingredientKey": "fish",
+      "qtyOnHand": 15.49,
+      "avgDailyUsage": 4.16
+    },
+    {
+      "branchCode": "B02",
+      "ingredientKey": "rice",
+      "qtyOnHand": 1257.14,
+      "avgDailyUsage": 150.34
+    },
+    {
+      "branchCode": "B02",
+      "ingredientKey": "ghee",
+      "qtyOnHand": 30.56,
+      "avgDailyUsage": 11.59
+    },
+    {
+      "branchCode": "B02",
+      "ingredientKey": "oil",
+      "qtyOnHand": 92.6,
+      "avgDailyUsage": 83.81
+    },
+    {
+      "branchCode": "B02",
+      "ingredientKey": "mayo",
+      "qtyOnHand": 72.67,
+      "avgDailyUsage": 20.59
+    },
+    {
+      "branchCode": "B02",
+      "ingredientKey": "milk",
+      "qtyOnHand": 81.57,
+      "avgDailyUsage": 18.03
+    },
+    {
+      "branchCode": "B02",
+      "ingredientKey": "cheese",
+      "qtyOnHand": 27.9,
+      "avgDailyUsage": 8.51
+    },
+    {
+      "branchCode": "B03",
+      "ingredientKey": "chicken",
+      "qtyOnHand": 321.06,
+      "avgDailyUsage": 99.1
+    },
+    {
+      "branchCode": "B03",
+      "ingredientKey": "mutton",
+      "qtyOnHand": 103.88,
+      "avgDailyUsage": 15.06
+    },
+    {
+      "branchCode": "B03",
+      "ingredientKey": "fish",
+      "qtyOnHand": 231.45,
+      "avgDailyUsage": 27.44
+    },
+    {
+      "branchCode": "B03",
+      "ingredientKey": "rice",
+      "qtyOnHand": 798.37,
+      "avgDailyUsage": 120.84
+    },
+    {
+      "branchCode": "B03",
+      "ingredientKey": "ghee",
+      "qtyOnHand": 65.74,
+      "avgDailyUsage": 13.34
+    },
+    {
+      "branchCode": "B03",
+      "ingredientKey": "oil",
+      "qtyOnHand": 343.95,
+      "avgDailyUsage": 63.55
+    },
+    {
+      "branchCode": "B03",
+      "ingredientKey": "mayo",
+      "qtyOnHand": 83.46,
+      "avgDailyUsage": 35.09
+    },
+    {
+      "branchCode": "B03",
+      "ingredientKey": "milk",
+      "qtyOnHand": 22.73,
+      "avgDailyUsage": 20.47
+    },
+    {
+      "branchCode": "B03",
+      "ingredientKey": "cheese",
+      "qtyOnHand": 47.06,
+      "avgDailyUsage": 9.32
+    },
+    {
+      "branchCode": "B04",
+      "ingredientKey": "chicken",
+      "qtyOnHand": 161.79,
+      "avgDailyUsage": 42.79
+    },
+    {
+      "branchCode": "B04",
+      "ingredientKey": "mutton",
+      "qtyOnHand": 11.32,
+      "avgDailyUsage": 2.97
+    },
+    {
+      "branchCode": "B04",
+      "ingredientKey": "fish",
+      "qtyOnHand": 23.56,
+      "avgDailyUsage": 3.36
+    },
+    {
+      "branchCode": "B04",
+      "ingredientKey": "rice",
+      "qtyOnHand": 289.01,
+      "avgDailyUsage": 71.64
+    },
+    {
+      "branchCode": "B04",
+      "ingredientKey": "ghee",
+      "qtyOnHand": 50.93,
+      "avgDailyUsage": 6
+    },
+    {
+      "branchCode": "B04",
+      "ingredientKey": "oil",
+      "qtyOnHand": 405.83,
+      "avgDailyUsage": 57.59
+    },
+    {
+      "branchCode": "B04",
+      "ingredientKey": "mayo",
+      "qtyOnHand": 185.56,
+      "avgDailyUsage": 26.43
+    },
+    {
+      "branchCode": "B04",
+      "ingredientKey": "milk",
+      "qtyOnHand": 97.79,
+      "avgDailyUsage": 12.12
+    },
+    {
+      "branchCode": "B04",
+      "ingredientKey": "cheese",
+      "qtyOnHand": 22.13,
+      "avgDailyUsage": 16.26
+    }
+  ],
+  "transfers": []
+}
