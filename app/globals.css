@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  HIYYA Command Center — design tokens.
+  Strict black-and-gold palette per the build spec, Section 9. No light mode:
+  this is the only theme the app has, so tokens live directly on :root.
+*/
+@layer base {
+  :root {
+    /* --- HIYYA brand tokens (source of truth; use these directly in app code) --- */
+    --hiyya-bg: #000000;
+    --hiyya-panel: 17 15 12; /* rgb channels, composed with alpha as bg-panel/86 */
+    --hiyya-panel-2: #1b1813;
+    --hiyya-gold: #d4af37;
+    --hiyya-champagne: #f2dfa7;
+    --hiyya-deep-gold: #8a6c2a;
+    --hiyya-bronze: #b07a3a;
+    --hiyya-platinum: #b9b6ae;
+    --hiyya-text: #f3ecdc;
+    --hiyya-muted: #9a907e;
+    --hiyya-gain: #9ccb9f;
+    --hiyya-loss: #d8674f;
+    --hiyya-warning: #e6be5a;
+    --hiyya-border: #332b1c;
+
+    /* Branch colours (Section 9) */
+    --hiyya-branch-b01: var(--hiyya-gold);
+    --hiyya-branch-b02: var(--hiyya-champagne);
+    --hiyya-branch-b03: var(--hiyya-bronze);
+    --hiyya-branch-b04: var(--hiyya-platinum);
+
+    /* --- shadcn/ui semantic tokens, mapped onto the HIYYA palette --- */
+    --background: var(--hiyya-bg);
+    --foreground: var(--hiyya-text);
+    --card: var(--hiyya-panel-2);
+    --card-foreground: var(--hiyya-text);
+    --popover: var(--hiyya-panel-2);
+    --popover-foreground: var(--hiyya-text);
+    --primary: var(--hiyya-gold);
+    --primary-foreground: #0a0801;
+    --secondary: var(--hiyya-panel-2);
+    --secondary-foreground: var(--hiyya-text);
+    --muted: var(--hiyya-panel-2);
+    --muted-foreground: var(--hiyya-muted);
+    --accent: var(--hiyya-champagne);
+    --accent-foreground: #0a0801;
+    --destructive: var(--hiyya-loss);
+    --destructive-foreground: #0a0801;
+    --border: var(--hiyya-border);
+    --input: var(--hiyya-border);
+    --ring: var(--hiyya-gold);
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

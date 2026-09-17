@@ -1,0 +1,7 @@
+.next
+node_modules
+pnpm-lock.yaml
+legacy-demo
+coverage
+playwright-report
+test-results

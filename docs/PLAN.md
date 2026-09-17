@@ -1,0 +1,50 @@
+# HIYYA Command Center — build plan
+
+Status: **draft, awaiting "go"**. Nothing in Stage A has been scaffolded yet. This plan follows the Phase build prompt (pasted into chat on 2026-09-17; the earlier v3 spec is preserved at `reference/hiyya-analytics-platform-prompt-v3.md` for brand/context background, and is superseded wherever the two differ).
+
+## 0. What exists today, and what doesn't carry over
+
+The repo currently contains one artifact from an earlier, separate engagement: `hiyya-brand-owner-dashboard.html`, a self-contained static HTML/CSS/vanilla-JS demo with fabricated numbers and a persona switcher, deployed to GitHub Pages. It is **not** the `reference/` input this prompt expects (see `docs/QUERY_TRACKER.md` Q00a) — its dataset format and its actual numbers both predate and conflict with this prompt's Section 10 acceptance table. It stays in the repo, untouched, as a historical artifact and a rough IA reference, but Stage A is a fresh Next.js codebase, not a refactor of that file.
+
+## 1. Sequencing
+
+Phases run in the exact order in Section 12 of the build prompt. Each phase ends with lint + typecheck + test green, a commit (`phase-N: <summary>`), and a stop-and-report using the Section 13 format. No phase starts without an explicit "go" on the previous one's report.
+
+| Phase | Scope                                                                                                                                                                                                               | Key files/dirs created                                                                                       |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| 0     | Scaffold: Next.js 14 (App Router) + TS strict, Tailwind, shadcn/ui primitives, ESLint/Prettier, Vitest, Playwright, pnpm scripts. Design tokens as CSS variables. Fonts (Cormorant Garamond, Manrope).              | `app/layout.tsx`, `app/page.tsx`, `lib/theme/tokens.ts`, `CLAUDE.md`, `package.json`, config files           |
+| 1     | Data layer + calc engine. Extract/seed scripts, Zod types, `DataSource` interface, `MockDataSource`, all of `lib/calc/*`, Section 10 acceptance tests passing in Vitest.                                            | `lib/data/*`, `lib/calc/*`, `scripts/*`, `tests/calc/*`, `docs/DATA_CONTRACT.md`                             |
+| 2     | Shell: header, persona switcher, scope select, tabs, breadcrumb, hero band, toast, Reset-demo, ECharts theme registration, 3D throne stage (all persona behaviours, motion toggle, WebGL/reduced-motion fallbacks). | `components/shell/*`, `components/three/*`, `lib/store/*`, `lib/theme/echarts-theme.ts`                      |
+| 3     | Brand Owner: all six tabs with drill-downs.                                                                                                                                                                         | `app/[tab]/page.tsx` routes, `components/kpi/*`, `components/charts/*`, `components/tables/*` (brand-scoped) |
+| 4     | Brand Manager: shared tabs + SOP recipe editor + impact preview.                                                                                                                                                    | `components/forms/SopRecipeEditor.tsx`                                                                       |
+| 5     | Branch Owner: At a glance, editable fixed-cost grid with live recalculation, scoped Sales/SOP.                                                                                                                      | `components/forms/FixedCostGrid.tsx`                                                                         |
+| 6     | Branch Manager (mobile-first): Today, Purchases, Stock & SOP, Wastage.                                                                                                                                              | `components/forms/PurchaseForm.tsx`, `WastageForm.tsx`, mobile layout variants                               |
+| 7     | Polish: accessibility audit, contrast, reduced motion, Lighthouse ≥85 on Overview, full Playwright suite green, README with screenshots, Vercel deploy.                                                             | `docs/screenshots/phase-7/*`, README updates                                                                 |
+
+Stage B (Phases 8–12: Supabase schema/RLS, auth, importers, alerts/exports/audit, later modules) does not start until the client confirms the work order, per the prompt's Section 4 and 12.
+
+## 2. Data fidelity strategy (given Q00/Q00a are open)
+
+Phase 1 cannot wait indefinitely on the source workbook, so the demo dataset will be built **top-down from the Section 10 acceptance table**, which is authoritative and exact:
+
+- The four branches' monthly net sales, food-cost-at-SOP, actual food cost, and net profit are fixed to the published figures (±₹50 tolerance is the test tolerance, not license to round differently).
+- The 10 named "Investigate" ingredient lines, and the brand-wide unexplained-deviation (₹1,79,962) and logged-wastage (₹92,216) totals, are fixed the same way.
+- Everything the workbook would normally supply but the acceptance table doesn't specify — ingredient-level SOP quantities and rates, daily sales curves, item mix, channel splits — will be **derived, not invented freely**: built with a documented, seeded allocation method so it reconciles exactly to the numbers above, and flagged in `docs/DATA_CONTRACT.md` as "demo-derived, pending workbook" wherever it's below the acceptance table's level of detail. This keeps the letter of "never hardcode a figure in the UI" (every screen number still traces to `lib/calc`, not a magic constant) while being honest that the _inputs_ to that engine are a documented demo allocation until Q00 is answered.
+
+## 3. Open questions (blocking or not)
+
+See `docs/QUERY_TRACKER.md` for the full list (Q00, Q00a, and the seeded Q01–Q13 from the v3 spec). None of these block Phase 0 (pure scaffolding). Q00/Q00a block Phase 1 from being more than "self-consistent with Section 10" rather than "verified against the client's real workbook" — flagging now so it isn't a surprise at Phase-1 sign-off.
+
+Additional process questions:
+
+- **Package manager**: prompt specifies pnpm — confirming it's fine to install pnpm globally in this environment (not yet verified as available).
+- **Deploy target**: an existing GitHub repo (`haneelteja/Hiyya-Kitchens-Demo`) and Vercel account access were used for the earlier static-HTML demo. Reuse the same GitHub repo for the Next.js app (as a new branch or by replacing main), or start a fresh repo? Recommend a fresh repo given this is architecturally a new project, but the choice is yours.
+- **Design tokens**: the earlier HTML demo's palette is close to but not byte-identical to this prompt's Section 9 table (e.g. `bg` was `#050402` there vs. `#000000` here). Phase 0 will use this prompt's exact values.
+
+## 4. Definition of done per phase
+
+Lint clean, `tsc --noEmit` clean, Vitest green (Phase 1 onward includes the Section 10 acceptance suite), Playwright green (from Phase 2's shell tests onward), a real commit, and a phase report in the Section 13 format with screenshots at 1440px and 390px under `docs/screenshots/phase-N/`.
+
+---
+
+**Waiting for "go" to start Phase 0.**

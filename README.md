@@ -1,9 +1,31 @@
-# Hiyya Kitchens — Command Center Demo
+# HIYYA Command Center
 
-Clickable, single-file HTML mockup of the HIYYA Kitchens role-based analytics platform.
+Role-based analytics portal for HIYYA Kitchens (themed mandi restaurants, Hyderabad/AP). See `CLAUDE.md` for stack, conventions and process, and `docs/PLAN.md` for the phase-by-phase build plan.
 
-- **Fabricated data** — no real branch, sales, or SOP figures.
-- **No authentication** — the "View as" switcher in the header simulates all 6 test personas (Brand Owner, Brand Manager, 2× Branch Owner, 2× Branch Manager) and re-renders tabs, scope, and charts per role.
-- No build step or backend — open `index.html` directly, or view it deployed via GitHub Pages.
+## Status
 
-This is a demo-stage deliverable. The production build (Next.js + Supabase + RLS) starts after a work order.
+**Stage A (demo)** — in progress, Phase 0 (scaffold). No authentication; a "View as" persona switcher drives all data via `MockDataSource`. Every number renders from `lib/calc`, unit-tested against the acceptance values in `docs/PLAN.md`.
+
+## Getting started
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Open <http://localhost:3000>.
+
+## Commands
+
+| Command          | What it does                           |
+| ---------------- | -------------------------------------- |
+| `pnpm dev`       | Local dev server                       |
+| `pnpm build`     | Production build                       |
+| `pnpm lint`      | ESLint                                 |
+| `pnpm typecheck` | `tsc --noEmit`                         |
+| `pnpm test`      | Vitest (calculation engine, selectors) |
+| `pnpm e2e`       | Playwright (one spec per persona)      |
+
+## Legacy artifact
+
+`legacy-demo/` holds the original single-file HTML mockup built before this Next.js rebuild. It's kept for historical reference only and is not part of the live app.
