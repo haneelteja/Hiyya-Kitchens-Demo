@@ -445,12 +445,13 @@ for (const branch of branches) {
 // Daily Aug sales — seeded weekday-weighted allocation summing exactly to the
 // branch's Aug net sales.
 // ---------------------------------------------------------------------------
+const DAYS_IN_AUG = 31; // Section 3: the manager demo date is Monday 31 Aug 2026
 const dailySalesAug: DemoDataset["dailySalesAug"] = [];
 for (const branch of branches) {
   const total = SECTION_10[branch.code].sales;
   const rnd = mulberry32(branch.code.charCodeAt(2) * 53 + 7);
   const weights: number[] = [];
-  for (let d = 1; d <= 30; d += 1) {
+  for (let d = 1; d <= DAYS_IN_AUG; d += 1) {
     const dow = new Date(Date.UTC(2026, 7, d)).getUTCDay();
     let w = 1 + (dow === 5 || dow === 6 ? 0.45 : 0) + (dow === 0 ? 0.25 : 0);
     w *= 0.85 + rnd() * 0.3;
@@ -460,7 +461,8 @@ for (const branch of branches) {
   let running = 0;
   weights.forEach((w, i) => {
     const day = i + 1;
-    const netSales = day === 30 ? total - running : Math.round((total * w) / weightSum);
+    const netSales =
+      day === DAYS_IN_AUG ? total - running : Math.round((total * w) / weightSum);
     running += netSales;
     dailySalesAug.push({
       branchCode: branch.code,
@@ -660,7 +662,7 @@ for (const branch of branches) {
   const rnd = mulberry32(branch.code.charCodeAt(2) * 71 + 3);
   const rows = ingredientUsageAug.filter((r) => r.branchCode === branch.code);
   for (const row of rows) {
-    const avgDailyUsage = Math.round((row.actualUsageQty / 30) * 100) / 100;
+    const avgDailyUsage = Math.round((row.actualUsageQty / DAYS_IN_AUG) * 100) / 100;
     const coverDays = 1 + rnd() * 8;
     stockOnHand.push({
       branchCode: branch.code,

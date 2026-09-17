@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { AppFrame } from "@/components/shell/AppFrame";
 
 const heading = Cormorant_Garamond({
   subsets: ["latin"],
@@ -31,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn(heading.variable, sans.variable)}>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
-        {children}
+        <AppFrame>{children}</AppFrame>
       </body>
     </html>
   );

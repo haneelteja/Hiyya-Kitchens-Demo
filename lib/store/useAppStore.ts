@@ -1,0 +1,146 @@
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type {
+  BranchCode,
+  FixedCostHead,
+  PersonaId,
+  Scope,
+  WastageReason,
+} from "@/lib/data/types";
+import { getPersona, tabsForPersona } from "@/lib/access/personas";
+
+export type Grain = "daily" | "weekly" | "monthly";
+
+/** In-memory-only demo edits (Section 4 guardrails — never localStorage). */
+export interface DemoEdits {
+  fixedCostOverrides: Record<string, number>; // key: `${branchCode}:${month}:${head}`
+  purchases: Array<{
+    id: string;
+    branchCode: BranchCode;
+    ingredientKey: string;
+    qty: number;
+    ratePaid: number;
+    supplier: string;
+    date: string;
+  }>;
+  wastageEntries: Array<{
+    id: string;
+    branchCode: BranchCode;
+    ingredientKey: string;
+    qty: number;
+    reason: WastageReason;
+    date: string;
+  }>;
+  sopOverrides: Record<string, number>; // key: `${menuItemCode}:${ingredientKey}:${branchCode}`
+}
+
+const initialDemoEdits: DemoEdits = {
+  fixedCostOverrides: {},
+  purchases: [],
+  wastageEntries: [],
+  sopOverrides: {},
+};
+
+export function fixedCostOverrideKey(
+  branchCode: string,
+  month: string,
+  head: FixedCostHead,
+) {
+  return `${branchCode}:${month}:${head}`;
+}
+
+interface AppState {
+  personaId: PersonaId;
+  scope: Scope;
+  grain: Grain;
+  period: string; // "YYYY-MM"
+  motionEnabled: boolean;
+  demoEdits: DemoEdits;
+
+  setPersona: (id: PersonaId) => void;
+  setScope: (scope: Scope) => void;
+  setGrain: (grain: Grain) => void;
+  toggleMotion: () => void;
+
+  setFixedCostOverride: (
+    branchCode: string,
+    month: string,
+    head: FixedCostHead,
+    amount: number,
+  ) => void;
+  addPurchase: (p: Omit<DemoEdits["purchases"][number], "id">) => void;
+  addWastageEntry: (w: Omit<DemoEdits["wastageEntries"][number], "id">) => void;
+  resetDemoEdits: () => void;
+}
+
+function defaultScopeFor(personaId: PersonaId): Scope {
+  const persona = getPersona(personaId);
+  if (persona.role === "brand_owner" || persona.role === "brand_manager") {
+    return { kind: "all" };
+  }
+  if (Array.isArray(persona.branchCodes) && persona.branchCodes.length > 1) {
+    return { kind: "own", branchCodes: persona.branchCodes };
+  }
+  const only = Array.isArray(persona.branchCodes) ? persona.branchCodes[0] : undefined;
+  return only ? { kind: "branch", branchCode: only } : { kind: "all" };
+}
+
+export const useAppStore = create<AppState>()(
+  persist(
+    (set, get) => ({
+      personaId: "owner",
+      scope: defaultScopeFor("owner"),
+      grain: "monthly",
+      period: "2026-08",
+      motionEnabled: true,
+      demoEdits: initialDemoEdits,
+
+      setPersona: (id) => {
+        set({ personaId: id, scope: defaultScopeFor(id) });
+      },
+      setScope: (scope) => set({ scope }),
+      setGrain: (grain) => set({ grain }),
+      toggleMotion: () => set({ motionEnabled: !get().motionEnabled }),
+
+      setFixedCostOverride: (branchCode, month, head, amount) =>
+        set((state) => ({
+          demoEdits: {
+            ...state.demoEdits,
+            fixedCostOverrides: {
+              ...state.demoEdits.fixedCostOverrides,
+              [fixedCostOverrideKey(branchCode, month, head)]: amount,
+            },
+          },
+        })),
+      addPurchase: (p) =>
+        set((state) => ({
+          demoEdits: {
+            ...state.demoEdits,
+            purchases: [...state.demoEdits.purchases, { ...p, id: crypto.randomUUID() }],
+          },
+        })),
+      addWastageEntry: (w) =>
+        set((state) => ({
+          demoEdits: {
+            ...state.demoEdits,
+            wastageEntries: [
+              ...state.demoEdits.wastageEntries,
+              { ...w, id: crypto.randomUUID() },
+            ],
+          },
+        })),
+      resetDemoEdits: () => set({ demoEdits: initialDemoEdits }),
+    }),
+    {
+      // Only the motion preference persists (Section 4/14 guardrail) — everything
+      // else in this store, including all demo edits, resets on refresh.
+      name: "hiyya-motion-preference",
+      partialize: (state) => ({ motionEnabled: state.motionEnabled }),
+    },
+  ),
+);
+
+export function currentTabs(): readonly string[] {
+  const persona = getPersona(useAppStore.getState().personaId);
+  return tabsForPersona(persona);
+}
