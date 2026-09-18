@@ -51,6 +51,7 @@ export function PurchaseForm({ branchCode }: { branchCode: BranchCode }) {
       date: TODAY,
     });
     toast({
+      variant: "success",
       description: `Purchase logged: ${qtyNum} ${ingredientKey} from ${supplier}.`,
     });
     setQty("");

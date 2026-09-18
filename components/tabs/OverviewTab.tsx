@@ -7,6 +7,7 @@ import { useAppStore } from "@/lib/store/useAppStore";
 import { KpiCard } from "@/components/kpi/KpiCard";
 import { LeakCard } from "@/components/kpi/LeakCard";
 import { DeltaText } from "@/components/kpi/DeltaText";
+import { EmptyState } from "@/components/kpi/EmptyState";
 import { ChartFrame } from "@/components/charts/ChartFrame";
 import { TrendChart, type TrendPoint } from "@/components/charts/TrendChart";
 import { RankChart, type RankBar } from "@/components/charts/RankChart";
@@ -316,7 +317,9 @@ export function OverviewTab() {
           </p>
           <ul className="flex flex-col gap-2">
             {attention.length === 0 && (
-              <li className="text-sm text-hiyya-muted">Nothing needs attention today.</li>
+              <li>
+                <EmptyState message="Nothing needs attention today." />
+              </li>
             )}
             {attention.map((line, i) => (
               <li
@@ -374,7 +377,7 @@ export function OverviewTab() {
                 <button
                   key={t.code}
                   onClick={() => openBranchDrilldown(t.code)}
-                  className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4 text-left transition-colors hover:border-hiyya-gold/50"
+                  className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-hiyya-gold/50 hover:shadow-[0_10px_28px_-14px_rgba(212,175,55,0.4)] focus-visible:-translate-y-0.5 focus-visible:border-hiyya-gold/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-hiyya-gold"
                 >
                   <div
                     className="mb-2 h-1 rounded-full"

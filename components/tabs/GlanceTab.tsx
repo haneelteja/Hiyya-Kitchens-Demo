@@ -9,6 +9,8 @@ import { LeakCard } from "@/components/kpi/LeakCard";
 import { DeltaText } from "@/components/kpi/DeltaText";
 import { ChartFrame } from "@/components/charts/ChartFrame";
 import { TrendChart, type TrendPoint } from "@/components/charts/TrendChart";
+import { EmptyState } from "@/components/kpi/EmptyState";
+import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import { formatInr, formatMonthLabel } from "@/lib/calc/format";
 import { growthPct, rankBy, anonymizedRankOf } from "@/lib/calc/ranks";
 import { trimToFirstTrading } from "@/lib/calc/sales";
@@ -169,7 +171,7 @@ export function GlanceTab() {
     [series],
   );
 
-  if (!portfolioPnl) return null;
+  if (!portfolioPnl) return <TabSkeleton kpis={4} panels={2} />;
   const isMultiBranch = branches.length > 1;
 
   return (
@@ -229,7 +231,9 @@ export function GlanceTab() {
           </p>
           <ul className="flex flex-col gap-2">
             {attention.length === 0 && (
-              <li className="text-sm text-hiyya-muted">Nothing needs attention today.</li>
+              <li>
+                <EmptyState message="Nothing needs attention today." />
+              </li>
             )}
             {attention.map((line, i) => (
               <li
@@ -287,7 +291,7 @@ export function GlanceTab() {
                 <button
                   key={b.code}
                   onClick={() => openBranchDrilldown(b.code as BranchCode)}
-                  className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4 text-left transition-colors hover:border-hiyya-gold/50"
+                  className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-hiyya-gold/50 hover:shadow-[0_10px_28px_-14px_rgba(212,175,55,0.4)] focus-visible:-translate-y-0.5 focus-visible:border-hiyya-gold/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-hiyya-gold"
                 >
                   <h3 className="font-heading text-lg font-semibold">{b.name}</h3>
                   <dl className="mt-2 space-y-1 text-xs">

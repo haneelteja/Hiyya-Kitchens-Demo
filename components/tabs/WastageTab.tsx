@@ -5,6 +5,7 @@ import { useDataSource } from "@/hooks/useDataSource";
 import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { WastageForm } from "@/components/forms/WastageForm";
+import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import {
   Table,
   TableBody,
@@ -51,7 +52,7 @@ export function WastageTab() {
     };
   }, [ds, branchCode]);
 
-  if (!branchCode) return null;
+  if (!branchCode) return <TabSkeleton kpis={0} panels={2} />;
 
   const logged = demoWastage.filter(
     (w) => w.branchCode === branchCode && w.date.startsWith(PERIOD),

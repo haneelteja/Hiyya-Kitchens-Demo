@@ -12,7 +12,7 @@ export function ResetDemoButton() {
 
   function handleReset() {
     resetDemoEdits();
-    toast({ description: "Demo data reset to its original state." });
+    toast({ variant: "info", description: "Demo data reset to its original state." });
   }
 
   return (

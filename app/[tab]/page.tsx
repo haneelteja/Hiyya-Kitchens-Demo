@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 import { AppShell } from "@/components/shell/AppShell";
+import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { getPersona } from "@/lib/access/personas";
 import type { PersonaRole } from "@/lib/data/types";
@@ -37,7 +38,14 @@ type TabComponent = ComponentType<Record<string, never>>;
 // role, only the currently-open tab's code — the other tabs in that role's
 // row load on demand the moment their pill is clicked, not before.
 function lazyTab(loader: () => Promise<{ [key: string]: TabComponent }>, named: string) {
-  return dynamic(() => loader().then((m) => m[named]), { ssr: false });
+  return dynamic(() => loader().then((m) => m[named]), {
+    ssr: false,
+    // Without this, a chunk still in flight (slow connection, or simply the
+    // first time this role's tab is opened this session) renders nothing at
+    // all — a second, code-level version of the same blank-panel gap the
+    // per-tab data-loading skeletons address below.
+    loading: () => <TabSkeleton />,
+  });
 }
 
 const OverviewTab = lazyTab(() => import("@/components/tabs/OverviewTab"), "OverviewTab");

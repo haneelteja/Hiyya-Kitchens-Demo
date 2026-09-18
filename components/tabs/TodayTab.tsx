@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { useDataSource } from "@/hooks/useDataSource";
 import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { useAppStore } from "@/lib/store/useAppStore";
+import { EmptyState } from "@/components/kpi/EmptyState";
 import { KpiCard } from "@/components/kpi/KpiCard";
+import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import { ReorderPill } from "@/components/tables/StatusPill";
 import { formatInr } from "@/lib/calc/format";
 import { computeReorderStatus } from "@/lib/calc/stock";
@@ -59,7 +61,7 @@ export function TodayTab() {
     };
   }, [ds, branchCode]);
 
-  if (!branchCode || !snapshot) return null;
+  if (!branchCode || !snapshot) return <TabSkeleton kpis={2} panels={2} />;
 
   const branchName =
     dataset.branches.find((b) => b.code === branchCode)?.name ?? branchCode;
@@ -122,7 +124,7 @@ export function TodayTab() {
           Under 2.5 days of cover — worst first.
         </p>
         {reorderRows.length === 0 ? (
-          <p className="text-sm text-hiyya-muted">Nothing needs reordering right now.</p>
+          <EmptyState message="Nothing needs reordering right now." />
         ) : (
           <ul className="flex flex-col gap-2">
             {reorderRows.map((s) => (
@@ -151,9 +153,10 @@ export function TodayTab() {
           Purchases and wastage entries you&apos;ve recorded this session.
         </p>
         {loggedToday.length === 0 ? (
-          <p className="text-sm text-hiyya-muted">
-            Nothing logged yet — use the Purchases or Wastage tab.
-          </p>
+          <EmptyState
+            variant="neutral"
+            message="Nothing logged yet — use the Purchases or Wastage tab."
+          />
         ) : (
           <ul className="flex flex-col gap-2">
             {loggedToday.map((entry) => (

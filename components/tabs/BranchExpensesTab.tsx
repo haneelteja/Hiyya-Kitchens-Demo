@@ -8,6 +8,7 @@ import { KpiCard } from "@/components/kpi/KpiCard";
 import { ChartFrame } from "@/components/charts/ChartFrame";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { FixedCostGrid } from "@/components/forms/FixedCostGrid";
+import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import { formatInr } from "@/lib/calc/format";
 import { goldRamp } from "@/lib/theme/tokens";
 import type { Branch, BranchCode, FixedCost } from "@/lib/data/types";
@@ -69,7 +70,7 @@ export function BranchExpensesTab() {
     return { fixedCosts, netProfit, marginPct };
   }, [pnl, liveTotal]);
 
-  if (!selected || !pnl || !live) return null;
+  if (!selected || !pnl || !live) return <TabSkeleton kpis={4} panels={2} />;
 
   const branch = branches.find((b) => b.code === selected);
   const effectiveCosts = baseCosts.map((c) => {

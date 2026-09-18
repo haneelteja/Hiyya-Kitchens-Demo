@@ -35,6 +35,13 @@ const toastVariants = cva(
         default: "border bg-background text-foreground",
         destructive:
           "destructive group border-destructive bg-destructive text-destructive-foreground",
+        // Same semantic colours as StatusPill's flags elsewhere in the app — a
+        // toast should read as good/neutral/caution news at a glance, not just
+        // be one more grey card (UI/UX audit, Quick Win: toast variants).
+        success: "border-hiyya-gain/40 bg-hiyya-panel-2 text-hiyya-text border-l-[3px]",
+        info: "border-hiyya-gold/40 bg-hiyya-panel-2 text-hiyya-text border-l-[3px]",
+        warning:
+          "border-hiyya-warning/40 bg-hiyya-panel-2 text-hiyya-text border-l-[3px]",
       },
     },
     defaultVariants: {

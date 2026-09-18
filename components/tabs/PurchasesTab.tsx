@@ -5,6 +5,7 @@ import { useDataSource } from "@/hooks/useDataSource";
 import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { PurchaseForm } from "@/components/forms/PurchaseForm";
+import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import {
   Table,
   TableBody,
@@ -51,7 +52,7 @@ export function PurchasesTab() {
     };
   }, [ds, branchCode]);
 
-  if (!branchCode) return null;
+  if (!branchCode) return <TabSkeleton kpis={0} panels={2} />;
 
   const logged = demoPurchases.filter(
     (p) => p.branchCode === branchCode && p.date.startsWith(PERIOD),

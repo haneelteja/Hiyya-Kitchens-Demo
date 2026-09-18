@@ -11,6 +11,7 @@ import { TrendChart, type TrendPoint } from "@/components/charts/TrendChart";
 import { BreakEvenChart } from "@/components/charts/BreakEvenChart";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { StackedBarChart } from "@/components/charts/StackedBarChart";
+import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import { formatInr, formatMonthLabel } from "@/lib/calc/format";
 import { fixedCostPerDay } from "@/lib/calc/fixedCosts";
 import { goldRamp, hiyyaColors } from "@/lib/theme/tokens";
@@ -51,7 +52,7 @@ export function ExpensesTab() {
     };
   }, [ds, scope]);
 
-  if (!summary) return null;
+  if (!summary) return <TabSkeleton kpis={4} panels={3} />;
 
   const waterfallSteps: WaterfallStep[] = [
     { label: "Net sales", value: summary.netSales },

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDataSource } from "@/hooks/useDataSource";
 import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { ReorderPill } from "@/components/tables/StatusPill";
+import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import {
   Table,
   TableBody,
@@ -61,7 +62,7 @@ export function StockSopTab() {
     };
   }, [ds, branchCode]);
 
-  if (!branchCode) return null;
+  if (!branchCode) return <TabSkeleton kpis={0} panels={2} />;
 
   const stockRows = stock
     .map((s) => ({ ...s, reorder: computeReorderStatus(s.qtyOnHand, s.avgDailyUsage) }))

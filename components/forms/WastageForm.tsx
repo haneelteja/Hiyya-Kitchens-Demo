@@ -42,7 +42,10 @@ export function WastageForm({ branchCode }: { branchCode: BranchCode }) {
       reason,
       date: TODAY,
     });
-    toast({ description: `Wastage logged: ${qtyNum} ${ingredientKey} — ${reason}.` });
+    toast({
+      variant: "success",
+      description: `Wastage logged: ${qtyNum} ${ingredientKey} — ${reason}.`,
+    });
     setQty("");
   }
 
