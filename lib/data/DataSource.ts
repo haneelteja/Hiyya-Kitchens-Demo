@@ -60,6 +60,76 @@ export interface BranchHealth {
   status: HealthStatus;
 }
 
+export interface BranchDaySales {
+  branchCode: BranchCode;
+  branchName: string;
+  date: string;
+  netSales: number;
+}
+
+export interface WeekdayAverage {
+  day: string;
+  average: number;
+}
+
+export interface TopItemRow {
+  code: string;
+  name: string;
+  category: string;
+  estQty: number;
+  estSales: number;
+  sopFoodCostPct: number;
+}
+
+export interface ChannelShareRow {
+  channel: string;
+  pct: number;
+}
+
+export interface ExpenseStructureRow {
+  branchCode: BranchCode;
+  branchName: string;
+  foodCostPct: number;
+  commissionPct: number;
+  fixedCostsPct: number;
+  royaltyFundPct: number;
+  profitPct: number;
+}
+
+export interface FixedCostHeadRow {
+  head: string;
+  amount: number;
+}
+
+export interface WastageReasonRow {
+  reason: string;
+  value: number;
+}
+
+export interface LeagueTableRow {
+  branchCode: BranchCode;
+  branchName: string;
+  themeColorToken: string;
+  monthlySales: number[]; // sparkline, oldest to newest
+  netSales: number;
+  marginPct: number;
+  health: HealthStatus;
+  rank: number;
+}
+
+export interface RevenueShareRow {
+  branchCode: BranchCode;
+  branchName: string;
+  netSales: number;
+  sharePct: number; // this branch's share of brand-wide net sales
+  royaltyPct: number;
+  royalty: number;
+  marketingFundPct: number;
+  marketingFund: number;
+  totalToBrand: number;
+  branchProfit: number;
+}
+
 /**
  * The one seam between the UI and where data actually lives. MockDataSource
  * implements this against lib/data/demo.json today; SupabaseDataSource (Stage B)
@@ -90,4 +160,30 @@ export interface DataSource {
   getStockOnHand(branchCode: BranchCode): Promise<StockOnHand[]>;
   getPurchases(branchCode: BranchCode, month: string): Promise<Purchase[]>;
   getWastageEntries(branchCode: BranchCode, month: string): Promise<WastageEntry[]>;
+
+  // --- Sales tab ---
+  getDailySalesByBranch(scope: Scope, period: string): Promise<BranchDaySales[]>;
+  getWeekdayAverages(scope: Scope, period: string): Promise<WeekdayAverage[]>;
+  getTopItems(
+    scope: Scope,
+    period: string,
+    sortBy: "sales" | "qty",
+  ): Promise<TopItemRow[]>;
+  getChannelMix(scope: Scope, period: string): Promise<ChannelShareRow[]>;
+
+  // --- Expenses & profit tab ---
+  getExpenseStructureByBranch(
+    scope: Scope,
+    period: string,
+  ): Promise<ExpenseStructureRow[]>;
+  getFixedCostsByHead(scope: Scope, period: string): Promise<FixedCostHeadRow[]>;
+
+  // --- SOP & wastage tab ---
+  getWastageByReason(scope: Scope, period: string): Promise<WastageReasonRow[]>;
+
+  // --- Branches tab ---
+  getLeagueTable(scope: Scope, period: string): Promise<LeagueTableRow[]>;
+
+  // --- Revenue share tab ---
+  getRevenueShareSummary(scope: Scope, period: string): Promise<RevenueShareRow[]>;
 }

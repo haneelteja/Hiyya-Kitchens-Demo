@@ -31,6 +31,27 @@ export function formatInr(value: number, options: FormatInrOptions = {}): string
   return `${negative ? "-" : ""}₹${rest}${last3}`;
 }
 
+const MONTH_ABBR = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+/** "2025-12" -> "Dec". Unambiguous across a year boundary, unlike the raw "12". */
+export function formatMonthLabel(period: string): string {
+  const month = Number(period.slice(5, 7));
+  return MONTH_ABBR[month - 1] ?? period;
+}
+
 export function formatPct(value: number, decimals = 1): string {
   const sign = value >= 0 ? "+" : "";
   return `${sign}${value.toFixed(decimals)}%`;

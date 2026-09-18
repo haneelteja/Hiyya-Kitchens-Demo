@@ -1,10 +1,11 @@
 # HIYYA Command Center — build plan
 
-Status: **Phase 2 complete, awaiting "go" for Phase 3**. This plan follows the Phase build prompt (pasted into chat on 2026-09-17; the earlier v3 spec is preserved at `reference/hiyya-analytics-platform-prompt-v3.md` for brand/context background, and is superseded wherever the two differ).
+Status: **Phase 3 complete, awaiting "go" for Phase 4**. This plan follows the Phase build prompt (pasted into chat on 2026-09-17; the earlier v3 spec is preserved at `reference/hiyya-analytics-platform-prompt-v3.md` for brand/context background, and is superseded wherever the two differ).
 
 - Phase 0 (scaffold) — done, commit `38f7c32`.
 - Phase 1 (data layer + calc engine) — done, commit `4dad6f0`. All 41 Vitest cases pass, including the full Section 10 acceptance table and the exact 10 "Investigate" flags.
-- Phase 2 (shell + 3D throne stage) — done, see the Phase 2 report. 24/24 Playwright cases pass; the demo-date bug found and fixed mid-phase (August only had 30 days of generated sales, so "today" — 31 Aug — showed 0) is documented there.
+- Phase 2 (shell + 3D throne stage) — done, commit `c103c92`. 24/24 Playwright cases pass; the demo-date bug found and fixed mid-phase (August only had 30 days of generated sales, so "today" — 31 Aug — showed 0) is documented there.
+- Phase 3 (Brand Owner: all six tabs with drill-downs) — done, see the Phase 3 report. 53/53 Vitest cases pass; two content bugs (a wrong month label, a wrong month name in a subtitle) and one screenshot-script false alarm are documented there.
 
 ## 0. What exists today, and what doesn't carry over
 

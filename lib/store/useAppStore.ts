@@ -41,6 +41,18 @@ const initialDemoEdits: DemoEdits = {
   sopOverrides: {},
 };
 
+/** The single global drill-down dialog's content (Section 8: click a bar/slice/row
+ * to drill in). One dialog, rendered once in AppShell, driven by this state. */
+export type Drilldown =
+  | { type: "branch"; branchCode: BranchCode }
+  | {
+      type: "ingredient";
+      ingredientKey: string;
+      ingredientName: string;
+      branchCodes: BranchCode[];
+    }
+  | null;
+
 export function fixedCostOverrideKey(
   branchCode: string,
   month: string,
@@ -56,11 +68,19 @@ interface AppState {
   period: string; // "YYYY-MM"
   motionEnabled: boolean;
   demoEdits: DemoEdits;
+  drilldown: Drilldown;
 
   setPersona: (id: PersonaId) => void;
   setScope: (scope: Scope) => void;
   setGrain: (grain: Grain) => void;
   toggleMotion: () => void;
+  openBranchDrilldown: (branchCode: BranchCode) => void;
+  openIngredientDrilldown: (
+    ingredientKey: string,
+    ingredientName: string,
+    branchCodes: BranchCode[],
+  ) => void;
+  closeDrilldown: () => void;
 
   setFixedCostOverride: (
     branchCode: string,
@@ -94,6 +114,7 @@ export const useAppStore = create<AppState>()(
       period: "2026-08",
       motionEnabled: true,
       demoEdits: initialDemoEdits,
+      drilldown: null,
 
       setPersona: (id) => {
         set({ personaId: id, scope: defaultScopeFor(id) });
@@ -101,6 +122,13 @@ export const useAppStore = create<AppState>()(
       setScope: (scope) => set({ scope }),
       setGrain: (grain) => set({ grain }),
       toggleMotion: () => set({ motionEnabled: !get().motionEnabled }),
+      openBranchDrilldown: (branchCode) =>
+        set({ drilldown: { type: "branch", branchCode } }),
+      openIngredientDrilldown: (ingredientKey, ingredientName, branchCodes) =>
+        set({
+          drilldown: { type: "ingredient", ingredientKey, ingredientName, branchCodes },
+        }),
+      closeDrilldown: () => set({ drilldown: null }),
 
       setFixedCostOverride: (branchCode, month, head, amount) =>
         set((state) => ({

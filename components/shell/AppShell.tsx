@@ -7,6 +7,7 @@ import { Tabs } from "@/components/shell/Tabs";
 import { Breadcrumb } from "@/components/shell/Breadcrumb";
 import { HeroBand } from "@/components/shell/HeroBand";
 import { Footer } from "@/components/shell/Footer";
+import { DrilldownDialog } from "@/components/shell/DrilldownDialog";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { getPersona, tabsForPersona } from "@/lib/access/personas";
 
@@ -39,6 +40,7 @@ export function AppShell({ tab, children }: { tab: string; children: React.React
         {tabs.includes(tab) ? children : null}
       </main>
       <Footer />
+      <DrilldownDialog />
     </div>
   );
 }

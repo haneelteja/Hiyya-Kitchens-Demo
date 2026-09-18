@@ -2,6 +2,14 @@
 
 import { useParams } from "next/navigation";
 import { AppShell } from "@/components/shell/AppShell";
+import { useAppStore } from "@/lib/store/useAppStore";
+import { getPersona } from "@/lib/access/personas";
+import { OverviewTab } from "@/components/tabs/OverviewTab";
+import { SalesTab } from "@/components/tabs/SalesTab";
+import { ExpensesTab } from "@/components/tabs/ExpensesTab";
+import { SopTab } from "@/components/tabs/SopTab";
+import { BranchesTab } from "@/components/tabs/BranchesTab";
+import { RevshareTab } from "@/components/tabs/RevshareTab";
 
 const TAB_TITLES: Record<string, string> = {
   overview: "Overview",
@@ -18,28 +26,45 @@ const TAB_TITLES: Record<string, string> = {
   wastage: "Wastage",
 };
 
-/**
- * The tab router (Section 3/8 repo layout): the persona decides which tabs exist
- * (enforced in AppShell, which redirects off an inaccessible tab). Real content
- * per tab lands in Phases 3–6; this phase proves the shell, routing, and access
- * gate all work end to end.
- */
+// The six Brand Owner/Manager tabs built in Phase 3 — shared between both roles
+// per Section 5 ("Brand Manager: same as owner, plus SOP recipes after Branches").
+const BRAND_TAB_COMPONENTS: Record<string, () => JSX.Element | null> = {
+  overview: OverviewTab,
+  sales: SalesTab,
+  expenses: ExpensesTab,
+  sop: SopTab,
+  branches: BranchesTab,
+  revshare: RevshareTab,
+};
+
+/** The tab router: the persona decides which tabs exist (enforced in AppShell,
+ * which redirects off an inaccessible tab). Brand Owner/Manager get their six
+ * real tabs (Phase 3); Branch Owner/Manager still see a placeholder until
+ * Phases 5–6. */
 export default function TabPage() {
   const params = useParams<{ tab: string }>();
   const tab = params.tab;
+  const personaId = useAppStore((s) => s.personaId);
+  const role = getPersona(personaId).role;
+
+  const isBrandRole = role === "brand_owner" || role === "brand_manager";
+  const RealTab = isBrandRole ? BRAND_TAB_COMPONENTS[tab] : undefined;
 
   return (
     <AppShell tab={tab}>
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/40 p-8 text-center">
-        <h2 className="font-heading text-xl font-semibold text-hiyya-champagne">
-          {TAB_TITLES[tab] ?? tab}
-        </h2>
-        <p className="mt-2 text-sm text-hiyya-muted">
-          The full {TAB_TITLES[tab]?.toLowerCase() ?? tab} view arrives in a later phase.
-          Phase 2 delivers the shell around it: persona switching, scope, tabs,
-          breadcrumb, the hero band, and the 3D throne stage behind everything.
-        </p>
-      </div>
+      {RealTab ? (
+        <RealTab />
+      ) : (
+        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/40 p-8 text-center">
+          <h2 className="font-heading text-xl font-semibold text-hiyya-champagne">
+            {TAB_TITLES[tab] ?? tab}
+          </h2>
+          <p className="mt-2 text-sm text-hiyya-muted">
+            The full {TAB_TITLES[tab]?.toLowerCase() ?? tab} view arrives in a later
+            phase.
+          </p>
+        </div>
+      )}
     </AppShell>
   );
 }

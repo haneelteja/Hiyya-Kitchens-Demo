@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatInr, formatPct } from "@/lib/calc/format";
+import { formatInr, formatMonthLabel, formatPct } from "@/lib/calc/format";
 
 describe("formatInr", () => {
   it("groups digits the Indian way: ₹1,23,456", () => {
@@ -14,6 +14,14 @@ describe("formatInr", () => {
   });
   it("handles negative values", () => {
     expect(formatInr(-5000)).toBe("-₹5,000");
+  });
+});
+
+describe("formatMonthLabel", () => {
+  it("is unambiguous across a year boundary (Dec -> Jan, not 12 -> 01)", () => {
+    expect(formatMonthLabel("2025-12")).toBe("Dec");
+    expect(formatMonthLabel("2026-01")).toBe("Jan");
+    expect(formatMonthLabel("2026-08")).toBe("Aug");
   });
 });
 

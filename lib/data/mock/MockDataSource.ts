@@ -12,13 +12,22 @@ import type {
   WastageEntry,
 } from "@/lib/data/types";
 import type {
+  BranchDaySales,
   BranchHealth,
   BranchRankRow,
+  ChannelShareRow,
   DataSource,
+  ExpenseStructureRow,
+  FixedCostHeadRow,
   Grain,
   IngredientVarianceRow,
+  LeagueTableRow,
   PnlSeriesPoint,
+  RevenueShareRow,
   TodaySnapshot,
+  TopItemRow,
+  WastageReasonRow,
+  WeekdayAverage,
 } from "@/lib/data/DataSource";
 import { resolveScopeToBranchCodes } from "@/lib/access/scope";
 import { computeDeviation } from "@/lib/calc/sop";
@@ -27,6 +36,10 @@ import { aggregatePnl, computePnl, type PnlResult } from "@/lib/calc/pnl";
 import { sumFixedCosts } from "@/lib/calc/fixedCosts";
 import { computeHealth } from "@/lib/calc/health";
 import { rankBy } from "@/lib/calc/ranks";
+import { itemSopFoodCostPct, weekdayAverages } from "@/lib/calc/sales";
+import { wastageByReasonSplit } from "@/lib/calc/wastage";
+import { expenseStructurePct } from "@/lib/calc/expenseStructure";
+import { computeRevenueShare } from "@/lib/calc/revenueShare";
 
 const IS_FRANCHISE: Record<BranchCode, boolean> = {
   B01: false,
@@ -330,6 +343,162 @@ export class MockDataSource implements DataSource {
   ): Promise<WastageEntry[]> {
     return dataset.wastageEntries.filter(
       (w) => w.branchCode === branchCode && w.date.startsWith(month),
+    );
+  }
+
+  async getDailySalesByBranch(scope: Scope, period: string): Promise<BranchDaySales[]> {
+    if (period !== "2026-08") return []; // only Aug has day-level data (see DATA_CONTRACT)
+    const codes = this.resolveCodes(scope);
+    return dataset.dailySalesAug
+      .filter((d) => codes.includes(d.branchCode))
+      .map((d) => ({ ...d, branchName: branchName(d.branchCode) }));
+  }
+
+  async getWeekdayAverages(scope: Scope, period: string): Promise<WeekdayAverage[]> {
+    const daily = await this.getDailySalesByBranch(scope, period);
+    const byDate = new Map<string, number>();
+    for (const d of daily) byDate.set(d.date, (byDate.get(d.date) ?? 0) + d.netSales);
+    const combined = [...byDate.entries()].map(([date, netSales]) => ({
+      date,
+      netSales,
+    }));
+    return weekdayAverages(combined);
+  }
+
+  async getTopItems(
+    scope: Scope,
+    period: string,
+    sortBy: "sales" | "qty",
+  ): Promise<TopItemRow[]> {
+    const summary = await this.getPnlSummary(scope, period);
+    // No per-sale POS data yet (Q01/Q02) — a documented, decreasing-share estimate
+    // across the menu, calibrated so the top item takes ~6% of net sales and each
+    // item after it a little less, never claiming to be a real item-level ledger.
+    const rows: TopItemRow[] = dataset.menuItems.map((item, i) => {
+      const estSales = Math.round(summary.netSales * 0.06 * Math.max(0.15, 1 - i * 0.11));
+      const estQty = item.price === 0 ? 0 : Math.round(estSales / item.price);
+      const linkedLines = dataset.sopLines
+        .filter((l) => l.menuItemCode === item.code && l.appliesTo === "ALL")
+        .map((l) => ({
+          qtyPerPortion: l.qtyPerPortion,
+          standardRate:
+            dataset.ingredients.find((ing) => ing.key === l.ingredientKey)
+              ?.standardRate ?? 0,
+        }));
+      return {
+        code: item.code,
+        name: item.name,
+        category: item.category,
+        estQty,
+        estSales,
+        sopFoodCostPct: itemSopFoodCostPct(linkedLines, item.price),
+      };
+    });
+    return rows.sort((a, b) =>
+      sortBy === "sales" ? b.estSales - a.estSales : b.estQty - a.estQty,
+    );
+  }
+
+  async getChannelMix(scope: Scope, period: string): Promise<ChannelShareRow[]> {
+    const codes = this.resolveCodes(scope);
+    const rows = dataset.channelShares.filter(
+      (c) => codes.includes(c.branchCode) && c.month === period,
+    );
+    const weights = new Map<string, number>();
+    for (const c of codes) {
+      const pnl = pnlForBranch(c, period);
+      weights.set(c, pnl.netSales);
+    }
+    const totalWeight = [...weights.values()].reduce((a, b) => a + b, 0) || 1;
+    const byChannel = new Map<string, number>();
+    for (const row of rows) {
+      const w = (weights.get(row.branchCode) ?? 0) / totalWeight;
+      byChannel.set(row.channel, (byChannel.get(row.channel) ?? 0) + row.pct * w * 100);
+    }
+    return [...byChannel.entries()].map(([channel, pct]) => ({ channel, pct }));
+  }
+
+  async getExpenseStructureByBranch(
+    scope: Scope,
+    period: string,
+  ): Promise<ExpenseStructureRow[]> {
+    const codes = this.resolveCodes(scope);
+    return codes.map((c) => ({
+      branchCode: c,
+      branchName: branchName(c),
+      ...expenseStructurePct(pnlForBranch(c, period)),
+    }));
+  }
+
+  async getFixedCostsByHead(scope: Scope, period: string): Promise<FixedCostHeadRow[]> {
+    const codes = this.resolveCodes(scope);
+    const byHead = new Map<string, number>();
+    for (const f of dataset.fixedCosts) {
+      if (!codes.includes(f.branchCode) || f.month !== period) continue;
+      byHead.set(f.head, (byHead.get(f.head) ?? 0) + f.amount);
+    }
+    return [...byHead.entries()].map(([head, amount]) => ({ head, amount }));
+  }
+
+  async getWastageByReason(scope: Scope, period: string): Promise<WastageReasonRow[]> {
+    const rows = await this.getIngredientVariance(scope, period);
+    const total = rows.reduce((s, r) => s + r.wastageValue, 0);
+    return wastageByReasonSplit(total);
+  }
+
+  async getLeagueTable(scope: Scope, period: string): Promise<LeagueTableRow[]> {
+    const codes = this.resolveCodes(scope);
+    const health = await this.getBranchHealth(scope, period);
+    const months = [...new Set(dataset.monthlyPnl.map((p) => p.month))].sort();
+    const rowsUnranked = codes.map((c) => {
+      const branch = dataset.branches.find((b) => b.code === c)!;
+      const monthlySales = months
+        .filter((m) =>
+          dataset.monthlyPnl.some((p) => p.branchCode === c && p.month === m),
+        )
+        .map((m) => pnlForBranch(c, m).netSales);
+      const pnl = pnlForBranch(c, period);
+      const h = health.find((x) => x.branchCode === c);
+      return {
+        branchCode: c,
+        branchName: branch.name,
+        themeColorToken:
+          dataset.themes.find((t) => t.branchCode === c)?.colorToken ?? "gold",
+        monthlySales,
+        netSales: pnl.netSales,
+        marginPct: pnl.marginPct,
+        health: h?.status ?? "healthy",
+      };
+    });
+    const ranked = rankBy(rowsUnranked, (r) => r.netSales);
+    return ranked.map((r): LeagueTableRow => ({ ...r.item, rank: r.rank }));
+  }
+
+  async getRevenueShareSummary(scope: Scope, period: string): Promise<RevenueShareRow[]> {
+    const codes = this.resolveCodes(scope);
+    const allCodes = dataset.branches.map((b) => b.code);
+    const brandTotalSales = allCodes.reduce(
+      (s, c) => s + pnlForBranch(c, period).netSales,
+      0,
+    );
+    return Promise.all(
+      codes.map(async (c) => {
+        const pnl = pnlForBranch(c, period);
+        const term = await this.getRevenueShareTerm(c);
+        const share = computeRevenueShare(pnl.netSales, term);
+        return {
+          branchCode: c,
+          branchName: branchName(c),
+          netSales: pnl.netSales,
+          sharePct: brandTotalSales === 0 ? 0 : (pnl.netSales / brandTotalSales) * 100,
+          royaltyPct: share.royaltyPct * 100,
+          royalty: share.royalty,
+          marketingFundPct: share.marketingFundPct * 100,
+          marketingFund: share.marketingFund,
+          totalToBrand: share.totalToBrand,
+          branchProfit: pnl.netProfit,
+        };
+      }),
     );
   }
 
