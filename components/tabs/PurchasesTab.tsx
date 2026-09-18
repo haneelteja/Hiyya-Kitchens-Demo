@@ -63,9 +63,9 @@ export function PurchasesTab() {
       <PurchaseForm branchCode={branchCode} />
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-        <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Purchases this month
-        </h3>
+        </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
           {rows.length} entr{rows.length === 1 ? "y" : "ies"} — most recent first.
         </p>

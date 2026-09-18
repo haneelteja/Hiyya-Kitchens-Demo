@@ -63,9 +63,9 @@ export function PurchaseForm({ branchCode }: { branchCode: BranchCode }) {
       onSubmit={handleSubmit}
       className="flex flex-col gap-3 rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4"
     >
-      <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+      <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
         Log a purchase
-      </h3>
+      </h2>
 
       <div>
         <label

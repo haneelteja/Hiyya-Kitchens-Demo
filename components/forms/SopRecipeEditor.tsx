@@ -123,9 +123,9 @@ export function SopRecipeEditor({
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.1fr_1fr]">
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-        <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Recipe
-        </h3>
+        </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
           Pick a menu item, then a recipe line, to edit its quantity per portion.
         </p>
@@ -194,9 +194,9 @@ export function SopRecipeEditor({
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-        <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Impact preview
-        </h3>
+        </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
           {ingredient?.name ?? line.ingredientKey} in{" "}
           {menuItems.find((m) => m.code === line.menuItemCode)?.name}, modelled against

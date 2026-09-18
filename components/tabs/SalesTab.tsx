@@ -192,9 +192,9 @@ export function SalesTab() {
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
         <div className="mb-3 flex items-center justify-between">
           <div>
-            <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+            <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
               Top items
-            </h3>
+            </h2>
             <p className="text-xs text-hiyya-muted">
               SOP food cost % shown in red above 45%.
             </p>

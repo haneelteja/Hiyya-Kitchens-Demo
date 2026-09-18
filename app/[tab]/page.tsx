@@ -1,22 +1,11 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import dynamic from "next/dynamic";
+import type { ComponentType } from "react";
 import { AppShell } from "@/components/shell/AppShell";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { getPersona } from "@/lib/access/personas";
-import { OverviewTab } from "@/components/tabs/OverviewTab";
-import { SalesTab } from "@/components/tabs/SalesTab";
-import { ExpensesTab } from "@/components/tabs/ExpensesTab";
-import { SopTab } from "@/components/tabs/SopTab";
-import { BranchesTab } from "@/components/tabs/BranchesTab";
-import { RevshareTab } from "@/components/tabs/RevshareTab";
-import { SopRecipesTab } from "@/components/tabs/SopRecipesTab";
-import { GlanceTab } from "@/components/tabs/GlanceTab";
-import { BranchExpensesTab } from "@/components/tabs/BranchExpensesTab";
-import { TodayTab } from "@/components/tabs/TodayTab";
-import { PurchasesTab } from "@/components/tabs/PurchasesTab";
-import { StockSopTab } from "@/components/tabs/StockSopTab";
-import { WastageTab } from "@/components/tabs/WastageTab";
 import type { PersonaRole } from "@/lib/data/types";
 
 const TAB_TITLES: Record<string, string> = {
@@ -34,7 +23,45 @@ const TAB_TITLES: Record<string, string> = {
   wastage: "Wastage",
 };
 
-type TabComponent = () => JSX.Element | null;
+type TabComponent = ComponentType<Record<string, never>>;
+
+// Every tab component is dynamically imported (next/dynamic, no SSR) rather
+// than statically imported above — a Brand Owner's browser has no reason to
+// ever download Branch Manager's Purchases/Wastage forms or vice versa. Before
+// this, app/[tab]/page.tsx statically imported all 13 tab components for all
+// four roles into one shared client bundle regardless of which single role a
+// session ever needed; that inflated the /[tab] route's First Load JS and was
+// the single biggest contributor to a 48/100 Lighthouse performance score on
+// Overview (Phase 7 polish). Splitting each into its own lazily-loaded chunk
+// means a session only ever downloads its own role's tabs, and even within a
+// role, only the currently-open tab's code — the other tabs in that role's
+// row load on demand the moment their pill is clicked, not before.
+function lazyTab(loader: () => Promise<{ [key: string]: TabComponent }>, named: string) {
+  return dynamic(() => loader().then((m) => m[named]), { ssr: false });
+}
+
+const OverviewTab = lazyTab(() => import("@/components/tabs/OverviewTab"), "OverviewTab");
+const SalesTab = lazyTab(() => import("@/components/tabs/SalesTab"), "SalesTab");
+const ExpensesTab = lazyTab(() => import("@/components/tabs/ExpensesTab"), "ExpensesTab");
+const SopTab = lazyTab(() => import("@/components/tabs/SopTab"), "SopTab");
+const BranchesTab = lazyTab(() => import("@/components/tabs/BranchesTab"), "BranchesTab");
+const RevshareTab = lazyTab(() => import("@/components/tabs/RevshareTab"), "RevshareTab");
+const SopRecipesTab = lazyTab(
+  () => import("@/components/tabs/SopRecipesTab"),
+  "SopRecipesTab",
+);
+const GlanceTab = lazyTab(() => import("@/components/tabs/GlanceTab"), "GlanceTab");
+const BranchExpensesTab = lazyTab(
+  () => import("@/components/tabs/BranchExpensesTab"),
+  "BranchExpensesTab",
+);
+const TodayTab = lazyTab(() => import("@/components/tabs/TodayTab"), "TodayTab");
+const PurchasesTab = lazyTab(
+  () => import("@/components/tabs/PurchasesTab"),
+  "PurchasesTab",
+);
+const StockSopTab = lazyTab(() => import("@/components/tabs/StockSopTab"), "StockSopTab");
+const WastageTab = lazyTab(() => import("@/components/tabs/WastageTab"), "WastageTab");
 
 /**
  * Per-role tab components, not a single flat tab-id map — brand and branch-owner

@@ -82,9 +82,9 @@ export function RevshareTab() {
       </ChartFrame>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-        <h3 className="mb-3 font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="mb-3 font-heading text-base font-semibold text-hiyya-champagne">
           Split by branch
-        </h3>
+        </h2>
         <RevenueShareTable rows={rows} />
       </div>
     </div>

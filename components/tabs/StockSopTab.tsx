@@ -74,9 +74,9 @@ export function StockSopTab() {
   return (
     <div className="flex flex-col gap-6">
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-        <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Stock on hand
-        </h3>
+        </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
           Days of cover at current average daily usage — worst first.
         </p>
@@ -121,9 +121,9 @@ export function StockSopTab() {
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-        <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           SOP quick reference
-        </h3>
+        </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
           Recipe quantity per portion, read-only — recipe changes are made by the Brand
           Manager.

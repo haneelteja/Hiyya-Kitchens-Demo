@@ -44,6 +44,9 @@ test("Suresh Reddy's scope select never offers Chrono Jail Mandi or Space Mandi"
   await page.goto("/overview");
   await page.getByLabel("View as").click();
   await page.getByRole("option", { name: /Suresh Reddy/ }).click();
+  // The persona switch triggers a client-side redirect to /glance — settle
+  // before opening another dropdown, or the click can race the redirect.
+  await page.waitForURL(/\/glance$/);
   await page.getByLabel("Scope").click();
   const options = await page.getByRole("option").allTextContents();
   expect(options.join(" ")).not.toContain("Chrono Jail Mandi");

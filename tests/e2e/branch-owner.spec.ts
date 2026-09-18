@@ -4,12 +4,17 @@ async function switchToSuresh(page: import("@playwright/test").Page) {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
   await page.getByRole("option", { name: /Suresh Reddy/ }).click();
+  // The persona switch itself triggers a client-side redirect to /glance — wait
+  // for that to settle before a caller clicks a different tab, or the click can
+  // occasionally race the redirect and land on nothing.
+  await page.waitForURL(/\/glance$/);
 }
 
 async function switchToAnil(page: import("@playwright/test").Page) {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
   await page.getByRole("option", { name: /Anil Kumar/ }).click();
+  await page.waitForURL(/\/glance$/);
 }
 
 test("Suresh Reddy (multi-branch) lands on 'At a glance' with a portfolio view", async ({
@@ -58,13 +63,15 @@ test("editing Dino Mandi's rent by +₹78,000 lowers net profit by exactly ₹78
   await page.getByRole("tab", { name: "Expenses & profit" }).click();
   await expect(page).toHaveURL(/\/expenses$/);
 
-  // Dino Mandi (B02) is first in Suresh's branch list. The KPI card is a <h3>
-  // label + sibling <p> value inside one container div (components/kpi/KpiCard.tsx).
+  // Dino Mandi (B02) is first in Suresh's branch list. The KPI card is a <p>
+  // label + sibling <p> value inside one container div (components/kpi/KpiCard.tsx)
+  // — label isn't a heading (Phase 7 accessibility fix), so both are <p>; the
+  // label match plus its next sibling <p> is the value.
   const netProfitValue = page
-    .locator("h3", { hasText: "Net profit" })
+    .locator("p", { hasText: "Net profit" })
     .locator("..")
     .locator("p")
-    .first();
+    .nth(1);
   const netProfitBefore = await netProfitValue.innerText();
 
   const rentInput = page

@@ -21,9 +21,11 @@ export function KpiCard({
         className,
       )}
     >
-      <h3 className="text-[11px] font-bold uppercase tracking-wider text-hiyya-muted">
+      {/* Not a document heading — a card caption, so it stays out of the h1→h2→h3
+          outline entirely rather than participating at the wrong level. */}
+      <p className="text-[11px] font-bold uppercase tracking-wider text-hiyya-muted">
         {label}
-      </h3>
+      </p>
       <p className="mt-1 font-heading text-2xl font-bold bg-gradient-to-b from-hiyya-champagne via-hiyya-gold to-hiyya-deep-gold bg-clip-text text-transparent">
         {value}
       </p>

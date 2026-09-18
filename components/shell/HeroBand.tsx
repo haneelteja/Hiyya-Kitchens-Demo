@@ -14,11 +14,15 @@ export function HeroBand() {
 
   return (
     <div className="relative flex min-h-[230px] flex-col justify-center px-6 py-8 max-[759px]:min-h-[340px]">
-      <div className="max-w-xl [text-shadow:0_2px_18px_rgba(0,0,0,0.6)]">
+      {/* pt matches the h1's own line-height + the p's margin/line-height below, so
+          the skeleton-to-real-content swap doesn't re-center this flex column at a
+          different height and shift the headline (a real, measured CLS source —
+          Phase 7 polish). Loading and loaded states now occupy the same footprint. */}
+      <div className="max-w-xl pt-1 [text-shadow:0_2px_18px_rgba(0,0,0,0.6)]">
         {loading ? (
           <>
-            <div className="h-9 w-3/4 animate-pulse rounded bg-white/5" />
-            <div className="mt-3 h-4 w-1/2 animate-pulse rounded bg-white/5" />
+            <div className="h-9 w-3/4 animate-pulse rounded bg-white/5 sm:h-11" />
+            <div className="mt-3 h-5 w-1/2 animate-pulse rounded bg-white/5" />
           </>
         ) : (
           <>

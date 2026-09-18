@@ -221,9 +221,9 @@ export function GlanceTab() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-          <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
             Needs your attention
-          </h3>
+          </h2>
           <p className="mb-3 text-xs text-hiyya-muted">
             Plain-language flags, worst first.
           </p>
@@ -243,9 +243,9 @@ export function GlanceTab() {
         </div>
 
         <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-          <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
             How you rank vs. the network
-          </h3>
+          </h2>
           <p className="mb-3 text-xs text-hiyya-muted">
             Rank only — other franchisees&apos; names and figures stay private.
           </p>

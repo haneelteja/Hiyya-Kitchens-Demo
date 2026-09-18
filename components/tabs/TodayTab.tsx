@@ -115,9 +115,9 @@ export function TodayTab() {
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-        <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Needs reordering
-        </h3>
+        </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
           Under 2.5 days of cover — worst first.
         </p>
@@ -144,9 +144,9 @@ export function TodayTab() {
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-        <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Logged today
-        </h3>
+        </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
           Purchases and wastage entries you&apos;ve recorded this session.
         </p>

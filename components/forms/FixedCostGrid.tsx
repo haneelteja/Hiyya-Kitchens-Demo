@@ -99,9 +99,9 @@ export function FixedCostGrid({ branchCode, month, baseCosts, onTotalChange }: P
 
   return (
     <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-      <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+      <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
         Fixed costs — {month}
-      </h3>
+      </h2>
       <p className="mb-3 text-xs text-hiyya-muted">
         Edit any head to see net profit and margin recalculate immediately below.
       </p>

@@ -10,17 +10,17 @@ Next.js 14 (App Router), TypeScript strict, Tailwind CSS + shadcn/ui, Apache ECh
 
 ## Commands
 
-| Command             | What it does                                                                                       |
-| ------------------- | -------------------------------------------------------------------------------------------------- |
-| `pnpm dev`          | Local dev server (<http://localhost:3000>)                                                         |
-| `pnpm build`        | Production build                                                                                   |
-| `pnpm lint`         | ESLint (`next/core-web-vitals` + `next/typescript` + Prettier compat)                              |
-| `pnpm typecheck`    | `tsc --noEmit`                                                                                     |
-| `pnpm format`       | Prettier, write mode                                                                               |
-| `pnpm format:check` | Prettier, check-only (CI)                                                                          |
-| `pnpm test`         | Vitest, single run (calculation engine, selectors)                                                 |
-| `pnpm test:watch`   | Vitest, watch mode                                                                                 |
-| `pnpm e2e`          | Playwright — `chromium` (1440px desktop) and `mobile` (390px) projects, auto-starts the dev server |
+| Command             | What it does                                                                                                                                                                                                                      |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`          | Local dev server (<http://localhost:3000>)                                                                                                                                                                                        |
+| `pnpm build`        | Production build                                                                                                                                                                                                                  |
+| `pnpm lint`         | ESLint (`next/core-web-vitals` + `next/typescript` + Prettier compat)                                                                                                                                                             |
+| `pnpm typecheck`    | `tsc --noEmit`                                                                                                                                                                                                                    |
+| `pnpm format`       | Prettier, write mode                                                                                                                                                                                                              |
+| `pnpm format:check` | Prettier, check-only (CI)                                                                                                                                                                                                         |
+| `pnpm test`         | Vitest, single run (calculation engine, selectors)                                                                                                                                                                                |
+| `pnpm test:watch`   | Vitest, watch mode                                                                                                                                                                                                                |
+| `pnpm e2e`          | Playwright — `chromium` (1440px desktop) and `mobile` (390px) projects, auto-builds and serves a production build (not `next dev` — see Phase 7 report: on-demand dev-compile of per-tab chunks under parallel workers was flaky) |
 
 Package manager: pnpm (already available in this environment; no global install needed). Node 24 locally — the spec pins Node 20, but nothing here depends on a Node-20-only API; noted as a drift, not a blocker.
 

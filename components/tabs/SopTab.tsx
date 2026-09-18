@@ -227,9 +227,9 @@ export function SopTab() {
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+            <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
               Ingredient variance
-            </h3>
+            </h2>
             <p className="text-xs text-hiyya-muted">
               Click a row to see which menu items likely drove it.
             </p>

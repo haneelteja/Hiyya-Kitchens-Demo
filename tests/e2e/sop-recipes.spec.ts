@@ -4,6 +4,10 @@ async function switchToBrandManager(page: import("@playwright/test").Page) {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
   await page.getByRole("option", { name: /Brand Manager/i }).click();
+  // Brand Manager's default landing tab is still /overview, but the persona
+  // switch is still an async store update — settle before the caller clicks a
+  // different tab, matching the same fix in branch-owner/branch-manager specs.
+  await page.waitForURL(/\/overview$/);
 }
 
 test("Brand Manager sees SOP recipes after Branches, Brand Owner never does", async ({

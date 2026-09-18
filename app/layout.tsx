@@ -8,7 +8,12 @@ const heading = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
   variable: "--font-heading",
-  display: "swap",
+  // "optional" (not "swap"): the hero headline renders once, immediately, in
+  // whichever font is ready in time — no later swap once the custom font
+  // finishes loading, which is exactly the layout shift Lighthouse's CLS audit
+  // was catching (Phase 7 polish: the HeroBand headline was the single biggest
+  // CLS contributor on Overview, "Web font loaded" as the recorded cause).
+  display: "optional",
 });
 
 const sans = Manrope({

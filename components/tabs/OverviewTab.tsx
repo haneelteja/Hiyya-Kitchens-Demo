@@ -269,6 +269,7 @@ export function OverviewTab() {
           subtitle="Click a bar to open that branch's quick view."
           toolbar={
             <select
+              aria-label="Rank by"
               value={rankMetric}
               onChange={(e) => setRankMetric(e.target.value as typeof rankMetric)}
               className="rounded-lg border border-hiyya-panel-2 bg-hiyya-panel-2 px-2 py-1 text-xs"
@@ -307,9 +308,9 @@ export function OverviewTab() {
         </ChartFrame>
 
         <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-          <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
             Needs your attention
-          </h3>
+          </h2>
           <p className="mb-3 text-xs text-hiyya-muted">
             Plain-language flags, worst first.
           </p>

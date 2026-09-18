@@ -4,6 +4,10 @@ async function switchToKiran(page: import("@playwright/test").Page) {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
   await page.getByRole("option", { name: /Kiran/ }).click();
+  // The persona switch itself triggers a client-side redirect to /today — wait
+  // for that to settle before a caller clicks a different tab, or the click can
+  // occasionally race the redirect and land on nothing.
+  await page.waitForURL(/\/today$/);
 }
 
 test("Kiran lands on Today with the four-tab set, and sees no P&L figures", async ({

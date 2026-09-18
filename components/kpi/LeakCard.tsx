@@ -31,9 +31,9 @@ export function LeakCard({
         aria-hidden="true"
       />
       <div className="relative">
-        <h3 className="text-[11px] font-bold uppercase tracking-wider text-hiyya-muted">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-hiyya-muted">
           {label}
-        </h3>
+        </p>
         <p className="mt-1 font-heading text-2xl font-bold bg-gradient-to-b from-hiyya-warning to-hiyya-gold bg-clip-text text-transparent">
           {value}
         </p>

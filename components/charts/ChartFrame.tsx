@@ -22,9 +22,9 @@ export function ChartFrame({
     <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
       <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h3 className="font-heading text-base font-semibold text-hiyya-champagne">
+          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
             {title}
-          </h3>
+          </h2>
           <p className="text-xs text-hiyya-muted">{subtitle}</p>
         </div>
         {toolbar}

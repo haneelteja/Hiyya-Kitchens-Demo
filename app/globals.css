@@ -69,3 +69,20 @@
     text-wrap: balance;
   }
 }
+
+/* The in-app motion toggle (Header) and prefers-reduced-motion together pause the
+   3D throne stage (JS-level, in ThreeStageWrapper — a WebGL canvas can't be paused
+   from CSS). This handles everything CSS drives instead: toast/dialog
+   animate-in/out, tab and button hover/focus transitions. Phase 7 polish — the
+   throne stage already respected the OS setting; the small CSS transitions used
+   everywhere else didn't yet. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
