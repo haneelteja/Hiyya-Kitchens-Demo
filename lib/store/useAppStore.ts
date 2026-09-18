@@ -88,6 +88,11 @@ interface AppState {
     head: FixedCostHead,
     amount: number,
   ) => void;
+  clearFixedCostOverride: (
+    branchCode: string,
+    month: string,
+    head: FixedCostHead,
+  ) => void;
   addPurchase: (p: Omit<DemoEdits["purchases"][number], "id">) => void;
   addWastageEntry: (w: Omit<DemoEdits["wastageEntries"][number], "id">) => void;
   setSopOverride: (
@@ -159,6 +164,13 @@ export const useAppStore = create<AppState>()(
             },
           },
         })),
+      clearFixedCostOverride: (branchCode, month, head) =>
+        set((state) => {
+          const key = fixedCostOverrideKey(branchCode, month, head);
+          const rest = { ...state.demoEdits.fixedCostOverrides };
+          delete rest[key];
+          return { demoEdits: { ...state.demoEdits, fixedCostOverrides: rest } };
+        }),
       addPurchase: (p) =>
         set((state) => ({
           demoEdits: {

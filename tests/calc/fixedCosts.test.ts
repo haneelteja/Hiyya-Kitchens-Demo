@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   applyFixedCostEdit,
+  applyOverridesToFixedCosts,
   fixedCostForDaysInMonth,
   fixedCostPerDay,
+  sumFixedCosts,
 } from "@/lib/calc/fixedCosts";
 import { computePnl } from "@/lib/calc/pnl";
+import type { FixedCost } from "@/lib/data/types";
 
 describe("fixedCostPerDay", () => {
   it("spreads the monthly total across the days in that month", () => {
@@ -48,5 +51,48 @@ describe("applyFixedCostEdit", () => {
     });
 
     expect(before.netProfit - after.netProfit).toBeCloseTo(78_000, 6);
+  });
+});
+
+describe("applyOverridesToFixedCosts", () => {
+  const costs: FixedCost[] = [
+    {
+      branchCode: "B02",
+      month: "2026-08",
+      head: "Rent",
+      amount: 335_061,
+      enteredBy: "demo",
+    },
+    {
+      branchCode: "B02",
+      month: "2026-08",
+      head: "Salaries",
+      amount: 446_748,
+      enteredBy: "demo",
+    },
+  ];
+
+  it("replaces only the overridden head's amount", () => {
+    const result = applyOverridesToFixedCosts(costs, { Rent: 413_061 });
+    expect(result.find((c) => c.head === "Rent")?.amount).toBe(413_061);
+    expect(result.find((c) => c.head === "Salaries")?.amount).toBe(446_748);
+  });
+
+  it("does not mutate the input array", () => {
+    applyOverridesToFixedCosts(costs, { Rent: 999 });
+    expect(costs.find((c) => c.head === "Rent")?.amount).toBe(335_061);
+  });
+
+  it("with no overrides, the total is unchanged", () => {
+    const result = applyOverridesToFixedCosts(costs, {});
+    expect(sumFixedCosts(result, "B02", "2026-08")).toBe(
+      sumFixedCosts(costs, "B02", "2026-08"),
+    );
+  });
+
+  it("composes with the Dino rent +₹78,000 acceptance case via sumFixedCosts", () => {
+    const result = applyOverridesToFixedCosts(costs, { Rent: 335_061 + 78_000 });
+    const newTotal = sumFixedCosts(result, "B02", "2026-08");
+    expect(newTotal - sumFixedCosts(costs, "B02", "2026-08")).toBe(78_000);
   });
 });

@@ -1,12 +1,13 @@
 # HIYYA Command Center — build plan
 
-Status: **Phase 4 complete, awaiting "go" for Phase 5**. This plan follows the Phase build prompt (pasted into chat on 2026-09-17; the earlier v3 spec is preserved at `reference/hiyya-analytics-platform-prompt-v3.md` for brand/context background, and is superseded wherever the two differ).
+Status: **Phase 5 complete, awaiting "go" for Phase 6**. This plan follows the Phase build prompt (pasted into chat on 2026-09-17; the earlier v3 spec is preserved at `reference/hiyya-analytics-platform-prompt-v3.md` for brand/context background, and is superseded wherever the two differ).
 
 - Phase 0 (scaffold) — done, commit `38f7c32`.
 - Phase 1 (data layer + calc engine) — done, commit `4dad6f0`. All 41 Vitest cases pass, including the full Section 10 acceptance table and the exact 10 "Investigate" flags.
 - Phase 2 (shell + 3D throne stage) — done, commit `c103c92`. 24/24 Playwright cases pass; the demo-date bug found and fixed mid-phase (August only had 30 days of generated sales, so "today" — 31 Aug — showed 0) is documented there.
 - Phase 3 (Brand Owner: all six tabs with drill-downs) — done, commit `34006ea`. 53/53 Vitest cases pass; two content bugs (a wrong month label, a wrong month name in a subtitle) and one screenshot-script false alarm are documented there.
-- Phase 4 (Brand Manager: shared tabs + SOP recipe editor + impact preview) — done, see the Phase 4 report. 53/53 Vitest, 32/32 Playwright cases pass.
+- Phase 4 (Brand Manager: shared tabs + SOP recipe editor + impact preview) — done, commit `3572c4a` (plus an access-control consistency fix, commit `071c786`, found during a full-implementation audit). 53/53 Vitest, 32/32 Playwright cases pass.
+- Phase 5 (Branch Owner: At a glance, editable fixed-cost grid with live recalculation, scoped Sales/SOP) — done, see the Phase 5 report. 57/57 Vitest, 46/46 Playwright cases pass.
 
 ## 0. What exists today, and what doesn't carry over
 

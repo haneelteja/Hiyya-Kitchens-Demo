@@ -1,4 +1,4 @@
-import type { FixedCost } from "@/lib/data/types";
+import type { FixedCost, FixedCostHead } from "@/lib/data/types";
 
 /** Monthly heads spread per day as total ÷ days in month. */
 export function fixedCostPerDay(monthlyTotal: number, daysInMonth: number): number {
@@ -51,4 +51,20 @@ export function applyFixedCostEdit(
   newHeadAmount: number,
 ): number {
   return currentTotal - currentHeadAmount + newHeadAmount;
+}
+
+/**
+ * Overlays a Branch Owner's in-memory edits (Zustand demoEdits.fixedCostOverrides,
+ * keyed by head) on top of the stored FixedCost rows for one branch/month — never
+ * mutates the input, and heads with no override pass through unchanged. The Fixed
+ * Cost Grid and its live recalculation both read through this single function, so
+ * the displayed row amount and the number computePnl sees can never drift apart.
+ */
+export function applyOverridesToFixedCosts(
+  costs: FixedCost[],
+  overridesByHead: Partial<Record<FixedCostHead, number>>,
+): FixedCost[] {
+  return costs.map((c) =>
+    c.head in overridesByHead ? { ...c, amount: overridesByHead[c.head]! } : c,
+  );
 }

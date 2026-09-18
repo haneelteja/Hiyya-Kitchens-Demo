@@ -11,6 +11,9 @@ import { SopTab } from "@/components/tabs/SopTab";
 import { BranchesTab } from "@/components/tabs/BranchesTab";
 import { RevshareTab } from "@/components/tabs/RevshareTab";
 import { SopRecipesTab } from "@/components/tabs/SopRecipesTab";
+import { GlanceTab } from "@/components/tabs/GlanceTab";
+import { BranchExpensesTab } from "@/components/tabs/BranchExpensesTab";
+import type { PersonaRole } from "@/lib/data/types";
 
 const TAB_TITLES: Record<string, string> = {
   overview: "Overview",
@@ -27,33 +30,52 @@ const TAB_TITLES: Record<string, string> = {
   wastage: "Wastage",
 };
 
-// The six shared Brand Owner/Manager tabs (Phase 3), plus SOP recipes for the
-// Brand Manager only (Phase 4) — per Section 5, "Brand Manager: same as owner,
-// plus SOP recipes after Branches". AppShell already redirects a persona off
-// any tab not in tabsForPersona(), so brand_owner can never render sop_recipes
-// even though it's listed in this shared map.
-const BRAND_TAB_COMPONENTS: Record<string, () => JSX.Element | null> = {
-  overview: OverviewTab,
-  sales: SalesTab,
-  expenses: ExpensesTab,
-  sop: SopTab,
-  branches: BranchesTab,
-  sop_recipes: SopRecipesTab,
-  revshare: RevshareTab,
+type TabComponent = () => JSX.Element | null;
+
+/**
+ * Per-role tab components, not a single flat tab-id map — brand and branch-owner
+ * roles both use the "sales"/"sop" tab id, but "expenses" means something
+ * different for each (Brand: read-only P&L breakdown; Branch Owner: an editable
+ * fixed-cost grid, Section 5). AppShell already redirects a persona off any tab
+ * not in tabsForPersona(), so a role only ever sees its own row here.
+ */
+const ROLE_TAB_COMPONENTS: Partial<Record<PersonaRole, Record<string, TabComponent>>> = {
+  brand_owner: {
+    overview: OverviewTab,
+    sales: SalesTab,
+    expenses: ExpensesTab,
+    sop: SopTab,
+    branches: BranchesTab,
+    revshare: RevshareTab,
+  },
+  brand_manager: {
+    overview: OverviewTab,
+    sales: SalesTab,
+    expenses: ExpensesTab,
+    sop: SopTab,
+    branches: BranchesTab,
+    sop_recipes: SopRecipesTab,
+    revshare: RevshareTab,
+  },
+  branch_owner: {
+    glance: GlanceTab,
+    sales: SalesTab,
+    expenses: BranchExpensesTab,
+    sop: SopTab,
+  },
 };
 
 /** The tab router: the persona decides which tabs exist (enforced in AppShell,
- * which redirects off an inaccessible tab). Brand Owner/Manager get their real
- * tabs (Phases 3–4); Branch Owner/Manager still see a placeholder until
- * Phases 5–6. */
+ * which redirects off an inaccessible tab). Brand Owner/Manager/Branch Owner get
+ * their real tabs (Phases 3–5); Branch Manager still sees a placeholder until
+ * Phase 6. */
 export default function TabPage() {
   const params = useParams<{ tab: string }>();
   const tab = params.tab;
   const personaId = useAppStore((s) => s.personaId);
   const role = getPersona(personaId).role;
 
-  const isBrandRole = role === "brand_owner" || role === "brand_manager";
-  const RealTab = isBrandRole ? BRAND_TAB_COMPONENTS[tab] : undefined;
+  const RealTab = ROLE_TAB_COMPONENTS[role]?.[tab];
 
   return (
     <AppShell tab={tab}>
