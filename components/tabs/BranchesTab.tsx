@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDataSource } from "@/hooks/useDataSource";
 import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { useAppStore } from "@/lib/store/useAppStore";
@@ -34,6 +34,14 @@ export function BranchesTab() {
     value: r.netSales,
   }));
 
+  // Stable reference so LeagueTable's memoized rows don't re-render on every
+  // BranchesTab render (perf review, Section 2, P1) — openBranchDrilldown
+  // itself is a Zustand action, stable for the store's lifetime.
+  const handleRowClick = useCallback(
+    (code: string) => openBranchDrilldown(code as BranchCode),
+    [openBranchDrilldown],
+  );
+
   return (
     <div className="flex flex-col gap-6">
       <ChartFrame
@@ -58,20 +66,14 @@ export function BranchesTab() {
           </table>
         }
       >
-        <RankChart
-          bars={bars}
-          onBarClick={(code) => openBranchDrilldown(code as BranchCode)}
-        />
+        <RankChart bars={bars} onBarClick={handleRowClick} />
       </ChartFrame>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
         <h2 className="mb-3 font-heading text-base font-semibold text-hiyya-champagne">
           League table
         </h2>
-        <LeagueTable
-          rows={league}
-          onRowClick={(code) => openBranchDrilldown(code as BranchCode)}
-        />
+        <LeagueTable rows={league} onRowClick={handleRowClick} />
       </div>
     </div>
   );

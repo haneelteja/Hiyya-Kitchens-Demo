@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { EChartsOption } from "echarts";
 import { useDataSource } from "@/hooks/useDataSource";
 import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { useAppStore } from "@/lib/store/useAppStore";
@@ -69,19 +70,58 @@ export function SopTab() {
     });
   });
 
-  const leaks = [...rows]
-    .sort((a, b) => b.unexplainedValue - a.unexplainedValue)
-    .slice(0, 6);
+  const leaks = useMemo(
+    () => [...rows].sort((a, b) => b.unexplainedValue - a.unexplainedValue).slice(0, 6),
+    [rows],
+  );
+  const leaksChartOption = useMemo<EChartsOption>(
+    () => ({
+      tooltip: { valueFormatter: (v) => formatInr(Number(v)) },
+      grid: { left: 140, right: 30, top: 10, bottom: 20 },
+      xAxis: {
+        type: "value",
+        axisLabel: { formatter: (v: number) => formatInr(v, { compact: true }) },
+      },
+      yAxis: {
+        type: "category",
+        data: leaks.map(
+          (r) => r.ingredientName + (showBranch ? ` · ${r.branchCode}` : ""),
+        ),
+      },
+      series: [
+        {
+          type: "bar",
+          data: leaks.map((r) => ({
+            value: r.unexplainedValue,
+            itemStyle: {
+              color: r.flag === "investigate" ? hiyyaColors.loss : hiyyaColors.warning,
+              borderRadius: [0, 4, 4, 0],
+            },
+          })),
+        },
+      ],
+    }),
+    [leaks, showBranch],
+  );
 
   const filteredRows = ingredientFilter
     ? rows.filter((r) => r.ingredientName === ingredientFilter)
     : rows;
 
-  function drillIngredient(ingredientName: string) {
-    const row = rows.find((r) => r.ingredientName === ingredientName);
-    if (!row) return;
-    openIngredientDrilldown(row.ingredientKey, ingredientName, branches);
-  }
+  const drillIngredient = useCallback(
+    (ingredientName: string) => {
+      const row = rows.find((r) => r.ingredientName === ingredientName);
+      if (!row) return;
+      openIngredientDrilldown(row.ingredientKey, ingredientName, branches);
+    },
+    [rows, branches, openIngredientDrilldown],
+  );
+  // Stable reference so IngredientVarianceTable's memoized rows don't
+  // re-render on every SopTab render (perf review, Section 2, P1).
+  const handleVarianceRowClick = useCallback(
+    (_ingredientKey: string, name: string) => drillIngredient(name),
+    [drillIngredient],
+  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -160,36 +200,7 @@ export function SopTab() {
             </table>
           }
         >
-          <Chart
-            height={220}
-            option={{
-              tooltip: { valueFormatter: (v) => formatInr(Number(v)) },
-              grid: { left: 140, right: 30, top: 10, bottom: 20 },
-              xAxis: {
-                type: "value",
-                axisLabel: { formatter: (v: number) => formatInr(v, { compact: true }) },
-              },
-              yAxis: {
-                type: "category",
-                data: leaks.map(
-                  (r) => r.ingredientName + (showBranch ? ` · ${r.branchCode}` : ""),
-                ),
-              },
-              series: [
-                {
-                  type: "bar",
-                  data: leaks.map((r) => ({
-                    value: r.unexplainedValue,
-                    itemStyle: {
-                      color:
-                        r.flag === "investigate" ? hiyyaColors.loss : hiyyaColors.warning,
-                      borderRadius: [0, 4, 4, 0],
-                    },
-                  })),
-                },
-              ],
-            }}
-          />
+          <Chart height={220} option={leaksChartOption} />
         </ChartFrame>
 
         <ChartFrame
@@ -246,7 +257,7 @@ export function SopTab() {
         <IngredientVarianceTable
           rows={filteredRows}
           showBranch={showBranch}
-          onRowClick={(_, name) => drillIngredient(name)}
+          onRowClick={handleVarianceRowClick}
         />
       </div>
     </div>

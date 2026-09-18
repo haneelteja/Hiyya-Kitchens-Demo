@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { EChartsOption } from "echarts";
 import { useDataSource } from "@/hooks/useDataSource";
 import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { KpiCard } from "@/components/kpi/KpiCard";
@@ -264,32 +265,31 @@ function useWeekday(scope: Scope) {
 
 function WeekdayChart({ scope }: { scope: Scope }) {
   const data = useWeekday(scope);
-  return (
-    <Chart
-      height={220}
-      option={{
-        tooltip: { valueFormatter: (v) => formatInr(Number(v)) },
-        grid: { left: 60, right: 16, top: 10, bottom: 26 },
-        xAxis: { type: "category", data: data.map((d) => d.day) },
-        yAxis: {
-          type: "value",
-          axisLabel: { formatter: (v: number) => formatInr(v, { compact: true }) },
+  const option = useMemo<EChartsOption>(
+    () => ({
+      tooltip: { valueFormatter: (v) => formatInr(Number(v)) },
+      grid: { left: 60, right: 16, top: 10, bottom: 26 },
+      xAxis: { type: "category", data: data.map((d) => d.day) },
+      yAxis: {
+        type: "value",
+        axisLabel: { formatter: (v: number) => formatInr(v, { compact: true }) },
+      },
+      series: [
+        {
+          type: "bar",
+          data: data.map((d, i) => ({
+            value: Math.round(d.average),
+            itemStyle: {
+              color: i === 5 || i === 6 ? hiyyaColors.champagne : hiyyaColors.deepGold,
+              borderRadius: [3, 3, 0, 0],
+            },
+          })),
         },
-        series: [
-          {
-            type: "bar",
-            data: data.map((d, i) => ({
-              value: Math.round(d.average),
-              itemStyle: {
-                color: i === 5 || i === 6 ? hiyyaColors.champagne : hiyyaColors.deepGold,
-                borderRadius: [3, 3, 0, 0],
-              },
-            })),
-          },
-        ],
-      }}
-    />
+      ],
+    }),
+    [data],
   );
+  return <Chart height={220} option={option} />;
 }
 
 function WeekdayTable({ scope }: { scope: Scope }) {

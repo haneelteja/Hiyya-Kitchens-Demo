@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+import type { EChartsOption } from "echarts";
 import { Chart } from "@/components/charts/Chart";
 
 /** Deviation heatmap: branch × ingredient. Clicking a cell filters the ingredient
@@ -15,39 +17,44 @@ export function HeatmapChart({
   values: [number, number, number][];
   onCellClick?: (ingredient: string, branch: string) => void;
 }) {
+  const option = useMemo<EChartsOption>(
+    () => ({
+      tooltip: {
+        formatter: (p: unknown) => {
+          const point = p as { data: [number, number, number] };
+          return `${ingredients[point.data[0]]} · ${branches[point.data[1]]}: ${point.data[2]}%`;
+        },
+      },
+      grid: { left: 130, right: 20, top: 10, bottom: 60 },
+      xAxis: { type: "category", data: ingredients, axisLabel: { rotate: 35 } },
+      yAxis: { type: "category", data: branches },
+      visualMap: {
+        min: -10,
+        max: 20,
+        show: false,
+        inRange: { color: ["#3E7D53", "#1B1813", "#8A6C2A", "#D8674F"] },
+      },
+      series: [
+        {
+          type: "heatmap",
+          data: values,
+          label: {
+            show: true,
+            color: "#F3ECDC",
+            fontSize: 10,
+            formatter: (p: unknown) =>
+              `${(p as { data: [number, number, number] }).data[2]}%`,
+          },
+        },
+      ],
+    }),
+    [branches, ingredients, values],
+  );
+
   return (
     <Chart
       height={Math.max(180, branches.length * 46 + 60)}
-      option={{
-        tooltip: {
-          formatter: (p: unknown) => {
-            const point = p as { data: [number, number, number] };
-            return `${ingredients[point.data[0]]} · ${branches[point.data[1]]}: ${point.data[2]}%`;
-          },
-        },
-        grid: { left: 130, right: 20, top: 10, bottom: 60 },
-        xAxis: { type: "category", data: ingredients, axisLabel: { rotate: 35 } },
-        yAxis: { type: "category", data: branches },
-        visualMap: {
-          min: -10,
-          max: 20,
-          show: false,
-          inRange: { color: ["#3E7D53", "#1B1813", "#8A6C2A", "#D8674F"] },
-        },
-        series: [
-          {
-            type: "heatmap",
-            data: values,
-            label: {
-              show: true,
-              color: "#F3ECDC",
-              fontSize: 10,
-              formatter: (p: unknown) =>
-                `${(p as { data: [number, number, number] }).data[2]}%`,
-            },
-          },
-        ],
-      }}
+      option={option}
       onClick={(params) => {
         const p = params as { data?: [number, number, number] };
         if (p.data && onCellClick)

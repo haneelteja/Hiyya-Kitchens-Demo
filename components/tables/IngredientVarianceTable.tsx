@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   Table,
   TableBody,
@@ -11,6 +12,61 @@ import {
 import { FlagPill } from "@/components/tables/StatusPill";
 import { formatInr } from "@/lib/calc/format";
 import type { IngredientVarianceRow } from "@/lib/data/DataSource";
+
+/**
+ * Memoized so a row only re-renders when its own data (or the showBranch
+ * column toggle) changes. Only effective because `onRowClick` is a stable
+ * reference from the caller (see SopTab's `handleVarianceRowClick`, wrapped
+ * in `useCallback`) — perf review, Section 2, P1.
+ */
+const VarianceRow = memo(function VarianceRow({
+  row,
+  showBranch,
+  onRowClick,
+}: {
+  row: IngredientVarianceRow;
+  showBranch: boolean;
+  onRowClick: (ingredientKey: string, ingredientName: string) => void;
+}) {
+  return (
+    <TableRow
+      role="button"
+      tabIndex={0}
+      onClick={() => onRowClick(row.ingredientKey, row.ingredientName)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onRowClick(row.ingredientKey, row.ingredientName);
+        }
+      }}
+      className="cursor-pointer border-hiyya-panel-2 hover:bg-white/[0.03] focus-visible:bg-white/[0.06] focus-visible:outline-none"
+    >
+      <TableCell>{row.ingredientName}</TableCell>
+      {showBranch && <TableCell className="text-hiyya-muted">{row.branchCode}</TableCell>}
+      <TableCell className="text-right tabular-nums">
+        {row.sopUsageQty.toLocaleString("en-IN")} {row.unit}
+      </TableCell>
+      <TableCell className="text-right tabular-nums">
+        {row.actualUsageQty.toLocaleString("en-IN")} {row.unit}
+      </TableCell>
+      <TableCell className="text-right tabular-nums">
+        {row.wastageQty.toLocaleString("en-IN")} {row.unit}
+      </TableCell>
+      <TableCell className="text-right tabular-nums">
+        {row.unexplainedQty.toLocaleString("en-IN")} {row.unit}
+      </TableCell>
+      <TableCell className="text-right tabular-nums">
+        {row.deviationPct.toFixed(1)}%
+      </TableCell>
+      <TableCell className="text-right tabular-nums">
+        {formatInr(row.unexplainedValue)}
+      </TableCell>
+      <TableCell>
+        <FlagPill flag={row.flag} />
+      </TableCell>
+    </TableRow>
+  );
+});
 
 /** The full ingredient variance table with flag pills (Section 8). Row click opens
  * the "which dishes use this ingredient" drill-down. */
@@ -40,45 +96,12 @@ export function IngredientVarianceTable({
       </TableHeader>
       <TableBody>
         {rows.map((r, i) => (
-          <TableRow
+          <VarianceRow
             key={`${r.branchCode}-${r.ingredientKey}-${i}`}
-            role="button"
-            tabIndex={0}
-            onClick={() => onRowClick(r.ingredientKey, r.ingredientName)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                onRowClick(r.ingredientKey, r.ingredientName);
-              }
-            }}
-            className="cursor-pointer border-hiyya-panel-2 hover:bg-white/[0.03] focus-visible:bg-white/[0.06] focus-visible:outline-none"
-          >
-            <TableCell>{r.ingredientName}</TableCell>
-            {showBranch && (
-              <TableCell className="text-hiyya-muted">{r.branchCode}</TableCell>
-            )}
-            <TableCell className="text-right tabular-nums">
-              {r.sopUsageQty.toLocaleString("en-IN")} {r.unit}
-            </TableCell>
-            <TableCell className="text-right tabular-nums">
-              {r.actualUsageQty.toLocaleString("en-IN")} {r.unit}
-            </TableCell>
-            <TableCell className="text-right tabular-nums">
-              {r.wastageQty.toLocaleString("en-IN")} {r.unit}
-            </TableCell>
-            <TableCell className="text-right tabular-nums">
-              {r.unexplainedQty.toLocaleString("en-IN")} {r.unit}
-            </TableCell>
-            <TableCell className="text-right tabular-nums">
-              {r.deviationPct.toFixed(1)}%
-            </TableCell>
-            <TableCell className="text-right tabular-nums">
-              {formatInr(r.unexplainedValue)}
-            </TableCell>
-            <TableCell>
-              <FlagPill flag={r.flag} />
-            </TableCell>
-          </TableRow>
+            row={r}
+            showBranch={showBranch}
+            onRowClick={onRowClick}
+          />
         ))}
       </TableBody>
     </Table>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+import type { EChartsOption } from "echarts";
 import { Chart } from "@/components/charts/Chart";
 import { formatInr } from "@/lib/calc/format";
 
@@ -23,37 +25,41 @@ export function StackedBarChart({
   isPercent?: boolean;
   onBarClick?: (categoryIndex: number) => void;
 }) {
-  const fmt = (v: number) =>
-    isPercent ? `${v.toFixed(0)}%` : formatInr(v, { compact: true });
+  const option = useMemo<EChartsOption>(() => {
+    const fmt = (v: number) =>
+      isPercent ? `${v.toFixed(0)}%` : formatInr(v, { compact: true });
+    return {
+      tooltip: {
+        trigger: "axis",
+        axisPointer: { type: "shadow" },
+        valueFormatter: (v) => fmt(Number(v)),
+      },
+      legend: { data: series.map((s) => s.name), top: 0, textStyle: { fontSize: 11 } },
+      grid: { left: 60, right: 20, top: 36, bottom: 50 },
+      xAxis: {
+        type: "category",
+        data: categories,
+        axisLabel: { rotate: categories.length > 6 ? 30 : 0 },
+      },
+      yAxis: {
+        type: "value",
+        max: isPercent ? 100 : undefined,
+        axisLabel: { formatter: (v: number) => fmt(v) },
+      },
+      series: series.map((s) => ({
+        name: s.name,
+        type: "bar",
+        stack: "total",
+        itemStyle: { color: s.color },
+        data: s.data,
+      })),
+    };
+  }, [categories, series, isPercent]);
+
   return (
     <Chart
       height={300}
-      option={{
-        tooltip: {
-          trigger: "axis",
-          axisPointer: { type: "shadow" },
-          valueFormatter: (v) => fmt(Number(v)),
-        },
-        legend: { data: series.map((s) => s.name), top: 0, textStyle: { fontSize: 11 } },
-        grid: { left: 60, right: 20, top: 36, bottom: 50 },
-        xAxis: {
-          type: "category",
-          data: categories,
-          axisLabel: { rotate: categories.length > 6 ? 30 : 0 },
-        },
-        yAxis: {
-          type: "value",
-          max: isPercent ? 100 : undefined,
-          axisLabel: { formatter: (v: number) => fmt(v) },
-        },
-        series: series.map((s) => ({
-          name: s.name,
-          type: "bar",
-          stack: "total",
-          itemStyle: { color: s.color },
-          data: s.data,
-        })),
-      }}
+      option={option}
       onClick={(params) => {
         const p = params as { dataIndex?: number };
         if (typeof p.dataIndex === "number" && onBarClick) onBarClick(p.dataIndex);
