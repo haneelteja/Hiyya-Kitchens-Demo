@@ -10,6 +10,7 @@ import { ExpensesTab } from "@/components/tabs/ExpensesTab";
 import { SopTab } from "@/components/tabs/SopTab";
 import { BranchesTab } from "@/components/tabs/BranchesTab";
 import { RevshareTab } from "@/components/tabs/RevshareTab";
+import { SopRecipesTab } from "@/components/tabs/SopRecipesTab";
 
 const TAB_TITLES: Record<string, string> = {
   overview: "Overview",
@@ -26,20 +27,24 @@ const TAB_TITLES: Record<string, string> = {
   wastage: "Wastage",
 };
 
-// The six Brand Owner/Manager tabs built in Phase 3 — shared between both roles
-// per Section 5 ("Brand Manager: same as owner, plus SOP recipes after Branches").
+// The six shared Brand Owner/Manager tabs (Phase 3), plus SOP recipes for the
+// Brand Manager only (Phase 4) — per Section 5, "Brand Manager: same as owner,
+// plus SOP recipes after Branches". AppShell already redirects a persona off
+// any tab not in tabsForPersona(), so brand_owner can never render sop_recipes
+// even though it's listed in this shared map.
 const BRAND_TAB_COMPONENTS: Record<string, () => JSX.Element | null> = {
   overview: OverviewTab,
   sales: SalesTab,
   expenses: ExpensesTab,
   sop: SopTab,
   branches: BranchesTab,
+  sop_recipes: SopRecipesTab,
   revshare: RevshareTab,
 };
 
 /** The tab router: the persona decides which tabs exist (enforced in AppShell,
- * which redirects off an inaccessible tab). Brand Owner/Manager get their six
- * real tabs (Phase 3); Branch Owner/Manager still see a placeholder until
+ * which redirects off an inaccessible tab). Brand Owner/Manager get their real
+ * tabs (Phases 3–4); Branch Owner/Manager still see a placeholder until
  * Phases 5–6. */
 export default function TabPage() {
   const params = useParams<{ tab: string }>();

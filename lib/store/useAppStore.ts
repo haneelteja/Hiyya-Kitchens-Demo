@@ -90,7 +90,26 @@ interface AppState {
   ) => void;
   addPurchase: (p: Omit<DemoEdits["purchases"][number], "id">) => void;
   addWastageEntry: (w: Omit<DemoEdits["wastageEntries"][number], "id">) => void;
+  setSopOverride: (
+    menuItemCode: string,
+    ingredientKey: string,
+    appliesTo: string,
+    qtyPerPortion: number,
+  ) => void;
+  clearSopOverride: (
+    menuItemCode: string,
+    ingredientKey: string,
+    appliesTo: string,
+  ) => void;
   resetDemoEdits: () => void;
+}
+
+export function sopOverrideKey(
+  menuItemCode: string,
+  ingredientKey: string,
+  appliesTo: string,
+) {
+  return `${menuItemCode}:${ingredientKey}:${appliesTo}`;
 }
 
 function defaultScopeFor(personaId: PersonaId): Scope {
@@ -157,6 +176,23 @@ export const useAppStore = create<AppState>()(
             ],
           },
         })),
+      setSopOverride: (menuItemCode, ingredientKey, appliesTo, qtyPerPortion) =>
+        set((state) => ({
+          demoEdits: {
+            ...state.demoEdits,
+            sopOverrides: {
+              ...state.demoEdits.sopOverrides,
+              [sopOverrideKey(menuItemCode, ingredientKey, appliesTo)]: qtyPerPortion,
+            },
+          },
+        })),
+      clearSopOverride: (menuItemCode, ingredientKey, appliesTo) =>
+        set((state) => {
+          const key = sopOverrideKey(menuItemCode, ingredientKey, appliesTo);
+          const rest = { ...state.demoEdits.sopOverrides };
+          delete rest[key];
+          return { demoEdits: { ...state.demoEdits, sopOverrides: rest } };
+        }),
       resetDemoEdits: () => set({ demoEdits: initialDemoEdits }),
     }),
     {
