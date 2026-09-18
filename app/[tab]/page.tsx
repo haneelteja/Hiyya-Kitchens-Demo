@@ -13,6 +13,10 @@ import { RevshareTab } from "@/components/tabs/RevshareTab";
 import { SopRecipesTab } from "@/components/tabs/SopRecipesTab";
 import { GlanceTab } from "@/components/tabs/GlanceTab";
 import { BranchExpensesTab } from "@/components/tabs/BranchExpensesTab";
+import { TodayTab } from "@/components/tabs/TodayTab";
+import { PurchasesTab } from "@/components/tabs/PurchasesTab";
+import { StockSopTab } from "@/components/tabs/StockSopTab";
+import { WastageTab } from "@/components/tabs/WastageTab";
 import type { PersonaRole } from "@/lib/data/types";
 
 const TAB_TITLES: Record<string, string> = {
@@ -63,12 +67,17 @@ const ROLE_TAB_COMPONENTS: Partial<Record<PersonaRole, Record<string, TabCompone
     expenses: BranchExpensesTab,
     sop: SopTab,
   },
+  branch_manager: {
+    today: TodayTab,
+    purchases: PurchasesTab,
+    stock_sop: StockSopTab,
+    wastage: WastageTab,
+  },
 };
 
 /** The tab router: the persona decides which tabs exist (enforced in AppShell,
- * which redirects off an inaccessible tab). Brand Owner/Manager/Branch Owner get
- * their real tabs (Phases 3–5); Branch Manager still sees a placeholder until
- * Phase 6. */
+ * which redirects off an inaccessible tab). All six personas across all four
+ * roles now have their real tabs (Phases 3–6). */
 export default function TabPage() {
   const params = useParams<{ tab: string }>();
   const tab = params.tab;
