@@ -2,11 +2,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useDataSource } from "@/hooks/useDataSource";
+import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import {
   SopRecipeEditor,
   type IngredientTotals,
 } from "@/components/forms/SopRecipeEditor";
 import { dataset } from "@/lib/data/mock/dataset";
+import { accessibleBranchCodes } from "@/lib/access/scope";
 import type { IngredientVarianceRow, TopItemRow } from "@/lib/data/DataSource";
 import type { BranchCode } from "@/lib/data/types";
 
@@ -34,6 +36,11 @@ function branchName(code: string): string {
  */
 export function SopRecipesTab() {
   const ds = useDataSource();
+  const { persona, scope } = useAccessibleScope();
+  const branchCodes = useMemo(
+    () => accessibleBranchCodes(persona, scope),
+    [persona, scope],
+  );
   const [varianceRows, setVarianceRows] = useState<IngredientVarianceRow[]>([]);
   const [topItemsAll, setTopItemsAll] = useState<TopItemRow[]>([]);
   const [topItemsByBranch, setTopItemsByBranch] = useState<Record<string, TopItemRow[]>>(
@@ -42,21 +49,17 @@ export function SopRecipesTab() {
 
   useEffect(() => {
     let cancelled = false;
-    ds.getIngredientVariance({ kind: "all" }, PERIOD).then((r) => {
+    ds.getIngredientVariance(scope, PERIOD).then((r) => {
       if (!cancelled) setVarianceRows(r);
     });
-    ds.getTopItems({ kind: "all" }, PERIOD, "sales").then((r) => {
+    ds.getTopItems(scope, PERIOD, "sales").then((r) => {
       if (!cancelled) setTopItemsAll(r);
     });
     Promise.all(
-      dataset.branches.map((b) =>
+      branchCodes.map((code: BranchCode) =>
         ds
-          .getTopItems(
-            { kind: "branch", branchCode: b.code as BranchCode },
-            PERIOD,
-            "sales",
-          )
-          .then((rows) => [b.code, rows] as const),
+          .getTopItems({ kind: "branch", branchCode: code }, PERIOD, "sales")
+          .then((rows) => [code, rows] as const),
       ),
     ).then((pairs) => {
       if (!cancelled) setTopItemsByBranch(Object.fromEntries(pairs));
@@ -64,7 +67,7 @@ export function SopRecipesTab() {
     return () => {
       cancelled = true;
     };
-  }, [ds]);
+  }, [ds, scope, branchCodes]);
 
   const totalsForIngredient = useMemo(
     () =>
