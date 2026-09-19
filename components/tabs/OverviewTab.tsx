@@ -47,6 +47,7 @@ export function OverviewTab() {
   const [deviationTotal, setDeviationTotal] = useState(0);
   const [grain, setGrain] = useState<"daily" | "weekly" | "monthly">("daily");
   const [series, setSeries] = useState<PnlSeriesPoint[]>([]);
+  const [monthlySeries, setMonthlySeries] = useState<PnlSeriesPoint[]>([]);
   const [trendView, setTrendView] = useState<"combined" | "branch">("combined");
   const [branchSeries, setBranchSeries] = useState<BranchTrendSeries[]>([]);
   const [rankMetric, setRankMetric] =
@@ -93,6 +94,16 @@ export function OverviewTab() {
       cancelled = true;
     };
   }, [ds, scope, grain]);
+
+  useEffect(() => {
+    let cancelled = false;
+    ds.getPnlSeries(scope, "monthly", PERIOD).then((s) => {
+      if (!cancelled) setMonthlySeries(s);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [ds, scope]);
 
   useEffect(() => {
     if (!isAllBranches) {
@@ -223,6 +234,17 @@ export function OverviewTab() {
         netProfit: p.netProfit,
       })),
     [series, grain],
+  );
+
+  const monthlyTrendPoints: TrendPoint[] = useMemo(
+    () =>
+      monthlySeries.map((p) => ({
+        label: formatMonthLabel(p.period),
+        netSales: p.netSales,
+        actualFoodCost: p.actualFoodCost,
+        netProfit: p.netProfit,
+      })),
+    [monthlySeries],
   );
 
   const leaderboardRows: LeaderboardRow[] = ranks.map((r) => ({
@@ -435,6 +457,31 @@ export function OverviewTab() {
           branches={isAllBranches ? branchSeries : undefined}
           view={isAllBranches ? trendView : "combined"}
         />
+      </ChartFrame>
+
+      <ChartFrame
+        title="Monthly profit & margin"
+        subtitle="Net profit by month, trend to date."
+        accessibleTable={
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Profit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {monthlyTrendPoints.map((p) => (
+                <tr key={p.label}>
+                  <td>{p.label}</td>
+                  <td>{formatInr(p.netProfit)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        }
+      >
+        <TrendChart points={monthlyTrendPoints} />
       </ChartFrame>
 
       {isAllBranches && (
