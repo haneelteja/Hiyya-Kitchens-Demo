@@ -34,7 +34,7 @@ export function LeakCard({
         <p className="text-[11px] font-bold uppercase tracking-wider text-hiyya-muted">
           {label}
         </p>
-        <p className="mt-0.5 font-heading text-xl font-bold bg-gradient-to-b from-hiyya-warning to-hiyya-gold bg-clip-text text-transparent">
+        <p className="mt-0.5 font-heading text-xl font-bold text-hiyya-warning">
           {value}
         </p>
         {foot ? <p className="mt-1 text-[11px] text-hiyya-muted">{foot}</p> : null}

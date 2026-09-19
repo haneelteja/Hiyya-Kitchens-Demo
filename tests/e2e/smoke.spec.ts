@@ -4,7 +4,7 @@ import { test, expect } from "@playwright/test";
 // Real per-persona specs (Section 10) land starting Phase 2.
 test("scaffold page loads", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText("HIYYA Command Center")).toBeVisible();
+  await expect(page.getByText("HIYYA Kitchens Command Center")).toBeVisible();
 });
 
 test("no horizontal overflow at 390px", async ({ page }) => {

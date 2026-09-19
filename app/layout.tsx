@@ -24,7 +24,7 @@ const sans = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "HIYYA Command Center",
+  title: "HIYYA Kitchens Command Center",
   description:
     "Role-based analytics for HIYYA Kitchens — demo build, fabricated data, no authentication.",
 };

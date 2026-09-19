@@ -297,14 +297,18 @@ export function GlanceTab() {
                   className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-hiyya-gold/50 hover:shadow-[0_10px_28px_-14px_rgba(212,175,55,0.4)] focus-visible:-translate-y-0.5 focus-visible:border-hiyya-gold/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-hiyya-gold"
                 >
                   <h3 className="font-heading text-lg font-semibold">{b.name}</h3>
-                  <dl className="mt-2 space-y-1 text-xs">
+                  <dl className="mt-2 space-y-1 text-sm">
                     <div className="flex justify-between border-t border-dashed border-hiyya-panel-2 pt-1">
-                      <dt className="text-hiyya-muted">Net sales</dt>
-                      <dd>{formatInr(pnl.netSales, { compact: true })}</dd>
+                      <dt className="text-xs text-hiyya-muted">Net sales</dt>
+                      <dd className="font-bold text-hiyya-text">
+                        {formatInr(pnl.netSales, { compact: true })}
+                      </dd>
                     </div>
                     <div className="flex justify-between border-t border-dashed border-hiyya-panel-2 pt-1">
-                      <dt className="text-hiyya-muted">Margin</dt>
-                      <dd>{pnl.marginPct.toFixed(1)}%</dd>
+                      <dt className="text-xs text-hiyya-muted">Margin</dt>
+                      <dd className="font-bold text-hiyya-text">
+                        {pnl.marginPct.toFixed(1)}%
+                      </dd>
                     </div>
                   </dl>
                 </button>

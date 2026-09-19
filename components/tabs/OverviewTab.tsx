@@ -536,18 +536,22 @@ export function OverviewTab() {
                   />
                   <h3 className="font-heading text-lg font-semibold">{t.theme}</h3>
                   <p className="mb-2 text-[11px] text-hiyya-muted">{t.branchName}</p>
-                  <dl className="space-y-1 text-xs">
+                  <dl className="space-y-1 text-sm">
                     <div className="flex justify-between border-t border-dashed border-hiyya-panel-2 pt-1">
-                      <dt className="text-hiyya-muted">Net sales</dt>
-                      <dd>{formatInr(t.pnl.netSales, { compact: true })}</dd>
+                      <dt className="text-xs text-hiyya-muted">Net sales</dt>
+                      <dd className="font-bold text-hiyya-text">
+                        {formatInr(t.pnl.netSales, { compact: true })}
+                      </dd>
                     </div>
                     <div className="flex justify-between border-t border-dashed border-hiyya-panel-2 pt-1">
-                      <dt className="text-hiyya-muted">Margin</dt>
-                      <dd>{t.pnl.marginPct.toFixed(1)}%</dd>
+                      <dt className="text-xs text-hiyya-muted">Margin</dt>
+                      <dd className="font-bold text-hiyya-text">
+                        {t.pnl.marginPct.toFixed(1)}%
+                      </dd>
                     </div>
                     <div className="flex justify-between border-t border-dashed border-hiyya-panel-2 pt-1">
-                      <dt className="text-hiyya-muted">SOP deviation loss</dt>
-                      <dd className="text-hiyya-loss">
+                      <dt className="text-xs text-hiyya-muted">SOP deviation loss</dt>
+                      <dd className="font-bold text-hiyya-loss">
                         {formatInr(t.deviation, { compact: true })}
                       </dd>
                     </div>

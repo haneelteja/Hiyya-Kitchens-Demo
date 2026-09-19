@@ -35,7 +35,9 @@ export function Header() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-heading text-xl font-bold">HIYYA Command Center</span>
+              <span className="font-heading text-xl font-bold">
+                HIYYA Kitchens Command Center
+              </span>
               <span className="rounded-full border border-hiyya-gold/40 bg-hiyya-gold/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-hiyya-gold">
                 Demo
               </span>

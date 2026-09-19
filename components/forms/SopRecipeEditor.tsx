@@ -237,7 +237,9 @@ export function SopRecipeEditor({
         <dl className="mt-4 space-y-1.5 text-xs">
           <div className="flex justify-between">
             <dt className="text-hiyya-muted">Estimated portions sold (Aug 2026)</dt>
-            <dd>{portionsSold.toLocaleString("en-IN")}</dd>
+            <dd className="font-bold text-hiyya-text">
+              {portionsSold.toLocaleString("en-IN")}
+            </dd>
           </div>
           <div className="flex justify-between">
             <dt className="text-hiyya-muted">Change in SOP usage</dt>

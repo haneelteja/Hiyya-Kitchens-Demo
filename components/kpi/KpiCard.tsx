@@ -26,7 +26,11 @@ export function KpiCard({
       <p className="text-[11px] font-bold uppercase tracking-wider text-hiyya-muted">
         {label}
       </p>
-      <p className="mt-0.5 font-heading text-xl font-bold bg-gradient-to-b from-hiyya-champagne via-hiyya-gold to-hiyya-deep-gold bg-clip-text text-transparent">
+      {/* A solid, bright fill reads far more reliably than a gradient clip at
+          this size — the gradient's darker stop could wash out against the
+          panel background, exactly the "numbers aren't clearly visible"
+          complaint this replaces. */}
+      <p className="mt-0.5 font-heading text-xl font-bold text-hiyya-champagne">
         {value}
       </p>
       {delta ? <div className="mt-0.5">{delta}</div> : null}
