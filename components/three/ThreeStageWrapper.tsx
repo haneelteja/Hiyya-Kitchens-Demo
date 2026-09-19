@@ -7,7 +7,9 @@ import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { resolveScopeToBranchCodes } from "@/lib/access/scope";
 import { dataset } from "@/lib/data/mock/dataset";
 import { branchColors } from "@/lib/theme/tokens";
+import { throneSkinForBranch, throneSkinForBranches } from "@/lib/theme/throneSkins";
 import type { OrbitBranch } from "@/components/three/ThroneOrbit";
+import type { BranchCode } from "@/lib/data/types";
 
 function detectWebGL(): boolean {
   try {
@@ -71,17 +73,21 @@ export function ThreeStageWrapper() {
   if (!webglOk) return <StaticFallback />;
 
   const isGrand = persona.role === "brand_owner" || persona.role === "brand_manager";
-  const codes = isGrand
-    ? dataset.branches.map((b) => b.code)
-    : resolveScopeToBranchCodes(scope);
+  const codes = (
+    isGrand ? dataset.branches.map((b) => b.code) : resolveScopeToBranchCodes(scope)
+  ) as BranchCode[];
   const orbitBranches: OrbitBranch[] = codes.map((code) => ({
     code,
     color: branchColors[code] ?? "#D4AF37",
+    skin: throneSkinForBranch(code),
   }));
 
-  const singleBranchScope = resolveScopeToBranchCodes(scope);
+  const singleBranchScope = resolveScopeToBranchCodes(scope) as BranchCode[];
   const rimColor =
     singleBranchScope.length === 1 ? (branchColors[singleBranchScope[0]] ?? null) : null;
+  // Brand-wide views keep the original gold "signature" hero throne; once scope
+  // narrows to one branch, the hero itself takes on that branch's theme skin.
+  const heroSkin = isGrand ? "signature" : throneSkinForBranches(singleBranchScope);
 
   const paused = !motionEnabled || tabHidden || reducedMotion;
 
@@ -91,6 +97,7 @@ export function ThreeStageWrapper() {
         variant={isGrand ? "grand" : "branch"}
         orbitBranches={orbitBranches}
         rimColor={rimColor}
+        heroSkin={heroSkin}
         paused={paused}
       />
     </div>

@@ -7,6 +7,7 @@ import { Throne } from "@/components/three/Throne";
 import { ThroneOrbit, type OrbitBranch } from "@/components/three/ThroneOrbit";
 import { ThroneRow } from "@/components/three/ThroneRow";
 import { GoldDust } from "@/components/three/GoldDust";
+import type { ThroneSkin } from "@/lib/theme/throneSkins";
 
 export interface ThreeStageProps {
   /** "grand" for brand roles (hero + orbit ring), "branch" for Branch Owner/Manager
@@ -15,6 +16,9 @@ export interface ThreeStageProps {
   orbitBranches: OrbitBranch[];
   /** Tints the rim light when the scope narrows to a single branch. */
   rimColor: string | null;
+  /** The hero throne's own skin — that branch's theme when scope narrows to
+   * one branch, "signature" for brand-wide views. */
+  heroSkin: ThroneSkin;
   paused: boolean;
 }
 
@@ -48,7 +52,7 @@ function CameraRig({ isMobile }: { isMobile: boolean }) {
   return null;
 }
 
-function Scene({ variant, orbitBranches, rimColor, paused }: ThreeStageProps) {
+function Scene({ variant, orbitBranches, rimColor, heroSkin, paused }: ThreeStageProps) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -85,6 +89,7 @@ function Scene({ variant, orbitBranches, rimColor, paused }: ThreeStageProps) {
         position={heroPosition}
         paused={paused}
         fixedRotation={heroRotation}
+        skin={heroSkin}
       />
 
       {variant === "grand" ? (
@@ -92,7 +97,7 @@ function Scene({ variant, orbitBranches, rimColor, paused }: ThreeStageProps) {
           <ThroneOrbit branches={orbitBranches} paused={paused} />
         </group>
       ) : (
-        <ThroneRow paused={paused} />
+        <ThroneRow paused={paused} skin={heroSkin} />
       )}
 
       <GoldDust paused={paused} />
@@ -106,11 +111,13 @@ function RotatingHero({
   position,
   paused,
   fixedRotation,
+  skin,
 }: {
   scale: number;
   position: [number, number, number];
   paused: boolean;
   fixedRotation?: number;
+  skin: ThroneSkin;
 }) {
   const ref = useRef<THREE.Group>(null);
   useFrame((_, delta) => {
@@ -119,7 +126,7 @@ function RotatingHero({
   });
   return (
     <group ref={ref} rotation={[0, fixedRotation ?? 0, 0]}>
-      <Throne scale={scale} position={position} />
+      <Throne scale={scale} position={position} skin={skin} />
     </group>
   );
 }

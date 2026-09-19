@@ -4,10 +4,12 @@ import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Throne } from "@/components/three/Throne";
+import type { ThroneSkin } from "@/lib/theme/throneSkins";
 
 export interface OrbitBranch {
   code: string;
   color: string;
+  skin: ThroneSkin;
 }
 
 /**
@@ -44,6 +46,7 @@ export function ThroneOrbit({
             position={[x, -0.4, z]}
             rotationY={-angle + Math.PI / 2}
             accentColor={b.color}
+            skin={b.skin}
           />
         );
       })}
