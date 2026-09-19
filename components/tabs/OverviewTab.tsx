@@ -6,13 +6,12 @@ import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { KpiCard } from "@/components/kpi/KpiCard";
 import { LeakCard } from "@/components/kpi/LeakCard";
-import { DeltaText } from "@/components/kpi/DeltaText";
 import { EmptyState } from "@/components/kpi/EmptyState";
 import { ChartFrame } from "@/components/charts/ChartFrame";
 import { TrendChart, type TrendPoint } from "@/components/charts/TrendChart";
 import { RankChart, type RankBar } from "@/components/charts/RankChart";
 import { DonutChart } from "@/components/charts/DonutChart";
-import { formatInr, formatMonthLabel } from "@/lib/calc/format";
+import { formatInr, formatMonthLabel, formatPct } from "@/lib/calc/format";
 import { growthPct } from "@/lib/calc/ranks";
 import { trimToFirstTrading } from "@/lib/calc/sales";
 import { branchColors } from "@/lib/theme/tokens";
@@ -187,11 +186,15 @@ export function OverviewTab() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KpiCard
           label="Net sales"
           value={summary ? formatInr(summary.netSales, { compact: true }) : "…"}
-          delta={growth !== null ? <DeltaText value={growth} suffix="vs July" /> : null}
+        />
+        <KpiCard
+          label="Growth"
+          value={growth !== null ? formatPct(growth) : "…"}
+          foot="vs July net sales"
         />
         <KpiCard
           label="Total expenses"
