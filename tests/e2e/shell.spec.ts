@@ -95,15 +95,17 @@ test("Kiran's tab bar never links to a brand-only tab like Revenue share", async
   await expect(page.getByRole("tab", { name: "Revenue share" })).toHaveCount(0);
 });
 
-test("motion toggle flips its pressed state and label", async ({ page }) => {
+test("the single throne control cycles play -> pause -> hidden -> play", async ({
+  page,
+}) => {
   await page.goto("/overview");
-  const toggle = page.getByRole("button", { name: /pause motion/i });
-  await expect(toggle).toHaveAttribute("aria-pressed", "true");
-  await toggle.click();
-  await expect(page.getByRole("button", { name: /play motion/i })).toHaveAttribute(
-    "aria-pressed",
-    "false",
-  );
+  await expect(page.getByRole("button", { name: /pause motion/i })).toBeVisible();
+  await page.getByRole("button", { name: /pause motion/i }).click();
+  await expect(page.getByRole("button", { name: /remove throne/i })).toBeVisible();
+  await page.getByRole("button", { name: /remove throne/i }).click();
+  await expect(page.getByRole("button", { name: /^play motion/i })).toBeVisible();
+  await page.getByRole("button", { name: /^play motion/i }).click();
+  await expect(page.getByRole("button", { name: /pause motion/i })).toBeVisible();
 });
 
 test("reset demo shows a confirmation toast", async ({ page }) => {

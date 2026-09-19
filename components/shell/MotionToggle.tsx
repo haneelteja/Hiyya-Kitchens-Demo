@@ -1,31 +1,36 @@
 "use client";
 
-import { Pause, Play } from "lucide-react";
+import { Pause, Play, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/lib/store/useAppStore";
+import type { ThroneMode } from "@/lib/store/useAppStore";
 
-/** Pauses the 3D throne stage's render loop; the choice persists (the one exception
- * to "no browser storage for business data" — this is a motion preference, not
- * business data). */
+/** What the button shows for the CURRENT mode: an icon/label describing the
+ * action a click will perform next (play -> pause -> hidden -> play). The
+ * preference persists (the one exception to "no browser storage for business
+ * data" — this is a motion preference, not business data). */
+const NEXT_ACTION: Record<ThroneMode, { label: string; Icon: typeof Pause }> = {
+  play: { label: "Pause motion", Icon: Pause },
+  pause: { label: "Remove throne", Icon: EyeOff },
+  hidden: { label: "Play motion", Icon: Play },
+};
+
 export function MotionToggle() {
-  const motionEnabled = useAppStore((s) => s.motionEnabled);
-  const toggleMotion = useAppStore((s) => s.toggleMotion);
+  const throneMode = useAppStore((s) => s.throneMode);
+  const cycleThroneMode = useAppStore((s) => s.cycleThroneMode);
+  const { label, Icon } = NEXT_ACTION[throneMode];
 
   return (
     <Button
       type="button"
       variant="outline"
       size="sm"
-      onClick={toggleMotion}
-      aria-pressed={motionEnabled}
+      onClick={cycleThroneMode}
+      aria-label={`${label} (throne is currently ${throneMode === "play" ? "playing" : throneMode === "pause" ? "paused" : "hidden"})`}
       className="gap-1.5 border-hiyya-panel-2 bg-hiyya-panel-2 text-hiyya-text hover:bg-hiyya-panel-2/70"
     >
-      {motionEnabled ? (
-        <Pause className="h-3.5 w-3.5" />
-      ) : (
-        <Play className="h-3.5 w-3.5" />
-      )}
-      {motionEnabled ? "Pause motion" : "Play motion"}
+      <Icon className="h-3.5 w-3.5" />
+      {label}
     </Button>
   );
 }

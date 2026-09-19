@@ -11,6 +11,11 @@ import { getPersona, tabsForPersona } from "@/lib/access/personas";
 
 export type Grain = "daily" | "weekly" | "monthly";
 
+/** Cycle order for the single throne control: playing -> paused (frozen,
+ * still visible) -> hidden (throne stage removed, static fallback shown). */
+export type ThroneMode = "play" | "pause" | "hidden";
+const THRONE_MODE_ORDER: readonly ThroneMode[] = ["play", "pause", "hidden"];
+
 /** In-memory-only demo edits (Section 4 guardrails — never localStorage). */
 export interface DemoEdits {
   fixedCostOverrides: Record<string, number>; // key: `${branchCode}:${month}:${head}`
@@ -66,14 +71,14 @@ interface AppState {
   scope: Scope;
   grain: Grain;
   period: string; // "YYYY-MM"
-  motionEnabled: boolean;
+  throneMode: ThroneMode;
   demoEdits: DemoEdits;
   drilldown: Drilldown;
 
   setPersona: (id: PersonaId) => void;
   setScope: (scope: Scope) => void;
   setGrain: (grain: Grain) => void;
-  toggleMotion: () => void;
+  cycleThroneMode: () => void;
   openBranchDrilldown: (branchCode: BranchCode) => void;
   openIngredientDrilldown: (
     ingredientKey: string,
@@ -131,12 +136,12 @@ function defaultScopeFor(personaId: PersonaId): Scope {
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       personaId: "owner",
       scope: defaultScopeFor("owner"),
       grain: "monthly",
       period: "2026-08",
-      motionEnabled: true,
+      throneMode: "play",
       demoEdits: initialDemoEdits,
       drilldown: null,
 
@@ -145,7 +150,14 @@ export const useAppStore = create<AppState>()(
       },
       setScope: (scope) => set({ scope }),
       setGrain: (grain) => set({ grain }),
-      toggleMotion: () => set({ motionEnabled: !get().motionEnabled }),
+      cycleThroneMode: () =>
+        set((state) => {
+          const next =
+            THRONE_MODE_ORDER[
+              (THRONE_MODE_ORDER.indexOf(state.throneMode) + 1) % THRONE_MODE_ORDER.length
+            ];
+          return { throneMode: next };
+        }),
       openBranchDrilldown: (branchCode) =>
         set({ drilldown: { type: "branch", branchCode } }),
       openIngredientDrilldown: (ingredientKey, ingredientName, branchCodes) =>
@@ -211,7 +223,7 @@ export const useAppStore = create<AppState>()(
       // Only the motion preference persists (Section 4/14 guardrail) — everything
       // else in this store, including all demo edits, resets on refresh.
       name: "hiyya-motion-preference",
-      partialize: (state) => ({ motionEnabled: state.motionEnabled }),
+      partialize: (state) => ({ throneMode: state.throneMode }),
     },
   ),
 );

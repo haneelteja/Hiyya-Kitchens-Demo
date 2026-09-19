@@ -41,7 +41,7 @@ function StaticFallback() {
  * canvas never delays the rest of the page.
  */
 export function ThreeStageWrapper() {
-  const motionEnabled = useAppStore((s) => s.motionEnabled);
+  const throneMode = useAppStore((s) => s.throneMode);
   const { persona, scope } = useAccessibleScope();
 
   const [mounted, setMounted] = useState(false);
@@ -70,7 +70,7 @@ export function ThreeStageWrapper() {
   }, []);
 
   if (!mounted) return null;
-  if (!webglOk) return <StaticFallback />;
+  if (!webglOk || throneMode === "hidden") return <StaticFallback />;
 
   const isGrand = persona.role === "brand_owner" || persona.role === "brand_manager";
   const codes = (
@@ -89,7 +89,7 @@ export function ThreeStageWrapper() {
   // narrows to one branch, the hero itself takes on that branch's theme skin.
   const heroSkin = isGrand ? "signature" : throneSkinForBranches(singleBranchScope);
 
-  const paused = !motionEnabled || tabHidden || reducedMotion;
+  const paused = throneMode === "pause" || tabHidden || reducedMotion;
 
   return (
     <div className="fixed inset-0 z-0" aria-hidden="true">
