@@ -122,7 +122,7 @@ export function SopRecipeEditor({
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.1fr_1fr]">
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Recipe
         </h2>
@@ -193,7 +193,7 @@ export function SopRecipeEditor({
         </table>
       </div>
 
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Impact preview
         </h2>

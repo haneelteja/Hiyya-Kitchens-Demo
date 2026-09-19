@@ -186,8 +186,8 @@ export function OverviewTab() {
   }));
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           label="Net sales"
           value={summary ? formatInr(summary.netSales, { compact: true }) : "…"}
@@ -308,7 +308,7 @@ export function OverviewTab() {
           />
         </ChartFrame>
 
-        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
           <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
             Needs your attention
           </h2>
@@ -372,12 +372,12 @@ export function OverviewTab() {
             <h2 className="mb-3 px-1 font-heading text-lg font-semibold text-hiyya-champagne">
               Performance by theme
             </h2>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {themeRows.map((t) => (
                 <button
                   key={t.code}
                   onClick={() => openBranchDrilldown(t.code)}
-                  className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-hiyya-gold/50 hover:shadow-[0_10px_28px_-14px_rgba(212,175,55,0.4)] focus-visible:-translate-y-0.5 focus-visible:border-hiyya-gold/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-hiyya-gold"
+                  className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-hiyya-gold/50 hover:shadow-[0_10px_28px_-14px_rgba(212,175,55,0.4)] focus-visible:-translate-y-0.5 focus-visible:border-hiyya-gold/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-hiyya-gold"
                 >
                   <div
                     className="mb-2 h-1 rounded-full"

@@ -98,7 +98,7 @@ export function FixedCostGrid({ branchCode, month, baseCosts, onTotalChange }: P
   const baseTotal = sumFixedCosts(baseCosts, branchCode, month);
 
   return (
-    <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+    <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
       <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
         Fixed costs — {month}
       </h2>

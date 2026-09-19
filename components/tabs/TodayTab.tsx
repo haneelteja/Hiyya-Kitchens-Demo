@@ -91,7 +91,7 @@ export function TodayTab() {
   ];
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <div>
         <h2 className="font-heading text-lg font-semibold text-hiyya-champagne">
           {branchName} — today
@@ -99,7 +99,7 @@ export function TodayTab() {
         <p className="text-xs text-hiyya-muted">Monday, 31 August 2026.</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <KpiCard
           label="Net sales today"
           value={formatInr(snapshot.netSalesToday, { compact: true })}
@@ -116,7 +116,7 @@ export function TodayTab() {
         />
       </div>
 
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Needs reordering
         </h2>
@@ -145,7 +145,7 @@ export function TodayTab() {
         )}
       </div>
 
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Logged today
         </h2>

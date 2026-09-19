@@ -12,7 +12,7 @@ export function Breadcrumb() {
 
   if (codes.length !== 1) {
     return (
-      <p className="px-6 pt-3 text-xs text-hiyya-muted">
+      <p className="px-6 pt-2 text-xs text-hiyya-muted">
         {codes.length} branch{codes.length === 1 ? "" : "es"} in view
       </p>
     );
@@ -29,7 +29,7 @@ export function Breadcrumb() {
   ].filter((c): c is string => Boolean(c));
 
   return (
-    <div className="flex flex-wrap gap-2 px-6 pt-3">
+    <div className="flex flex-wrap gap-2 px-6 pt-2">
       {chips.map((chip) => (
         <span
           key={chip}

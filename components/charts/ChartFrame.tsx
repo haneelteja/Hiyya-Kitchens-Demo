@@ -19,8 +19,8 @@ export function ChartFrame({
   children: ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
-      <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
+    <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
+      <div className="mb-2 flex flex-wrap items-start justify-between gap-2">
         <div>
           <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
             {title}
@@ -30,7 +30,7 @@ export function ChartFrame({
         {toolbar}
       </div>
       {children}
-      <details className="mt-3 text-xs text-hiyya-muted">
+      <details className="mt-2 text-xs text-hiyya-muted">
         <summary className="cursor-pointer select-none text-hiyya-gold">
           View as table
         </summary>

@@ -15,7 +15,7 @@ export function LeakCard({
   foot?: ReactNode;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-xl border border-hiyya-gold/40 bg-gradient-to-br from-[#241C0F] to-black p-4">
+    <div className="relative overflow-hidden rounded-xl border border-hiyya-gold/40 bg-gradient-to-br from-[#241C0F] to-black p-3">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.16]"
         style={{
@@ -34,10 +34,10 @@ export function LeakCard({
         <p className="text-[11px] font-bold uppercase tracking-wider text-hiyya-muted">
           {label}
         </p>
-        <p className="mt-1 font-heading text-2xl font-bold bg-gradient-to-b from-hiyya-warning to-hiyya-gold bg-clip-text text-transparent">
+        <p className="mt-0.5 font-heading text-xl font-bold bg-gradient-to-b from-hiyya-warning to-hiyya-gold bg-clip-text text-transparent">
           {value}
         </p>
-        {foot ? <p className="mt-2 text-[11px] text-hiyya-muted">{foot}</p> : null}
+        {foot ? <p className="mt-1 text-[11px] text-hiyya-muted">{foot}</p> : null}
       </div>
     </div>
   );

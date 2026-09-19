@@ -43,7 +43,7 @@ export function BranchesTab() {
   );
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <ChartFrame
         title="Branch ranking"
         subtitle="By net sales, Aug 2026. Click a bar to drill in."
@@ -69,7 +69,7 @@ export function BranchesTab() {
         <RankChart bars={bars} onBarClick={handleRowClick} />
       </ChartFrame>
 
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <h2 className="mb-3 font-heading text-base font-semibold text-hiyya-champagne">
           League table
         </h2>

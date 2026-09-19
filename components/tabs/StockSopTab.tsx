@@ -73,8 +73,8 @@ export function StockSopTab() {
   );
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+    <div className="flex flex-col gap-4">
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Stock on hand
         </h2>
@@ -121,7 +121,7 @@ export function StockSopTab() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           SOP quick reference
         </h2>

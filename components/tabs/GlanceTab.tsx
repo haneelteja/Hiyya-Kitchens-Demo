@@ -175,8 +175,8 @@ export function GlanceTab() {
   const isMultiBranch = branches.length > 1;
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           label="Net sales"
           value={formatInr(portfolioPnl.netSales, { compact: true })}
@@ -222,7 +222,7 @@ export function GlanceTab() {
       </ChartFrame>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
           <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
             Needs your attention
           </h2>
@@ -246,7 +246,7 @@ export function GlanceTab() {
           </ul>
         </div>
 
-        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
           <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
             How you rank vs. the network
           </h2>
@@ -283,7 +283,7 @@ export function GlanceTab() {
           <h2 className="mb-3 px-1 font-heading text-lg font-semibold text-hiyya-champagne">
             Your branches
           </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {branches.map((b) => {
               const pnl = perBranchPnl[b.code as BranchCode];
               if (!pnl) return null;
@@ -291,7 +291,7 @@ export function GlanceTab() {
                 <button
                   key={b.code}
                   onClick={() => openBranchDrilldown(b.code as BranchCode)}
-                  className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-hiyya-gold/50 hover:shadow-[0_10px_28px_-14px_rgba(212,175,55,0.4)] focus-visible:-translate-y-0.5 focus-visible:border-hiyya-gold/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-hiyya-gold"
+                  className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-hiyya-gold/50 hover:shadow-[0_10px_28px_-14px_rgba(212,175,55,0.4)] focus-visible:-translate-y-0.5 focus-visible:border-hiyya-gold/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-hiyya-gold"
                 >
                   <h3 className="font-heading text-lg font-semibold">{b.name}</h3>
                   <dl className="mt-2 space-y-1 text-xs">

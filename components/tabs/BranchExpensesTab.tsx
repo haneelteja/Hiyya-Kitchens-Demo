@@ -79,7 +79,7 @@ export function BranchExpensesTab() {
   });
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       {branches.length > 1 && (
         <div className="flex flex-wrap gap-1.5">
           {branches.map((b) => (
@@ -98,7 +98,7 @@ export function BranchExpensesTab() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard label="Net sales" value={formatInr(pnl.netSales, { compact: true })} />
         <KpiCard
           label="Fixed costs"

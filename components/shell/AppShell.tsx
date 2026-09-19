@@ -35,7 +35,7 @@ export function AppShell({ tab, children }: { tab: string; children: React.React
         role="tabpanel"
         aria-label={tab}
         tabIndex={-1}
-        className="mx-auto max-w-[1480px] px-6 pb-16 pt-4"
+        className="mx-auto max-w-[1480px] px-6 pb-10 pt-3"
       >
         {tabs.includes(tab) ? children : null}
       </main>

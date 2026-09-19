@@ -60,10 +60,10 @@ export function PurchasesTab() {
   const rows = [...seeded, ...logged].sort((a, b) => (a.date < b.date ? 1 : -1));
 
   return (
-    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_1.3fr] lg:items-start lg:gap-4">
+    <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[1fr_1.3fr] lg:items-start lg:gap-4">
       <PurchaseForm branchCode={branchCode} />
 
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
           Purchases this month
         </h2>

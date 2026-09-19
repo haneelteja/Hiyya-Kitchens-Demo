@@ -124,8 +124,8 @@ export function SopTab() {
   );
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard label="SOP value" value={formatInr(sopValue, { compact: true })} />
         <KpiCard label="Actual value" value={formatInr(actualValue, { compact: true })} />
         <KpiCard
@@ -235,7 +235,7 @@ export function SopTab() {
         </ChartFrame>
       </div>
 
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-4">
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
             <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
