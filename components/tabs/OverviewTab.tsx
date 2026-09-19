@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useDataSource } from "@/hooks/useDataSource";
 import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { useAppStore } from "@/lib/store/useAppStore";
@@ -8,7 +8,11 @@ import { KpiCard } from "@/components/kpi/KpiCard";
 import { LeakCard } from "@/components/kpi/LeakCard";
 import { EmptyState } from "@/components/kpi/EmptyState";
 import { ChartFrame } from "@/components/charts/ChartFrame";
-import { TrendChart, type TrendPoint } from "@/components/charts/TrendChart";
+import {
+  TrendChart,
+  type TrendPoint,
+  type BranchTrendSeries,
+} from "@/components/charts/TrendChart";
 import { RankChart, type RankBar } from "@/components/charts/RankChart";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { formatInr, formatMonthLabel, formatPct } from "@/lib/calc/format";
@@ -38,6 +42,8 @@ export function OverviewTab() {
   const [deviationTotal, setDeviationTotal] = useState(0);
   const [grain, setGrain] = useState<"daily" | "weekly" | "monthly">("daily");
   const [series, setSeries] = useState<PnlSeriesPoint[]>([]);
+  const [trendView, setTrendView] = useState<"combined" | "branch">("combined");
+  const [branchSeries, setBranchSeries] = useState<BranchTrendSeries[]>([]);
   const [rankMetric, setRankMetric] =
     useState<(typeof RANK_METRICS)[number]["id"]>("netSales");
   const [ranks, setRanks] = useState<BranchRankRow[]>([]);
@@ -82,6 +88,42 @@ export function OverviewTab() {
       cancelled = true;
     };
   }, [ds, scope, grain]);
+
+  useEffect(() => {
+    if (!isAllBranches) {
+      setBranchSeries([]);
+      return;
+    }
+    let cancelled = false;
+    async function loadBranchSeries() {
+      const branches = await ds.getBranches(scope);
+      const rows = await Promise.all(
+        branches.map(async (b) => {
+          const s = await ds.getPnlSeries(
+            { kind: "branch", branchCode: b.code },
+            grain,
+            PERIOD,
+          );
+          return {
+            code: b.code,
+            name: b.name.replace(" Mandi", ""),
+            color: branchColors[b.code] ?? "#D4AF37",
+            points: trimToFirstTrading(s).map((p) => ({
+              label: grain === "monthly" ? formatMonthLabel(p.period) : p.period.slice(-2),
+              netSales: p.netSales,
+              actualFoodCost: p.actualFoodCost,
+              netProfit: p.netProfit,
+            })),
+          };
+        }),
+      );
+      if (!cancelled) setBranchSeries(rows);
+    }
+    loadBranchSeries();
+    return () => {
+      cancelled = true;
+    };
+  }, [ds, scope, grain, isAllBranches]);
 
   useEffect(() => {
     let cancelled = false;
@@ -226,45 +268,108 @@ export function OverviewTab() {
 
       <ChartFrame
         title="Sales, expenses & profit trend"
-        subtitle="Daily, weekly, or monthly — trimmed to the first trading period."
+        subtitle={
+          isAllBranches && trendView === "branch"
+            ? "Daily, weekly, or monthly — each branch's sales (solid) and expenses (dashed)."
+            : isAllBranches
+              ? "Daily, weekly, or monthly — hover a point for the branch-by-branch breakdown."
+              : "Daily, weekly, or monthly — trimmed to the first trading period."
+        }
         toolbar={
-          <div className="flex overflow-hidden rounded-lg border border-hiyya-panel-2">
-            {(["daily", "weekly", "monthly"] as const).map((g) => (
-              <button
-                key={g}
-                onClick={() => setGrain(g)}
-                aria-pressed={grain === g}
-                className={`px-3 py-1.5 text-xs font-bold capitalize ${grain === g ? "bg-gradient-to-br from-hiyya-champagne to-hiyya-gold text-black" : "bg-hiyya-panel-2 text-hiyya-muted"}`}
-              >
-                {g}
-              </button>
-            ))}
+          <div className="flex flex-wrap items-center gap-2">
+            {isAllBranches && (
+              <div className="flex overflow-hidden rounded-lg border border-hiyya-panel-2">
+                {(["combined", "branch"] as const).map((v) => (
+                  <button
+                    key={v}
+                    onClick={() => setTrendView(v)}
+                    aria-pressed={trendView === v}
+                    className={`px-3 py-1.5 text-xs font-bold ${trendView === v ? "bg-gradient-to-br from-hiyya-champagne to-hiyya-gold text-black" : "bg-hiyya-panel-2 text-hiyya-muted"}`}
+                  >
+                    {v === "combined" ? "Combined" : "By branch"}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="flex overflow-hidden rounded-lg border border-hiyya-panel-2">
+              {(["daily", "weekly", "monthly"] as const).map((g) => (
+                <button
+                  key={g}
+                  onClick={() => setGrain(g)}
+                  aria-pressed={grain === g}
+                  className={`px-3 py-1.5 text-xs font-bold capitalize ${grain === g ? "bg-gradient-to-br from-hiyya-champagne to-hiyya-gold text-black" : "bg-hiyya-panel-2 text-hiyya-muted"}`}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
           </div>
         }
         accessibleTable={
-          <table className="w-full text-left text-xs">
-            <thead>
-              <tr>
-                <th>Period</th>
-                <th>Sales</th>
-                <th>Expenses</th>
-                <th>Profit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {trendPoints.map((p, i) => (
-                <tr key={i}>
-                  <td>{p.label}</td>
-                  <td>{formatInr(p.netSales)}</td>
-                  <td>{formatInr(p.actualFoodCost)}</td>
-                  <td>{formatInr(p.netProfit)}</td>
+          isAllBranches && trendView === "branch" ? (
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  {branchSeries.map((b) => (
+                    <th key={b.code} colSpan={2}>
+                      {b.name}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+                <tr>
+                  <th></th>
+                  {branchSeries.map((b) => (
+                    <Fragment key={b.code}>
+                      <th>Sales</th>
+                      <th>Expenses</th>
+                    </Fragment>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {trendPoints.map((p, i) => (
+                  <tr key={i}>
+                    <td>{p.label}</td>
+                    {branchSeries.map((b) => (
+                      <Fragment key={b.code}>
+                        <td>{formatInr(b.points[i]?.netSales ?? 0)}</td>
+                        <td>{formatInr(b.points[i]?.actualFoodCost ?? 0)}</td>
+                      </Fragment>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  <th>Sales</th>
+                  <th>Expenses</th>
+                  <th>Profit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {trendPoints.map((p, i) => (
+                  <tr key={i}>
+                    <td>{p.label}</td>
+                    <td>{formatInr(p.netSales)}</td>
+                    <td>{formatInr(p.actualFoodCost)}</td>
+                    <td>{formatInr(p.netProfit)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )
         }
       >
-        <TrendChart points={trendPoints} />
+        <TrendChart
+          points={trendPoints}
+          branches={isAllBranches ? branchSeries : undefined}
+          view={isAllBranches ? trendView : "combined"}
+        />
       </ChartFrame>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
