@@ -15,7 +15,12 @@ import {
 } from "@/components/charts/TrendChart";
 import { Leaderboard, type LeaderboardRow } from "@/components/kpi/Leaderboard";
 import { DonutChart } from "@/components/charts/DonutChart";
-import { formatInr, formatMonthLabel, formatPct } from "@/lib/calc/format";
+import {
+  formatInr,
+  formatMonthLabel,
+  formatPct,
+  shortBranchName,
+} from "@/lib/calc/format";
 import { growthPct } from "@/lib/calc/ranks";
 import { trimToFirstTrading } from "@/lib/calc/sales";
 import { branchColors } from "@/lib/theme/tokens";
@@ -106,7 +111,7 @@ export function OverviewTab() {
           );
           return {
             code: b.code,
-            name: b.name.replace(" Mandi", ""),
+            name: shortBranchName(b.name),
             color: branchColors[b.code] ?? "#D4AF37",
             points: trimToFirstTrading(s).map((p) => ({
               label: grain === "monthly" ? formatMonthLabel(p.period) : p.period.slice(-2),
@@ -222,7 +227,7 @@ export function OverviewTab() {
 
   const leaderboardRows: LeaderboardRow[] = ranks.map((r) => ({
     code: r.branchCode,
-    name: r.branchName.replace(" Mandi", ""),
+    name: shortBranchName(r.branchName),
     color: branchColors[r.branchCode] ?? "#D4AF37",
     value: r.value,
   }));
@@ -458,7 +463,7 @@ export function OverviewTab() {
           >
             <DonutChart
               slices={themeRows.map((t) => ({
-                name: t.branchName.replace(" Mandi", ""),
+                name: shortBranchName(t.branchName),
                 value: t.pnl.netSales,
                 color: branchColors[t.code],
                 key: t.code,

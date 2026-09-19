@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatInr } from "@/lib/calc/format";
+import { formatInr, shortBranchName } from "@/lib/calc/format";
 import { averagePerDay, bestDay } from "@/lib/calc/sales";
 import { branchColors, goldRamp, hiyyaColors } from "@/lib/theme/tokens";
 import type { BranchDaySales, ChannelShareRow, TopItemRow } from "@/lib/data/DataSource";
@@ -25,6 +25,11 @@ import type { Scope } from "@/lib/data/types";
 import { dataset } from "@/lib/data/mock/dataset";
 
 const PERIOD = "2026-08";
+
+function branchDisplayName(code: string): string {
+  const name = dataset.branches.find((b) => b.code === code)?.name;
+  return name ? shortBranchName(name) : code;
+}
 
 export function SalesTab() {
   const ds = useDataSource();
@@ -136,8 +141,7 @@ export function SalesTab() {
         <StackedBarChart
           categories={byDate.dates.map((d) => d.slice(-2))}
           series={byDate.branchCodes.map((c) => ({
-            name:
-              dataset.branches.find((b) => b.code === c)?.name.replace(" Mandi", "") ?? c,
+            name: branchDisplayName(c),
             color: branchColors[c] ?? "#D4AF37",
             data: byDate.dates.map(
               (date) =>

@@ -62,6 +62,13 @@ export function formatIstDate(isoDate: string, pattern = "d MMM yyyy"): string {
   return formatInTimeZone(new Date(isoDate), IST, pattern);
 }
 
+/** "Chrono Jail Mandi" -> "Hiyya Chrono Jail". Shared short label used anywhere a
+ * full branch name (theme + "Mandi") is too long — chart legends, axis labels,
+ * card titles — but the branch still needs a name, not just an anonymous code. */
+export function shortBranchName(fullName: string): string {
+  return `Hiyya ${fullName.replace(" Mandi", "")}`;
+}
+
 export function todayIst(): Date {
   const now = new Date();
   const istString = formatInTimeZone(now, IST, "yyyy-MM-dd'T'HH:mm:ssXXX");

@@ -12,7 +12,7 @@ import { BreakEvenChart } from "@/components/charts/BreakEvenChart";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { StackedBarChart } from "@/components/charts/StackedBarChart";
 import { TabSkeleton } from "@/components/kpi/TabSkeleton";
-import { formatInr, formatMonthLabel } from "@/lib/calc/format";
+import { formatInr, formatMonthLabel, shortBranchName } from "@/lib/calc/format";
 import { fixedCostPerDay } from "@/lib/calc/fixedCosts";
 import { goldRamp, hiyyaColors } from "@/lib/theme/tokens";
 import type { BranchCode } from "@/lib/data/types";
@@ -254,7 +254,7 @@ export function ExpensesTab() {
         >
           <StackedBarChart
             isPercent
-            categories={structure.map((r) => r.branchName.replace(" Mandi", ""))}
+            categories={structure.map((r) => shortBranchName(r.branchName))}
             series={[
               {
                 name: "Food cost",

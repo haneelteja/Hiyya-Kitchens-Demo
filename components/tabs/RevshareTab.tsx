@@ -7,7 +7,7 @@ import { KpiCard } from "@/components/kpi/KpiCard";
 import { ChartFrame } from "@/components/charts/ChartFrame";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { RevenueShareTable } from "@/components/tables/RevenueShareTable";
-import { formatInr } from "@/lib/calc/format";
+import { formatInr, shortBranchName } from "@/lib/calc/format";
 import { branchColors } from "@/lib/theme/tokens";
 import type { RevenueShareRow } from "@/lib/data/DataSource";
 
@@ -72,7 +72,7 @@ export function RevshareTab() {
       >
         <DonutChart
           slices={rows.map((r) => ({
-            name: r.branchName.replace(" Mandi", ""),
+            name: shortBranchName(r.branchName),
             value: r.sharePct,
             color: branchColors[r.branchCode],
             key: r.branchCode,

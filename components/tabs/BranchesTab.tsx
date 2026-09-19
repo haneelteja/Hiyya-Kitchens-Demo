@@ -7,7 +7,7 @@ import { useAppStore } from "@/lib/store/useAppStore";
 import { ChartFrame } from "@/components/charts/ChartFrame";
 import { RankChart, type RankBar } from "@/components/charts/RankChart";
 import { LeagueTable } from "@/components/tables/LeagueTable";
-import { formatInr } from "@/lib/calc/format";
+import { formatInr, shortBranchName } from "@/lib/calc/format";
 import type { BranchCode } from "@/lib/data/types";
 import type { LeagueTableRow } from "@/lib/data/DataSource";
 
@@ -30,7 +30,7 @@ export function BranchesTab() {
 
   const bars: RankBar[] = league.map((r) => ({
     branchCode: r.branchCode,
-    label: r.branchName.replace(" Mandi", ""),
+    label: shortBranchName(r.branchName),
     value: r.netSales,
   }));
 
