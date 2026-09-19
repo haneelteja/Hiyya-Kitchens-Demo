@@ -13,7 +13,7 @@ import {
   type TrendPoint,
   type BranchTrendSeries,
 } from "@/components/charts/TrendChart";
-import { RankChart, type RankBar } from "@/components/charts/RankChart";
+import { Leaderboard, type LeaderboardRow } from "@/components/kpi/Leaderboard";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { formatInr, formatMonthLabel, formatPct } from "@/lib/calc/format";
 import { growthPct } from "@/lib/calc/ranks";
@@ -220,11 +220,15 @@ export function OverviewTab() {
     [series, grain],
   );
 
-  const rankBars: RankBar[] = ranks.map((r) => ({
-    branchCode: r.branchCode,
-    label: r.branchName.replace(" Mandi", ""),
+  const leaderboardRows: LeaderboardRow[] = ranks.map((r) => ({
+    code: r.branchCode,
+    name: r.branchName.replace(" Mandi", ""),
+    color: branchColors[r.branchCode] ?? "#D4AF37",
     value: r.value,
   }));
+  const isRankPercent = rankMetric === "marginPct" || rankMetric === "sopDeviationPct";
+  const formatRankValue = (v: number) =>
+    isRankPercent ? `${v.toFixed(1)}%` : formatInr(v, { compact: true });
 
   return (
     <div className="flex flex-col gap-4">
@@ -266,25 +270,60 @@ export function OverviewTab() {
         />
       </div>
 
-      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
-          Needs your attention
-        </h2>
-        <p className="mb-2 text-xs text-hiyya-muted">Plain-language flags, worst first.</p>
-        {attention.length === 0 ? (
-          <EmptyState message="Nothing needs attention today." />
-        ) : (
-          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
-            {attention.map((line, i) => (
-              <li
-                key={i}
-                className="rounded-lg border border-hiyya-loss/30 border-l-4 bg-black/20 p-2.5 text-sm"
-              >
-                {line}
-              </li>
-            ))}
-          </ul>
-        )}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
+          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+            Needs your attention
+          </h2>
+          <p className="mb-2 text-xs text-hiyya-muted">
+            Plain-language flags, worst first.
+          </p>
+          {attention.length === 0 ? (
+            <EmptyState message="Nothing needs attention today." />
+          ) : (
+            <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {attention.map((line, i) => (
+                <li
+                  key={i}
+                  className="rounded-lg border border-hiyya-loss/30 border-l-4 bg-black/20 p-2.5 text-sm"
+                >
+                  {line}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
+          <div className="mb-2 flex flex-wrap items-start justify-between gap-2">
+            <div>
+              <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+                Branch ranking
+              </h2>
+              <p className="text-xs text-hiyya-muted">
+                Click a branch to open its quick view.
+              </p>
+            </div>
+            <select
+              aria-label="Rank by"
+              value={rankMetric}
+              onChange={(e) => setRankMetric(e.target.value as typeof rankMetric)}
+              className="rounded-lg border border-hiyya-panel-2 bg-hiyya-panel-2 px-2 py-1 text-xs"
+            >
+              {RANK_METRICS.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <Leaderboard
+            metricKey={rankMetric}
+            rows={leaderboardRows}
+            formatValue={formatRankValue}
+            onRowClick={(code) => openBranchDrilldown(code as BranchCode)}
+          />
+        </div>
       </div>
 
       <ChartFrame
@@ -390,49 +429,6 @@ export function OverviewTab() {
           points={trendPoints}
           branches={isAllBranches ? branchSeries : undefined}
           view={isAllBranches ? trendView : "combined"}
-        />
-      </ChartFrame>
-
-      <ChartFrame
-        title="Branch ranking"
-        subtitle="Click a bar to open that branch's quick view."
-        toolbar={
-          <select
-            aria-label="Rank by"
-            value={rankMetric}
-            onChange={(e) => setRankMetric(e.target.value as typeof rankMetric)}
-            className="rounded-lg border border-hiyya-panel-2 bg-hiyya-panel-2 px-2 py-1 text-xs"
-          >
-            {RANK_METRICS.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.label}
-              </option>
-            ))}
-          </select>
-        }
-        accessibleTable={
-          <table className="w-full text-left text-xs">
-            <thead>
-              <tr>
-                <th>Branch</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rankBars.map((b) => (
-                <tr key={b.branchCode}>
-                  <td>{b.label}</td>
-                  <td>{b.value.toFixed(1)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        }
-      >
-        <RankChart
-          bars={rankBars}
-          isPercent={rankMetric === "marginPct" || rankMetric === "sopDeviationPct"}
-          onBarClick={(code) => openBranchDrilldown(code as BranchCode)}
         />
       </ChartFrame>
 
