@@ -266,6 +266,27 @@ export function OverviewTab() {
         />
       </div>
 
+      <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+          Needs your attention
+        </h2>
+        <p className="mb-2 text-xs text-hiyya-muted">Plain-language flags, worst first.</p>
+        {attention.length === 0 ? (
+          <EmptyState message="Nothing needs attention today." />
+        ) : (
+          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {attention.map((line, i) => (
+              <li
+                key={i}
+                className="rounded-lg border border-hiyya-loss/30 border-l-4 bg-black/20 p-2.5 text-sm"
+              >
+                {line}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       <ChartFrame
         title="Sales, expenses & profit trend"
         subtitle={
@@ -372,74 +393,48 @@ export function OverviewTab() {
         />
       </ChartFrame>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <ChartFrame
-          title="Branch ranking"
-          subtitle="Click a bar to open that branch's quick view."
-          toolbar={
-            <select
-              aria-label="Rank by"
-              value={rankMetric}
-              onChange={(e) => setRankMetric(e.target.value as typeof rankMetric)}
-              className="rounded-lg border border-hiyya-panel-2 bg-hiyya-panel-2 px-2 py-1 text-xs"
-            >
-              {RANK_METRICS.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.label}
-                </option>
-              ))}
-            </select>
-          }
-          accessibleTable={
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr>
-                  <th>Branch</th>
-                  <th>Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rankBars.map((b) => (
-                  <tr key={b.branchCode}>
-                    <td>{b.label}</td>
-                    <td>{b.value.toFixed(1)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          }
-        >
-          <RankChart
-            bars={rankBars}
-            isPercent={rankMetric === "marginPct" || rankMetric === "sopDeviationPct"}
-            onBarClick={(code) => openBranchDrilldown(code as BranchCode)}
-          />
-        </ChartFrame>
-
-        <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
-            Needs your attention
-          </h2>
-          <p className="mb-3 text-xs text-hiyya-muted">
-            Plain-language flags, worst first.
-          </p>
-          <ul className="flex flex-col gap-2">
-            {attention.length === 0 && (
-              <li>
-                <EmptyState message="Nothing needs attention today." />
-              </li>
-            )}
-            {attention.map((line, i) => (
-              <li
-                key={i}
-                className="rounded-lg border border-hiyya-loss/30 border-l-4 bg-black/20 p-2.5 text-sm"
-              >
-                {line}
-              </li>
+      <ChartFrame
+        title="Branch ranking"
+        subtitle="Click a bar to open that branch's quick view."
+        toolbar={
+          <select
+            aria-label="Rank by"
+            value={rankMetric}
+            onChange={(e) => setRankMetric(e.target.value as typeof rankMetric)}
+            className="rounded-lg border border-hiyya-panel-2 bg-hiyya-panel-2 px-2 py-1 text-xs"
+          >
+            {RANK_METRICS.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.label}
+              </option>
             ))}
-          </ul>
-        </div>
-      </div>
+          </select>
+        }
+        accessibleTable={
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr>
+                <th>Branch</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rankBars.map((b) => (
+                <tr key={b.branchCode}>
+                  <td>{b.label}</td>
+                  <td>{b.value.toFixed(1)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        }
+      >
+        <RankChart
+          bars={rankBars}
+          isPercent={rankMetric === "marginPct" || rankMetric === "sopDeviationPct"}
+          onBarClick={(code) => openBranchDrilldown(code as BranchCode)}
+        />
+      </ChartFrame>
 
       {isAllBranches && (
         <>
