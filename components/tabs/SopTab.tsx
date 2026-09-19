@@ -12,12 +12,17 @@ import { HeatmapChart } from "@/components/charts/HeatmapChart";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { Chart } from "@/components/charts/Chart";
 import { IngredientVarianceTable } from "@/components/tables/IngredientVarianceTable";
-import { formatInr } from "@/lib/calc/format";
+import { formatInr, shortBranchName } from "@/lib/calc/format";
 import { goldRamp, hiyyaColors } from "@/lib/theme/tokens";
 import type { IngredientVarianceRow, WastageReasonRow } from "@/lib/data/DataSource";
 import { dataset } from "@/lib/data/mock/dataset";
 
 const PERIOD = "2026-08";
+
+function branchDisplayName(code: string): string {
+  const name = dataset.branches.find((b) => b.code === code)?.name;
+  return name ? shortBranchName(name) : code;
+}
 
 export function SopTab() {
   const ds = useDataSource();
@@ -43,6 +48,7 @@ export function SopTab() {
     [rows],
   );
   const showBranch = branches.length > 1;
+  const branchNames = useMemo(() => branches.map(branchDisplayName), [branches]);
 
   const sopValue = rows.reduce(
     (s, r) =>
@@ -85,7 +91,7 @@ export function SopTab() {
       yAxis: {
         type: "category",
         data: leaks.map(
-          (r) => r.ingredientName + (showBranch ? ` · ${r.branchCode}` : ""),
+          (r) => r.ingredientName + (showBranch ? ` · ${branchDisplayName(r.branchCode)}` : ""),
         ),
       },
       series: [
@@ -154,7 +160,7 @@ export function SopTab() {
             <tbody>
               {rows.map((r, i) => (
                 <tr key={i}>
-                  <td>{r.branchCode}</td>
+                  <td>{branchDisplayName(r.branchCode)}</td>
                   <td>{r.ingredientName}</td>
                   <td>{r.deviationPct.toFixed(1)}%</td>
                 </tr>
@@ -164,7 +170,7 @@ export function SopTab() {
         }
       >
         <HeatmapChart
-          branches={branches}
+          branches={branchNames}
           ingredients={ingredients}
           values={heatmapValues}
           onCellClick={(ingredientName) => {
@@ -191,7 +197,7 @@ export function SopTab() {
                   <tr key={i}>
                     <td>
                       {r.ingredientName}
-                      {showBranch ? ` · ${r.branchCode}` : ""}
+                      {showBranch ? ` · ${branchDisplayName(r.branchCode)}` : ""}
                     </td>
                     <td>{formatInr(r.unexplainedValue)}</td>
                   </tr>

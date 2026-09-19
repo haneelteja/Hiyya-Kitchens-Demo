@@ -10,8 +10,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FlagPill } from "@/components/tables/StatusPill";
-import { formatInr } from "@/lib/calc/format";
+import { formatInr, shortBranchName } from "@/lib/calc/format";
+import { dataset } from "@/lib/data/mock/dataset";
 import type { IngredientVarianceRow } from "@/lib/data/DataSource";
+
+function branchDisplayName(code: string): string {
+  const name = dataset.branches.find((b) => b.code === code)?.name;
+  return name ? shortBranchName(name) : code;
+}
 
 /**
  * Memoized so a row only re-renders when its own data (or the showBranch
@@ -42,7 +48,11 @@ const VarianceRow = memo(function VarianceRow({
       className="cursor-pointer border-hiyya-panel-2 hover:bg-white/[0.03] focus-visible:bg-white/[0.06] focus-visible:outline-none"
     >
       <TableCell>{row.ingredientName}</TableCell>
-      {showBranch && <TableCell className="text-hiyya-muted">{row.branchCode}</TableCell>}
+      {showBranch && (
+        <TableCell className="text-hiyya-muted">
+          {branchDisplayName(row.branchCode)}
+        </TableCell>
+      )}
       <TableCell className="text-right tabular-nums">
         {row.sopUsageQty.toLocaleString("en-IN")} {row.unit}
       </TableCell>
