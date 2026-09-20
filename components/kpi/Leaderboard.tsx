@@ -10,12 +10,25 @@ export interface LeaderboardRow {
   value: number;
 }
 
+const MEDAL_BADGE: Record<number, string> = {
+  1: "bg-gradient-to-br from-hiyya-champagne to-hiyya-gold text-black",
+  2: "bg-gradient-to-br from-[#E4E1DA] to-hiyya-platinum text-black",
+  3: "bg-gradient-to-br from-[#C99457] to-hiyya-bronze text-black",
+};
+
+const MEDAL_ROW: Record<number, string> = {
+  1: "border-hiyya-gold/40 bg-gradient-to-r from-hiyya-gold/10 to-transparent",
+  2: "border-hiyya-platinum/40 bg-gradient-to-r from-hiyya-platinum/10 to-transparent",
+  3: "border-hiyya-bronze/40 bg-gradient-to-r from-hiyya-bronze/10 to-transparent",
+};
+
 /**
  * A ranked list, not a bar chart — rows are already sorted best-first by the
- * caller (rank 1 wins the star). Keyed by the metric so switching "rank by"
- * remounts the list and replays its enter animation (tailwindcss-animate),
- * giving a "the leaderboard just reshuffled" cue without reaching for
- * Framer Motion here (reserved for panel/drawer transitions elsewhere).
+ * caller. Ranks 1–3 get gold/silver/bronze medal badges (rank 1 also wins the
+ * star). Keyed by the metric so switching "rank by" remounts the list and
+ * replays its enter animation (tailwindcss-animate), giving a "the
+ * leaderboard just reshuffled" cue without reaching for Framer Motion here
+ * (reserved for panel/drawer transitions elsewhere).
  */
 export function Leaderboard({
   metricKey,
@@ -44,17 +57,13 @@ export function Leaderboard({
               onClick={() => onRowClick?.(r.code)}
               className={cn(
                 "flex w-full items-center gap-2.5 rounded-lg border px-2.5 py-2 text-left transition-colors",
-                isFirst
-                  ? "border-hiyya-gold/40 bg-gradient-to-r from-hiyya-gold/10 to-transparent"
-                  : "border-hiyya-panel-2 bg-black/20 hover:border-hiyya-gold/30",
+                MEDAL_ROW[rank] ?? "border-hiyya-panel-2 bg-black/20 hover:border-hiyya-gold/30",
               )}
             >
               <span
                 className={cn(
                   "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold",
-                  isFirst
-                    ? "bg-gradient-to-br from-hiyya-champagne to-hiyya-gold text-black"
-                    : "bg-hiyya-panel-2 text-hiyya-muted",
+                  MEDAL_BADGE[rank] ?? "bg-hiyya-panel-2 text-hiyya-muted",
                 )}
               >
                 {rank}
