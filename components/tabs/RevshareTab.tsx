@@ -6,9 +6,10 @@ import { useAccessibleScope } from "@/hooks/useAccessibleScope";
 import { KpiCard } from "@/components/kpi/KpiCard";
 import { ChartFrame } from "@/components/charts/ChartFrame";
 import { DonutChart } from "@/components/charts/DonutChart";
+import { StackedBarChart } from "@/components/charts/StackedBarChart";
 import { RevenueShareTable } from "@/components/tables/RevenueShareTable";
 import { formatInr, shortBranchName } from "@/lib/calc/format";
-import { branchColors } from "@/lib/theme/tokens";
+import { branchColors, hiyyaColors } from "@/lib/theme/tokens";
 import type { RevenueShareRow } from "@/lib/data/DataSource";
 
 const PERIOD = "2026-08";
@@ -48,38 +49,79 @@ export function RevshareTab() {
         />
       </div>
 
-      <ChartFrame
-        title="Revenue share"
-        subtitle="Each branch's share of brand-wide net sales."
-        accessibleTable={
-          <table className="w-full text-left text-xs">
-            <thead>
-              <tr>
-                <th>Branch</th>
-                <th>Share</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => (
-                <tr key={r.branchCode}>
-                  <td>{r.branchName}</td>
-                  <td>{r.sharePct.toFixed(1)}%</td>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <ChartFrame
+          title="Revenue share"
+          subtitle="Each branch's share of brand-wide net sales."
+          accessibleTable={
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr>
+                  <th>Branch</th>
+                  <th>Share</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        }
-      >
-        <DonutChart
-          slices={rows.map((r) => ({
-            name: shortBranchName(r.branchName),
-            value: r.sharePct,
-            color: branchColors[r.branchCode],
-            key: r.branchCode,
-          }))}
-          valueIsPercent
-        />
-      </ChartFrame>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.branchCode}>
+                    <td>{r.branchName}</td>
+                    <td>{r.sharePct.toFixed(1)}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          }
+        >
+          <DonutChart
+            slices={rows.map((r) => ({
+              name: shortBranchName(r.branchName),
+              value: r.sharePct,
+              color: branchColors[r.branchCode],
+              key: r.branchCode,
+            }))}
+            valueIsPercent
+          />
+        </ChartFrame>
+
+        <ChartFrame
+          title="Contribution to brand revenue"
+          subtitle="Royalty + marketing fund each branch actually pays — not the same split as sales share."
+          accessibleTable={
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr>
+                  <th>Branch</th>
+                  <th>Royalty</th>
+                  <th>Marketing fund</th>
+                  <th>Total to brand</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.branchCode}>
+                    <td>{r.branchName}</td>
+                    <td>{formatInr(r.royalty)}</td>
+                    <td>{formatInr(r.marketingFund)}</td>
+                    <td>{formatInr(r.totalToBrand)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          }
+        >
+          <StackedBarChart
+            categories={rows.map((r) => shortBranchName(r.branchName))}
+            series={[
+              { name: "Royalty", color: hiyyaColors.gold, data: rows.map((r) => r.royalty) },
+              {
+                name: "Marketing fund",
+                color: hiyyaColors.bronze,
+                data: rows.map((r) => r.marketingFund),
+              },
+            ]}
+          />
+        </ChartFrame>
+      </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <h2 className="mb-3 font-heading text-base font-semibold text-hiyya-champagne">
