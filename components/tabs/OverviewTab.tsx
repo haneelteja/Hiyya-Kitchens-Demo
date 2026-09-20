@@ -50,6 +50,7 @@ export function OverviewTab() {
   const [monthlySeries, setMonthlySeries] = useState<PnlSeriesPoint[]>([]);
   const [trendView, setTrendView] = useState<"combined" | "branch">("combined");
   const [branchSeries, setBranchSeries] = useState<BranchTrendSeries[]>([]);
+  const [hiddenBranches, setHiddenBranches] = useState<Set<string>>(new Set());
   const [rankMetric, setRankMetric] =
     useState<(typeof RANK_METRICS)[number]["id"]>("netSales");
   const [ranks, setRanks] = useState<BranchRankRow[]>([]);
@@ -125,7 +126,8 @@ export function OverviewTab() {
             name: shortBranchName(b.name),
             color: branchColors[b.code] ?? "#D4AF37",
             points: trimToFirstTrading(s).map((p) => ({
-              label: grain === "monthly" ? formatMonthLabel(p.period) : p.period.slice(-2),
+              label:
+                grain === "monthly" ? formatMonthLabel(p.period) : p.period.slice(-2),
               netSales: p.netSales,
               actualFoodCost: p.actualFoodCost,
               netProfit: p.netProfit,
@@ -246,6 +248,23 @@ export function OverviewTab() {
       })),
     [monthlySeries],
   );
+
+  const visibleBranchSeries = branchSeries.filter((b) => !hiddenBranches.has(b.code));
+
+  function toggleBranch(code: string) {
+    setHiddenBranches((prev) => {
+      const next = new Set(prev);
+      if (next.has(code)) {
+        next.delete(code);
+      } else {
+        // Never let the last visible branch be toggled off — an empty chart isn't useful.
+        const remainingVisible = branchSeries.filter((b) => !next.has(b.code)).length;
+        if (remainingVisible <= 1) return prev;
+        next.add(code);
+      }
+      return next;
+    });
+  }
 
   const leaderboardRows: LeaderboardRow[] = ranks.map((r) => ({
     code: r.branchCode,
@@ -398,7 +417,7 @@ export function OverviewTab() {
               <thead>
                 <tr>
                   <th>Period</th>
-                  {branchSeries.map((b) => (
+                  {visibleBranchSeries.map((b) => (
                     <th key={b.code} colSpan={2}>
                       {b.name}
                     </th>
@@ -406,7 +425,7 @@ export function OverviewTab() {
                 </tr>
                 <tr>
                   <th></th>
-                  {branchSeries.map((b) => (
+                  {visibleBranchSeries.map((b) => (
                     <Fragment key={b.code}>
                       <th>Sales</th>
                       <th>Expenses</th>
@@ -418,7 +437,7 @@ export function OverviewTab() {
                 {trendPoints.map((p, i) => (
                   <tr key={i}>
                     <td>{p.label}</td>
-                    {branchSeries.map((b) => (
+                    {visibleBranchSeries.map((b) => (
                       <Fragment key={b.code}>
                         <td>{formatInr(b.points[i]?.netSales ?? 0)}</td>
                         <td>{formatInr(b.points[i]?.actualFoodCost ?? 0)}</td>
@@ -452,9 +471,46 @@ export function OverviewTab() {
           )
         }
       >
+        {isAllBranches && trendView === "branch" && (
+          <div
+            className="mb-2 flex flex-wrap gap-1.5"
+            role="group"
+            aria-label="Branches shown"
+          >
+            {branchSeries.map((b) => {
+              const active = !hiddenBranches.has(b.code);
+              return (
+                <button
+                  key={b.code}
+                  type="button"
+                  onClick={() => toggleBranch(b.code)}
+                  aria-pressed={active}
+                  className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold transition-opacity ${
+                    active
+                      ? "border-hiyya-panel-2 bg-hiyya-panel-2 text-hiyya-text opacity-100"
+                      : "border-hiyya-panel-2/50 bg-transparent text-hiyya-muted opacity-50"
+                  }`}
+                >
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: b.color }}
+                    aria-hidden="true"
+                  />
+                  {b.name}
+                </button>
+              );
+            })}
+          </div>
+        )}
         <TrendChart
           points={trendPoints}
-          branches={isAllBranches ? branchSeries : undefined}
+          branches={
+            isAllBranches
+              ? trendView === "branch"
+                ? visibleBranchSeries
+                : branchSeries
+              : undefined
+          }
           view={isAllBranches ? trendView : "combined"}
         />
       </ChartFrame>
