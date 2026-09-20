@@ -1,19 +1,19 @@
 import { test, expect } from "@playwright/test";
 
-async function switchToKiran(page: import("@playwright/test").Page) {
+async function switchToSatish(page: import("@playwright/test").Page) {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
-  await page.getByRole("option", { name: /Kiran/ }).click();
+  await page.getByRole("option", { name: /Satish/ }).click();
   // The persona switch itself triggers a client-side redirect to /today — wait
   // for that to settle before a caller clicks a different tab, or the click can
   // occasionally race the redirect and land on nothing.
   await page.waitForURL(/\/today$/);
 }
 
-test("Kiran lands on Today with the four-tab set, and sees no P&L figures", async ({
+test("Satish lands on Today with the four-tab set, and sees no P&L figures", async ({
   page,
 }) => {
-  await switchToKiran(page);
+  await switchToSatish(page);
   await expect(page).toHaveURL(/\/today$/);
   const tabs = page.getByRole("tab");
   await expect(tabs).toHaveText(["Today", "Purchases", "Stock & SOP", "Wastage"]);
@@ -26,7 +26,7 @@ test("Kiran lands on Today with the four-tab set, and sees no P&L figures", asyn
 test("logging a purchase adds it to the list and shows a confirmation toast", async ({
   page,
 }) => {
-  await switchToKiran(page);
+  await switchToSatish(page);
   await page.getByRole("tab", { name: "Purchases" }).click();
   await expect(page).toHaveURL(/\/purchases$/);
 
@@ -45,7 +45,7 @@ test("logging a purchase adds it to the list and shows a confirmation toast", as
 });
 
 test("logging wastage adds it to the list, and shows up on Today", async ({ page }) => {
-  await switchToKiran(page);
+  await switchToSatish(page);
   await page.getByRole("tab", { name: "Wastage" }).click();
   await expect(page).toHaveURL(/\/wastage$/);
 
@@ -68,7 +68,7 @@ test("logging wastage adds it to the list, and shows up on Today", async ({ page
 test("Stock & SOP shows reorder status and a read-only recipe reference (no inputs)", async ({
   page,
 }) => {
-  await switchToKiran(page);
+  await switchToSatish(page);
   await page.getByRole("tab", { name: "Stock & SOP" }).click();
   await expect(page).toHaveURL(/\/stock_sop$/);
   await expect(page.getByText("SOP quick reference")).toBeVisible();
@@ -78,7 +78,7 @@ test("Stock & SOP shows reorder status and a read-only recipe reference (no inpu
 test("Branch Manager never sees brand-only or branch-owner-only tabs", async ({
   page,
 }) => {
-  await switchToKiran(page);
+  await switchToSatish(page);
   await expect(page.getByRole("tab", { name: "Revenue share" })).toHaveCount(0);
   await expect(page.getByRole("tab", { name: "SOP recipes" })).toHaveCount(0);
   await expect(page.getByRole("tab", { name: "At a glance" })).toHaveCount(0);
@@ -96,7 +96,7 @@ test("no horizontal overflow at 390px across all four Branch Manager tabs", asyn
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await switchToKiran(page);
+  await switchToSatish(page);
   for (const name of ["Today", "Purchases", "Stock & SOP", "Wastage"]) {
     await page.getByRole("tab", { name }).click();
     await expect(page.getByRole("tab", { name })).toHaveAttribute(

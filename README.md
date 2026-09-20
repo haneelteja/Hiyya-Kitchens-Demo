@@ -1,6 +1,6 @@
 # HIYYA Command Center
 
-A role-based analytics portal for HIYYA Kitchens (themed mandi restaurants, Hyderabad/AP). No login — a "View as" switcher in the header lets you step into any of six personas and see exactly the data, tabs, and edit rights that persona is scoped to. Every number on screen is computed by `lib/calc` from a single fabricated dataset, not hardcoded — see [`CLAUDE.md`](CLAUDE.md) for stack, conventions and process, and [`docs/PLAN.md`](docs/PLAN.md) for the phase-by-phase build log.
+A role-based analytics portal for HIYYA Kitchens (themed mandi restaurants, Hyderabad/AP). No login — a "View as" switcher in the header lets you step into any of four personas and see exactly the data, tabs, and edit rights that persona is scoped to. Every number on screen is computed by `lib/calc` from a single fabricated dataset, not hardcoded — see [`CLAUDE.md`](CLAUDE.md) for stack, conventions and process, and [`docs/PLAN.md`](docs/PLAN.md) for the phase-by-phase build log.
 
 **Live demo:** <https://hiyya-kitchens-demo.vercel.app>
 
@@ -10,16 +10,14 @@ A role-based analytics portal for HIYYA Kitchens (themed mandi restaurants, Hyde
 
 **Phases 0–7 complete** — every persona has its real screens; the app has been through an accessibility/performance polish pass. See [`docs/PLAN.md`](docs/PLAN.md) for what's in each phase and the exact commit for each.
 
-## The six personas
+## The four personas
 
-| Persona             | Role                       | Sees                                                                                           | Screenshot                                                    |
-| ------------------- | -------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| Gautamy Chowdary    | Brand Owner                | Full brand P&L, all four branches, drill-downs, revenue share                                  | ![Overview](docs/screenshots/phase-3/overview.png)            |
-| Ravi Teja (demo)    | Brand Manager              | Same as Brand Owner, plus the SOP recipe editor with a live impact preview                     | ![SOP recipes](docs/screenshots/phase-4/sop-recipes-1440.png) |
-| Suresh Reddy (demo) | Branch Owner (×2 branches) | Full analytics for owned branches, a portfolio roll-up, and an anonymised rank vs. the network | ![At a glance](docs/screenshots/phase-5/glance-1440.png)      |
-| Anil Kumar (demo)   | Branch Owner (×1 branch)   | Same, scoped to a single branch — no portfolio switcher needed                                 | —                                                             |
-| Kiran (demo)        | Branch Manager             | Mobile-first: Today, Purchases, Stock & SOP, Wastage — no P&L                                  | ![Today](docs/screenshots/phase-6/today-390.png)              |
-| Farhan (demo)       | Branch Manager             | Same tabs, scoped to their own branch                                                          | —                                                             |
+| Persona              | Role                       | Sees                                                                                           | Screenshot                                                    |
+| -------------------- | -------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Gautamy Chowdary     | Brand Owner                | Full brand P&L, all four branches, drill-downs, revenue share                                  | ![Overview](docs/screenshots/phase-3/overview.png)            |
+| Gowtham Muvva (demo) | Brand Manager              | Same as Brand Owner, plus the SOP recipe editor with a live impact preview                     | ![SOP recipes](docs/screenshots/phase-4/sop-recipes-1440.png) |
+| Yugander (demo)      | Branch Owner (×2 branches) | Full analytics for owned branches, a portfolio roll-up, and an anonymised rank vs. the network | ![At a glance](docs/screenshots/phase-5/glance-1440.png)      |
+| Satish (demo)        | Branch Manager             | Mobile-first: Today, Purchases, Stock & SOP, Wastage — no P&L                                  | ![Today](docs/screenshots/phase-6/today-390.png)              |
 
 Branch Owners never see another branch's identifiable data (rank position only, never names or figures); Branch Managers never see profit or margin at all. Access control is enforced in `lib/access/scope.ts` and the data layer, not just hidden in the UI.
 

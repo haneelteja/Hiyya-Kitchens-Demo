@@ -13,7 +13,7 @@ export type BranchCode = z.infer<typeof BranchCode>;
 export const ThemeName = z.enum(["Chrono Jail", "Dino", "Jail", "Space"]);
 export type ThemeName = z.infer<typeof ThemeName>;
 
-export const PersonaId = z.enum(["owner", "bm", "bo1", "bo2", "mg1", "mg2"]);
+export const PersonaId = z.enum(["owner", "bm", "bo1", "mg1"]);
 export type PersonaId = z.infer<typeof PersonaId>;
 
 export const PersonaRole = z.enum([

@@ -118,29 +118,27 @@ describe("Section 10 acceptance — SOP deviation", () => {
 });
 
 describe("Access control — Branch Owner never sees another branch's identifiable data", () => {
-  it("Suresh Reddy (bo1, B02+B03) never resolves to B01 or B04, no matter what scope is requested", () => {
-    const suresh = getPersona("bo1");
+  it("Yugander (bo1, B02+B03) never resolves to B01 or B04, no matter what scope is requested", () => {
+    const yugander = getPersona("bo1");
     // Even an adversarial "give me all branches" or "give me B01" request must be
-    // clamped to Suresh's own membership — this is the structural check the spec's
+    // clamped to Yugander's own membership — this is the structural check the spec's
     // Playwright suite also asserts in the browser.
-    expect(accessibleBranchCodes(suresh, { kind: "all" })).toEqual(["B02", "B03"]);
-    expect(accessibleBranchCodes(suresh, { kind: "branch", branchCode: "B01" })).toEqual([
-      "B02",
-      "B03",
-    ]);
-    expect(accessibleBranchCodes(suresh, { kind: "branch", branchCode: "B04" })).toEqual([
-      "B02",
-      "B03",
-    ]);
-    // Requesting one of his own branches narrows correctly.
-    expect(accessibleBranchCodes(suresh, { kind: "branch", branchCode: "B02" })).toEqual([
-      "B02",
-    ]);
+    expect(accessibleBranchCodes(yugander, { kind: "all" })).toEqual(["B02", "B03"]);
+    expect(
+      accessibleBranchCodes(yugander, { kind: "branch", branchCode: "B01" }),
+    ).toEqual(["B02", "B03"]);
+    expect(
+      accessibleBranchCodes(yugander, { kind: "branch", branchCode: "B04" }),
+    ).toEqual(["B02", "B03"]);
+    // Requesting one of their own branches narrows correctly.
+    expect(
+      accessibleBranchCodes(yugander, { kind: "branch", branchCode: "B02" }),
+    ).toEqual(["B02"]);
   });
 
-  it("Kiran (mg1, B02 only) is clamped to B02 even under an 'all' scope request", () => {
-    const kiran = getPersona("mg1");
-    expect(accessibleBranchCodes(kiran, { kind: "all" })).toEqual(["B02"]);
+  it("Satish (mg1, B02 only) is clamped to B02 even under an 'all' scope request", () => {
+    const satish = getPersona("mg1");
+    expect(accessibleBranchCodes(satish, { kind: "all" })).toEqual(["B02"]);
   });
 
   it("Brand Owner and Brand Manager can reach every branch", () => {

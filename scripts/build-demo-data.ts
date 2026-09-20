@@ -123,7 +123,7 @@ const branches: Branch[] = [
     location: "Kukatpally (GPR Multiplex), Hyderabad, TS",
     theme: "Dino",
     ownership: "franchise",
-    ownerName: "Suresh Reddy",
+    ownerName: "Yugander",
     openedOn: "2026-05-08",
   },
   {
@@ -132,7 +132,7 @@ const branches: Branch[] = [
     location: "Dwaraka Nagar, Visakhapatnam, AP",
     theme: "Jail",
     ownership: "franchise",
-    ownerName: "Suresh Reddy",
+    ownerName: "Yugander",
     openedOn: "2026-03-18", // assumed — Q07
   },
   {
@@ -162,33 +162,21 @@ const personas: Persona[] = [
   },
   {
     id: "bm",
-    label: "Brand Manager: Ravi Teja (demo)",
+    label: "Brand Manager: Gowtham Muvva (demo)",
     role: "brand_manager",
     branchCodes: "all",
   },
   {
     id: "bo1",
-    label: "Branch Owner: Suresh Reddy (demo)",
+    label: "Branch Owner: Yugander (demo)",
     role: "branch_owner",
     branchCodes: ["B02", "B03"],
   },
   {
-    id: "bo2",
-    label: "Branch Owner: Anil Kumar (demo)",
-    role: "branch_owner",
-    branchCodes: ["B04"],
-  },
-  {
     id: "mg1",
-    label: "Branch Manager: Kiran (demo)",
+    label: "Branch Manager: Satish (demo)",
     role: "branch_manager",
     branchCodes: ["B02"],
-  },
-  {
-    id: "mg2",
-    label: "Branch Manager: Farhan (demo)",
-    role: "branch_manager",
-    branchCodes: ["B01"],
   },
 ];
 

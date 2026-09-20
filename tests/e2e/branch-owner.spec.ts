@@ -1,26 +1,19 @@
 import { test, expect } from "@playwright/test";
 
-async function switchToSuresh(page: import("@playwright/test").Page) {
+async function switchToYugander(page: import("@playwright/test").Page) {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
-  await page.getByRole("option", { name: /Suresh Reddy/ }).click();
+  await page.getByRole("option", { name: /Yugander/ }).click();
   // The persona switch itself triggers a client-side redirect to /glance — wait
   // for that to settle before a caller clicks a different tab, or the click can
   // occasionally race the redirect and land on nothing.
   await page.waitForURL(/\/glance$/);
 }
 
-async function switchToAnil(page: import("@playwright/test").Page) {
-  await page.goto("/overview");
-  await page.getByLabel("View as").click();
-  await page.getByRole("option", { name: /Anil Kumar/ }).click();
-  await page.waitForURL(/\/glance$/);
-}
-
-test("Suresh Reddy (multi-branch) lands on 'At a glance' with a portfolio view", async ({
+test("Yugander (multi-branch) lands on 'At a glance' with a portfolio view", async ({
   page,
 }) => {
-  await switchToSuresh(page);
+  await switchToYugander(page);
   await expect(page).toHaveURL(/\/glance$/);
   const tabs = page.getByRole("tab");
   await expect(tabs).toHaveText([
@@ -37,33 +30,24 @@ test("Suresh Reddy (multi-branch) lands on 'At a glance' with a portfolio view",
 test("anonymised network rank shows a rank, never another branch's name or value", async ({
   page,
 }) => {
-  await switchToSuresh(page);
+  await switchToYugander(page);
   await expect(page.getByText("How you rank vs. the network")).toBeVisible();
   await expect(page.getByText(/^Rank \d+ of \d+$/).first()).toBeVisible();
-  // Neither of the other two branches (owned by the brand or by Anil Kumar) should
-  // ever be named on this page.
+  // Neither of the other two branches (owned by the brand, or not in Yugander's
+  // portfolio) should ever be named on this page.
   const bodyText = await page.locator("main").innerText();
   expect(bodyText).not.toContain("Chrono Jail Mandi");
   expect(bodyText).not.toContain("Space Mandi");
 });
 
-test("Anil Kumar (single branch) sees his branch directly, no portfolio switcher", async ({
-  page,
-}) => {
-  await switchToAnil(page);
-  await expect(page).toHaveURL(/\/glance$/);
-  await expect(page.getByText("Space Mandi", { exact: true }).first()).toBeVisible();
-  await expect(page.getByText("Your branches")).toHaveCount(0);
-});
-
 test("editing Dino Mandi's rent by +₹78,000 lowers net profit by exactly ₹78,000", async ({
   page,
 }) => {
-  await switchToSuresh(page);
+  await switchToYugander(page);
   await page.getByRole("tab", { name: "Expenses & profit" }).click();
   await expect(page).toHaveURL(/\/expenses$/);
 
-  // Dino Mandi (B02) is first in Suresh's branch list. The KPI card is a <p>
+  // Dino Mandi (B02) is first in Yugander's branch list. The KPI card is a <p>
   // label + sibling <p> value inside one container div (components/kpi/KpiCard.tsx)
   // — label isn't a heading (Phase 7 accessibility fix), so both are <p>; the
   // label match plus its next sibling <p> is the value.
@@ -88,7 +72,7 @@ test("editing Dino Mandi's rent by +₹78,000 lowers net profit by exactly ₹78
 });
 
 test("Branch Owner never sees Revenue share or SOP recipes tabs", async ({ page }) => {
-  await switchToSuresh(page);
+  await switchToYugander(page);
   await expect(page.getByRole("tab", { name: "Revenue share" })).toHaveCount(0);
   await expect(page.getByRole("tab", { name: "SOP recipes" })).toHaveCount(0);
 });
@@ -105,7 +89,7 @@ test("no horizontal overflow at 390px on 'At a glance' or the fixed-cost grid", 
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await switchToSuresh(page);
+  await switchToYugander(page);
   let overflow = await page.evaluate(() => ({
     scrollWidth: document.documentElement.scrollWidth,
     clientWidth: document.documentElement.clientWidth,

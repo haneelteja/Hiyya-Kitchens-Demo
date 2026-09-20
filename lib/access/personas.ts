@@ -1,7 +1,7 @@
 import type { Persona, PersonaId } from "@/lib/data/types";
 import { dataset } from "@/lib/data/mock/dataset";
 
-/** The six demo personas, in the header switcher's order (spec Section 5). */
+/** The four demo personas, in the header switcher's order (spec Section 5). */
 export function listPersonas(): Persona[] {
   return dataset.personas;
 }

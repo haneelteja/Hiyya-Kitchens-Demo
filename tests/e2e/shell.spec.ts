@@ -22,12 +22,12 @@ test("Brand Owner sees all six tabs in spec order", async ({ page }) => {
   ]);
 });
 
-test("switching to Suresh Reddy (bo1) lands on 'At a glance' with his 4-tab set", async ({
+test("switching to Yugander (bo1) lands on 'At a glance' with their 4-tab set", async ({
   page,
 }) => {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
-  await page.getByRole("option", { name: /Suresh Reddy/ }).click();
+  await page.getByRole("option", { name: /Yugander/ }).click();
   await expect(page).toHaveURL(/\/glance$/);
   const tabs = page.getByRole("tab");
   await expect(tabs).toHaveText([
@@ -38,12 +38,12 @@ test("switching to Suresh Reddy (bo1) lands on 'At a glance' with his 4-tab set"
   ]);
 });
 
-test("Suresh Reddy's scope select never offers Chrono Jail Mandi or Space Mandi", async ({
+test("Yugander's scope select never offers Chrono Jail Mandi or Space Mandi", async ({
   page,
 }) => {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
-  await page.getByRole("option", { name: /Suresh Reddy/ }).click();
+  await page.getByRole("option", { name: /Yugander/ }).click();
   // The persona switch triggers a client-side redirect to /glance — settle
   // before opening another dropdown, or the click can race the redirect.
   await page.waitForURL(/\/glance$/);
@@ -55,12 +55,12 @@ test("Suresh Reddy's scope select never offers Chrono Jail Mandi or Space Mandi"
   expect(options.some((o) => o.includes("Jail Mandi Vizag"))).toBe(true);
 });
 
-test("Kiran (mg1, single branch) has a disabled scope control showing Dino Mandi", async ({
+test("Satish (mg1, single branch) has a disabled scope control showing Dino Mandi", async ({
   page,
 }) => {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
-  await page.getByRole("option", { name: /Kiran/ }).click();
+  await page.getByRole("option", { name: /Satish/ }).click();
   await expect(page).toHaveURL(/\/today$/);
   const tabs = page.getByRole("tab");
   await expect(tabs).toHaveText(["Today", "Purchases", "Stock & SOP", "Wastage"]);
@@ -72,7 +72,7 @@ test("a hard reload always lands back on the Brand Owner default (persona is in-
 }) => {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
-  await page.getByRole("option", { name: /Kiran/ }).click();
+  await page.getByRole("option", { name: /Satish/ }).click();
   await expect(page).toHaveURL(/\/today$/);
   // Section 4/14: only the motion preference persists. A full reload — the only
   // way to reach an arbitrary URL in this demo, since there's no server session —
@@ -86,12 +86,12 @@ test("a hard reload always lands back on the Brand Owner default (persona is in-
   );
 });
 
-test("Kiran's tab bar never links to a brand-only tab like Revenue share", async ({
+test("Satish's tab bar never links to a brand-only tab like Revenue share", async ({
   page,
 }) => {
   await page.goto("/overview");
   await page.getByLabel("View as").click();
-  await page.getByRole("option", { name: /Kiran/ }).click();
+  await page.getByRole("option", { name: /Satish/ }).click();
   await expect(page.getByRole("tab", { name: "Revenue share" })).toHaveCount(0);
 });
 
