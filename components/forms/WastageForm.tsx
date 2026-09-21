@@ -54,7 +54,7 @@ export function WastageForm({ branchCode }: { branchCode: BranchCode }) {
       onSubmit={handleSubmit}
       className="flex flex-col gap-3 rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3"
     >
-      <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+      <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
         Log wastage
       </h2>
 

@@ -64,7 +64,7 @@ export function Tabs({ activeTab }: { activeTab: string }) {
               "whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-bold transition-colors",
               active
                 ? "bg-gradient-to-br from-hiyya-champagne to-hiyya-gold text-black shadow-[0_6px_18px_-8px_rgba(212,175,55,0.7)]"
-                : "text-hiyya-muted hover:bg-hiyya-highlight/5 hover:text-hiyya-champagne",
+                : "text-hiyya-muted hover:bg-hiyya-highlight/5 hover:text-hiyya-champagne-ink",
             )}
           >
             {TAB_LABELS[tab] ?? tab}

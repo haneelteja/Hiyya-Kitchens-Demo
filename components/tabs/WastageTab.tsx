@@ -64,7 +64,7 @@ export function WastageTab() {
       <WastageForm branchCode={branchCode} />
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
           Wastage this month
         </h2>
         <p className="mb-3 text-xs text-hiyya-muted">

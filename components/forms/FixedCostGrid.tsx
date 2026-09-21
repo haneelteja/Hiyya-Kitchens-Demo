@@ -99,7 +99,7 @@ export function FixedCostGrid({ branchCode, month, baseCosts, onTotalChange }: P
 
   return (
     <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-      <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+      <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
         Fixed costs — {month}
       </h2>
       <p className="mb-3 text-xs text-hiyya-muted">
@@ -129,7 +129,7 @@ export function FixedCostGrid({ branchCode, month, baseCosts, onTotalChange }: P
                     onChange={(e) => handleChange(row, e.target.value)}
                     className={cn(
                       "h-8 max-w-[9rem] text-sm",
-                      overridden && "border-hiyya-gold text-hiyya-gold",
+                      overridden && "border-hiyya-gold text-hiyya-gold-ink",
                     )}
                   />
                 </td>
@@ -137,7 +137,7 @@ export function FixedCostGrid({ branchCode, month, baseCosts, onTotalChange }: P
                   {overridden && (
                     <button
                       onClick={() => revert(row)}
-                      className="text-[11px] text-hiyya-muted hover:text-hiyya-champagne"
+                      className="text-[11px] text-hiyya-muted hover:text-hiyya-champagne-ink"
                     >
                       Revert
                     </button>
@@ -156,7 +156,7 @@ export function FixedCostGrid({ branchCode, month, baseCosts, onTotalChange }: P
                 <span
                   className={cn(
                     "ml-2 text-xs font-normal",
-                    total > baseTotal ? "text-hiyya-loss" : "text-hiyya-gain",
+                    total > baseTotal ? "text-hiyya-loss-ink" : "text-hiyya-gain-ink",
                   )}
                 >
                   ({total > baseTotal ? "+" : ""}

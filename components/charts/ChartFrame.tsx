@@ -22,7 +22,7 @@ export function ChartFrame({
     <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
       <div className="mb-2 flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+          <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
             {title}
           </h2>
           <p className="text-xs text-hiyya-muted">{subtitle}</p>
@@ -31,7 +31,7 @@ export function ChartFrame({
       </div>
       {children}
       <details className="mt-2 text-xs text-hiyya-muted">
-        <summary className="cursor-pointer select-none text-hiyya-gold">
+        <summary className="cursor-pointer select-none text-hiyya-gold-ink">
           View as table
         </summary>
         <div className="mt-2 max-h-72 overflow-auto">{accessibleTable}</div>

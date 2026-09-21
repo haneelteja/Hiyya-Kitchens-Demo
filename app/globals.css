@@ -29,15 +29,20 @@
     --hiyya-well: rgba(0, 0, 0, 0.2);
     --hiyya-well-strong: rgba(0, 0, 0, 0.3);
     --hiyya-gold: #d4af37;
+    --hiyya-gold-ink: var(--hiyya-gold); /* text-on-dark-panel already has strong contrast; no separate value needed */
     --hiyya-champagne: #f2dfa7;
+    --hiyya-champagne-ink: var(--hiyya-champagne);
     --hiyya-deep-gold: #8a6c2a;
     --hiyya-bronze: #b07a3a;
     --hiyya-platinum: #b9b6ae;
     --hiyya-text: #f3ecdc;
     --hiyya-muted: #9a907e;
     --hiyya-gain: #9ccb9f;
+    --hiyya-gain-ink: var(--hiyya-gain);
     --hiyya-loss: #d8674f;
+    --hiyya-loss-ink: var(--hiyya-loss);
     --hiyya-warning: #e6be5a;
+    --hiyya-warning-ink: var(--hiyya-warning);
     --hiyya-border: #332b1c;
 
     /* Branch colours (Section 9) */
@@ -82,15 +87,27 @@
     --hiyya-well: rgba(58, 50, 41, 0.06);
     --hiyya-well-strong: rgba(58, 50, 41, 0.09);
     --hiyya-gold: #d9a857;
+    /* text-hiyya-gold/-champagne double as decorative fills (chart swatches,
+       icon fills, tinted borders/backgrounds) AND as plain text color on a
+       near-white panel. The light pastel values above read beautifully as
+       fills but fail WCAG AA as text-on-white (~2:1). These -ink variants are
+       a separate, deliberately darker/more saturated twin of the same hue,
+       used only where the class draws literal text — see the project-wide
+       text-hiyya-gold(-ink)/text-hiyya-champagne(-ink) split. */
+    --hiyya-gold-ink: #9c6b24; /* ~4.7:1 on white/panel */
     --hiyya-champagne: #f0c99a;
+    --hiyya-champagne-ink: #a8672a; /* ~4.7:1 on white/panel */
     --hiyya-deep-gold: #b98a46;
     --hiyya-bronze: #d48a6a;
     --hiyya-platinum: #b9afa0;
     --hiyya-text: #3a3229;
     --hiyya-muted: #8b7f6e;
     --hiyya-gain: #6fae84;
+    --hiyya-gain-ink: #3f7a57; /* ~5.5:1 on white/panel — see the gold-ink/champagne-ink note above */
     --hiyya-loss: #d96c5c;
+    --hiyya-loss-ink: #b8452f; /* ~5.6:1 on white/panel */
     --hiyya-warning: #e0a947;
+    --hiyya-warning-ink: #96650e; /* ~5.1:1 on white/panel */
     --hiyya-border: #e6dccb;
 
     --background: var(--hiyya-bg);

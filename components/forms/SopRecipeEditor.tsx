@@ -123,7 +123,7 @@ export function SopRecipeEditor({
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.1fr_1fr]">
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
           Recipe
         </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
@@ -138,8 +138,8 @@ export function SopRecipeEditor({
               className={cn(
                 "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
                 item.code === selectedItem
-                  ? "border-hiyya-gold bg-hiyya-gold/10 text-hiyya-gold"
-                  : "border-hiyya-panel-2 text-hiyya-muted hover:text-hiyya-champagne",
+                  ? "border-hiyya-gold bg-hiyya-gold/10 text-hiyya-gold-ink"
+                  : "border-hiyya-panel-2 text-hiyya-muted hover:text-hiyya-champagne-ink",
               )}
             >
               {item.name}
@@ -175,7 +175,7 @@ export function SopRecipeEditor({
                   <td className="py-1.5">{info?.name ?? l.ingredientKey}</td>
                   <td className="py-1.5">
                     {overridden ? (
-                      <span className="text-hiyya-gold">
+                      <span className="text-hiyya-gold-ink">
                         {sopOverrides[key]} {info?.unit}
                       </span>
                     ) : (
@@ -194,7 +194,7 @@ export function SopRecipeEditor({
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
           Impact preview
         </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
@@ -218,7 +218,7 @@ export function SopRecipeEditor({
         <div className="grid grid-cols-2 gap-3 text-xs">
           <div className="rounded-lg border border-hiyya-panel-2 p-3">
             <p className="text-hiyya-muted">Current deviation</p>
-            <p className="mt-1 font-heading text-lg font-bold text-hiyya-champagne">
+            <p className="mt-1 font-heading text-lg font-bold text-hiyya-champagne-ink">
               {formatPct(currentDeviationPct)}
             </p>
             <div className="mt-1">
@@ -227,7 +227,7 @@ export function SopRecipeEditor({
           </div>
           <div className="rounded-lg border border-hiyya-gold/40 bg-hiyya-gold/5 p-3">
             <p className="text-hiyya-muted">New deviation, if applied</p>
-            <p className="mt-1 font-heading text-lg font-bold text-hiyya-champagne">
+            <p className="mt-1 font-heading text-lg font-bold text-hiyya-champagne-ink">
               {validQty ? formatPct(impact.newDeviationPct) : "—"}
             </p>
             <div className="mt-1">{validQty ? <FlagPill flag={newFlag} /> : null}</div>
@@ -245,7 +245,7 @@ export function SopRecipeEditor({
             <dt className="text-hiyya-muted">Change in SOP usage</dt>
             <dd
               className={
-                impact.deltaSopUsage >= 0 ? "text-hiyya-loss" : "text-hiyya-gain"
+                impact.deltaSopUsage >= 0 ? "text-hiyya-loss-ink" : "text-hiyya-gain-ink"
               }
             >
               {impact.deltaSopUsage >= 0 ? "+" : ""}
@@ -254,7 +254,7 @@ export function SopRecipeEditor({
           </div>
           <div className="flex justify-between">
             <dt className="text-hiyya-muted">Value of that change</dt>
-            <dd className={deltaValue >= 0 ? "text-hiyya-loss" : "text-hiyya-gain"}>
+            <dd className={deltaValue >= 0 ? "text-hiyya-loss-ink" : "text-hiyya-gain-ink"}>
               {deltaValue >= 0 ? "+" : "-"}
               {formatInr(Math.abs(deltaValue))}
             </dd>
@@ -282,7 +282,7 @@ export function SopRecipeEditor({
                 clearSopOverride(line.menuItemCode, line.ingredientKey, line.appliesTo);
                 setDraftQty(String(line.qtyPerPortion));
               }}
-              className="rounded-full border border-hiyya-panel-2 px-4 py-1.5 text-xs text-hiyya-muted hover:text-hiyya-champagne"
+              className="rounded-full border border-hiyya-panel-2 px-4 py-1.5 text-xs text-hiyya-muted hover:text-hiyya-champagne-ink"
             >
               Revert to SOP
             </button>

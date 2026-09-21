@@ -328,7 +328,7 @@ export function OverviewTab() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+          <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
             Needs your attention
           </h2>
           <p className="mb-2 text-xs text-hiyya-muted">
@@ -353,7 +353,7 @@ export function OverviewTab() {
         <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
           <div className="mb-2 flex flex-wrap items-start justify-between gap-2">
             <div>
-              <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+              <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
                 Branch ranking
               </h2>
               <p className="text-xs text-hiyya-muted">
@@ -586,7 +586,7 @@ export function OverviewTab() {
           </ChartFrame>
 
           <div>
-            <h2 className="mb-3 px-1 font-heading text-lg font-semibold text-hiyya-champagne">
+            <h2 className="mb-3 px-1 font-heading text-lg font-semibold text-hiyya-champagne-ink">
               Performance by theme
             </h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -617,7 +617,7 @@ export function OverviewTab() {
                     </div>
                     <div className="flex justify-between border-t border-dashed border-hiyya-panel-2 pt-1">
                       <dt className="text-xs text-hiyya-muted">SOP deviation loss</dt>
-                      <dd className="font-bold text-hiyya-loss">
+                      <dd className="font-bold text-hiyya-loss-ink">
                         {formatInr(t.deviation, { compact: true })}
                       </dd>
                     </div>

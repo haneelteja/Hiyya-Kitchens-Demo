@@ -10,10 +10,10 @@ const FLAG_LABEL: Record<DeviationFlag, string> = {
   ok: "OK",
 };
 const FLAG_STYLE: Record<DeviationFlag, string> = {
-  investigate: "text-hiyya-loss border-hiyya-loss/40 bg-hiyya-loss/10",
-  watch: "text-hiyya-warning border-hiyya-warning/40 bg-hiyya-warning/10",
+  investigate: "text-hiyya-loss-ink border-hiyya-loss/40 bg-hiyya-loss/10",
+  watch: "text-hiyya-warning-ink border-hiyya-warning/40 bg-hiyya-warning/10",
   below_sop: "text-sky-300 border-sky-300/40 bg-sky-300/10",
-  ok: "text-hiyya-gain border-hiyya-gain/40 bg-hiyya-gain/10",
+  ok: "text-hiyya-gain-ink border-hiyya-gain/40 bg-hiyya-gain/10",
 };
 
 /** Flag pill — colour + icon + text label together, never colour alone (Section 9). */
@@ -37,9 +37,9 @@ const HEALTH_LABEL: Record<HealthStatus, string> = {
   healthy: "Healthy",
 };
 const HEALTH_STYLE: Record<HealthStatus, string> = {
-  needs_action: "text-hiyya-loss border-hiyya-loss/40 bg-hiyya-loss/10",
-  watch: "text-hiyya-warning border-hiyya-warning/40 bg-hiyya-warning/10",
-  healthy: "text-hiyya-gain border-hiyya-gain/40 bg-hiyya-gain/10",
+  needs_action: "text-hiyya-loss-ink border-hiyya-loss/40 bg-hiyya-loss/10",
+  watch: "text-hiyya-warning-ink border-hiyya-warning/40 bg-hiyya-warning/10",
+  healthy: "text-hiyya-gain-ink border-hiyya-gain/40 bg-hiyya-gain/10",
 };
 
 export function HealthPill({ status }: { status: HealthStatus }) {
@@ -62,9 +62,9 @@ const REORDER_LABEL: Record<ReorderStatus["status"], string> = {
   ok: "OK",
 };
 const REORDER_STYLE: Record<ReorderStatus["status"], string> = {
-  order_today: "text-hiyya-loss border-hiyya-loss/40 bg-hiyya-loss/10",
-  reorder_soon: "text-hiyya-warning border-hiyya-warning/40 bg-hiyya-warning/10",
-  ok: "text-hiyya-gain border-hiyya-gain/40 bg-hiyya-gain/10",
+  order_today: "text-hiyya-loss-ink border-hiyya-loss/40 bg-hiyya-loss/10",
+  reorder_soon: "text-hiyya-warning-ink border-hiyya-warning/40 bg-hiyya-warning/10",
+  ok: "text-hiyya-gain-ink border-hiyya-gain/40 bg-hiyya-gain/10",
 };
 
 /** Stock reorder pill (Section 7: order-today under 1.5 days cover, reorder-soon under 2.5). */

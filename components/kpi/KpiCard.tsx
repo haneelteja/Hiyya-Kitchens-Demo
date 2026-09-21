@@ -30,7 +30,7 @@ export function KpiCard({
           this size — the gradient's darker stop could wash out against the
           panel background, exactly the "numbers aren't clearly visible"
           complaint this replaces. */}
-      <p className="mt-0.5 font-heading text-xl font-bold text-hiyya-champagne">
+      <p className="mt-0.5 font-heading text-xl font-bold text-hiyya-champagne-ink">
         {value}
       </p>
       {delta ? <div className="mt-0.5">{delta}</div> : null}

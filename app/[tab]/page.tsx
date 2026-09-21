@@ -127,7 +127,7 @@ export default function TabPage() {
         <RealTab />
       ) : (
         <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/40 p-8 text-center">
-          <h2 className="font-heading text-xl font-semibold text-hiyya-champagne">
+          <h2 className="font-heading text-xl font-semibold text-hiyya-champagne-ink">
             {TAB_TITLES[tab] ?? tab}
           </h2>
           <p className="mt-2 text-sm text-hiyya-muted">

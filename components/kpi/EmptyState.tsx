@@ -21,7 +21,7 @@ export function EmptyState({
     <div className="flex flex-col items-center gap-2 py-6 text-center">
       <Icon
         className={
-          variant === "clear" ? "h-6 w-6 text-hiyya-gain" : "h-6 w-6 text-hiyya-muted"
+          variant === "clear" ? "h-6 w-6 text-hiyya-gain-ink" : "h-6 w-6 text-hiyya-muted"
         }
         aria-hidden="true"
       />

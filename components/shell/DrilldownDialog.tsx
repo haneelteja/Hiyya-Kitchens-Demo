@@ -87,7 +87,7 @@ function BranchDrilldownBody({
   return (
     <>
       <DialogHeader>
-        <DialogTitle className="font-heading text-xl text-hiyya-gold">
+        <DialogTitle className="font-heading text-xl text-hiyya-gold-ink">
           {branch?.name ?? branchCode} — quick view
         </DialogTitle>
       </DialogHeader>
@@ -126,7 +126,7 @@ function IngredientDrilldownBody({
   return (
     <>
       <DialogHeader>
-        <DialogTitle className="font-heading text-xl text-hiyya-gold">
+        <DialogTitle className="font-heading text-xl text-hiyya-gold-ink">
           {drilldown.ingredientName} — likely source
         </DialogTitle>
       </DialogHeader>
@@ -168,7 +168,7 @@ function MiniKpi({ label, value }: { label: string; value: string }) {
       <p className="text-[10px] font-bold uppercase tracking-wide text-hiyya-muted">
         {label}
       </p>
-      <p className="mt-1 font-heading text-lg font-bold text-hiyya-champagne">{value}</p>
+      <p className="mt-1 font-heading text-lg font-bold text-hiyya-champagne-ink">{value}</p>
     </div>
   );
 }

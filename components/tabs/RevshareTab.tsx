@@ -125,7 +125,7 @@ export function RevshareTab() {
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-        <h2 className="mb-3 font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="mb-3 font-heading text-base font-semibold text-hiyya-champagne-ink">
           Split by branch
         </h2>
         <RevenueShareTable rows={rows} />

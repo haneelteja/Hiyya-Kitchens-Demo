@@ -245,7 +245,7 @@ export function SopTab() {
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+            <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
               Ingredient variance
             </h2>
             <p className="text-xs text-hiyya-muted">
@@ -255,7 +255,7 @@ export function SopTab() {
           {ingredientFilter && (
             <button
               onClick={() => setIngredientFilter(null)}
-              className="rounded-full border border-hiyya-panel-2 px-3 py-1 text-xs text-hiyya-muted hover:text-hiyya-gold"
+              className="rounded-full border border-hiyya-panel-2 px-3 py-1 text-xs text-hiyya-muted hover:text-hiyya-gold-ink"
             >
               Clear filter: {ingredientFilter} ✕
             </button>

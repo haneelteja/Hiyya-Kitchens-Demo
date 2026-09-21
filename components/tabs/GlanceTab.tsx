@@ -226,7 +226,7 @@ export function GlanceTab() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+          <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
             Needs your attention
           </h2>
           <p className="mb-3 text-xs text-hiyya-muted">
@@ -250,7 +250,7 @@ export function GlanceTab() {
         </div>
 
         <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-          <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+          <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
             How you rank vs. the network
           </h2>
           <p className="mb-3 text-xs text-hiyya-muted">
@@ -259,7 +259,7 @@ export function GlanceTab() {
           <div className="flex flex-col gap-3">
             {branches.map((b) => (
               <div key={b.code} className="rounded-lg border border-hiyya-panel-2 p-3">
-                <p className="mb-1.5 text-sm font-semibold text-hiyya-champagne">
+                <p className="mb-1.5 text-sm font-semibold text-hiyya-champagne-ink">
                   {b.name}
                 </p>
                 <div className="flex gap-4 text-xs">
@@ -268,7 +268,7 @@ export function GlanceTab() {
                     return (
                       <div key={m.id}>
                         <span className="text-hiyya-muted">{m.label}: </span>
-                        <span className="font-bold text-hiyya-gold">
+                        <span className="font-bold text-hiyya-gold-ink">
                           {r && r.of > 0 ? `Rank ${r.rank} of ${r.of}` : "—"}
                         </span>
                       </div>
@@ -283,7 +283,7 @@ export function GlanceTab() {
 
       {isMultiBranch && (
         <div>
-          <h2 className="mb-3 px-1 font-heading text-lg font-semibold text-hiyya-champagne">
+          <h2 className="mb-3 px-1 font-heading text-lg font-semibold text-hiyya-champagne-ink">
             Your branches
           </h2>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

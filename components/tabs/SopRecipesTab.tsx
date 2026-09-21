@@ -110,7 +110,7 @@ export function SopRecipesTab() {
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/40 p-4">
-        <h2 className="font-heading text-lg font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-lg font-semibold text-hiyya-champagne-ink">
           SOP recipes
         </h2>
         <p className="mt-1 text-xs text-hiyya-muted">

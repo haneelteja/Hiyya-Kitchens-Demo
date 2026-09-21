@@ -83,7 +83,7 @@ export function BranchesTab() {
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
           Branch ranking
         </h2>
         <p className="mb-2 text-xs text-hiyya-muted">
@@ -98,7 +98,7 @@ export function BranchesTab() {
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-        <h2 className="mb-3 font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="mb-3 font-heading text-base font-semibold text-hiyya-champagne-ink">
           League table
         </h2>
         <LeagueTable rows={league} onRowClick={handleRowClick} />

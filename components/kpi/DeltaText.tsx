@@ -8,7 +8,7 @@ export function DeltaText({ value, suffix }: { value: number; suffix?: string })
     <span
       className={cn(
         "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold",
-        up ? "bg-hiyya-gain/10 text-hiyya-gain" : "bg-hiyya-loss/10 text-hiyya-loss",
+        up ? "bg-hiyya-gain/10 text-hiyya-gain-ink" : "bg-hiyya-loss/10 text-hiyya-loss-ink",
       )}
     >
       {up ? "▲" : "▼"} {formatPct(Math.abs(value)).replace("+", "")}

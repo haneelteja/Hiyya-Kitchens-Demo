@@ -93,7 +93,7 @@ export function TodayTab() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h2 className="font-heading text-lg font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-lg font-semibold text-hiyya-champagne-ink">
           {branchName} — today
         </h2>
         <p className="text-xs text-hiyya-muted">Monday, 31 August 2026.</p>
@@ -117,7 +117,7 @@ export function TodayTab() {
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
           Needs reordering
         </h2>
         <p className="mb-3 text-xs text-hiyya-muted">
@@ -146,7 +146,7 @@ export function TodayTab() {
       </div>
 
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
-        <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+        <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
           Logged today
         </h2>
         <p className="mb-3 text-xs text-hiyya-muted">

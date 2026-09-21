@@ -198,7 +198,7 @@ export function SalesTab() {
       <div className="rounded-xl border border-hiyya-panel-2 bg-hiyya-panel-2/30 p-3">
         <div className="mb-3 flex items-center justify-between">
           <div>
-            <h2 className="font-heading text-base font-semibold text-hiyya-champagne">
+            <h2 className="font-heading text-base font-semibold text-hiyya-champagne-ink">
               Top items
             </h2>
             <p className="text-xs text-hiyya-muted">
@@ -242,7 +242,7 @@ export function SalesTab() {
                   {formatInr(item.estSales, { compact: true })}
                 </TableCell>
                 <TableCell
-                  className={`text-right tabular-nums ${item.sopFoodCostPct > 45 ? "font-bold text-hiyya-loss" : ""}`}
+                  className={`text-right tabular-nums ${item.sopFoodCostPct > 45 ? "font-bold text-hiyya-loss-ink" : ""}`}
                 >
                   {item.sopFoodCostPct.toFixed(1)}%
                 </TableCell>

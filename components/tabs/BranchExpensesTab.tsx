@@ -89,8 +89,8 @@ export function BranchExpensesTab() {
               onClick={() => setSelected(b.code as BranchCode)}
               className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                 b.code === selected
-                  ? "border-hiyya-gold bg-hiyya-gold/10 text-hiyya-gold"
-                  : "border-hiyya-panel-2 text-hiyya-muted hover:text-hiyya-champagne"
+                  ? "border-hiyya-gold bg-hiyya-gold/10 text-hiyya-gold-ink"
+                  : "border-hiyya-panel-2 text-hiyya-muted hover:text-hiyya-champagne-ink"
               }`}
             >
               {b.name}

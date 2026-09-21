@@ -76,11 +76,11 @@ export function Leaderboard({
               <span className="flex-1 truncate text-sm font-semibold">{r.name}</span>
               {isFirst && (
                 <Star
-                  className="h-4 w-4 shrink-0 fill-hiyya-gold text-hiyya-gold"
+                  className="h-4 w-4 shrink-0 fill-hiyya-gold text-hiyya-gold-ink"
                   aria-label="Top ranked"
                 />
               )}
-              <span className="shrink-0 text-sm font-bold text-hiyya-champagne">
+              <span className="shrink-0 text-sm font-bold text-hiyya-champagne-ink">
                 {formatValue(r.value)}
               </span>
             </button>
