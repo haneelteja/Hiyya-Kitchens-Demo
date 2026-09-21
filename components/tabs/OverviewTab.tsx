@@ -238,6 +238,13 @@ export function OverviewTab() {
     [series, grain],
   );
 
+  // Daily/weekly rows are just day-of-month or week numbers within PERIOD, so the
+  // accessible table's first column needs the month for context (e.g. "Aug-26");
+  // monthly rows are already distinct months, so "Month" says more than a single
+  // period ever could.
+  const periodColumnLabel =
+    grain === "monthly" ? "Month" : `${formatMonthLabel(PERIOD)}-${PERIOD.slice(2, 4)}`;
+
   const monthlyTrendPoints: TrendPoint[] = useMemo(
     () =>
       monthlySeries.map((p) => ({
@@ -416,7 +423,7 @@ export function OverviewTab() {
             <table className="w-full text-left text-xs">
               <thead>
                 <tr>
-                  <th>Period</th>
+                  <th>{periodColumnLabel}</th>
                   {visibleBranchSeries.map((b) => (
                     <th key={b.code} colSpan={2}>
                       {b.name}
@@ -451,7 +458,7 @@ export function OverviewTab() {
             <table className="w-full text-left text-xs">
               <thead>
                 <tr>
-                  <th>Period</th>
+                  <th>{periodColumnLabel}</th>
                   <th>Sales</th>
                   <th>Expenses</th>
                   <th>Profit</th>
