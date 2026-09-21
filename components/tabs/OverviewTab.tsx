@@ -24,7 +24,11 @@ import {
 import { growthPct } from "@/lib/calc/ranks";
 import { trimToFirstTrading } from "@/lib/calc/sales";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import type { BranchRankRow, PnlSeriesPoint } from "@/lib/data/DataSource";
+import type {
+  BranchRankRow,
+  ChannelShareRow,
+  PnlSeriesPoint,
+} from "@/lib/data/DataSource";
 import type { PnlResult } from "@/lib/calc/pnl";
 import type { BranchCode } from "@/lib/data/types";
 import { dataset } from "@/lib/data/mock/dataset";
@@ -41,7 +45,7 @@ export function OverviewTab() {
   const ds = useDataSource();
   const { persona, scope } = useAccessibleScope();
   const openBranchDrilldown = useAppStore((s) => s.openBranchDrilldown);
-  const { branchColors, hiyyaColors } = useThemeColors();
+  const { branchColors, hiyyaColors, goldRamp } = useThemeColors();
 
   const [summary, setSummary] = useState<PnlResult | null>(null);
   const [julySummary, setJulySummary] = useState<PnlResult | null>(null);
@@ -56,6 +60,7 @@ export function OverviewTab() {
     useState<(typeof RANK_METRICS)[number]["id"]>("netSales");
   const [ranks, setRanks] = useState<BranchRankRow[]>([]);
   const [attention, setAttention] = useState<string[]>([]);
+  const [channelMix, setChannelMix] = useState<ChannelShareRow[]>([]);
   const [themeRows, setThemeRows] = useState<
     Array<{
       code: BranchCode;
@@ -145,6 +150,16 @@ export function OverviewTab() {
     // branchColors/hiyyaColors are included so a theme switch re-derives each
     // branch's stored color too, not just the ones computed fresh at render time.
   }, [ds, scope, grain, isAllBranches, branchColors, hiyyaColors]);
+
+  useEffect(() => {
+    let cancelled = false;
+    ds.getChannelMix(scope, PERIOD).then((c) => {
+      if (!cancelled) setChannelMix(c);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [ds, scope]);
 
   useEffect(() => {
     let cancelled = false;
@@ -525,65 +540,102 @@ export function OverviewTab() {
         />
       </ChartFrame>
 
-      <ChartFrame
-        title="Monthly profit & margin"
-        subtitle="Net profit by month, trend to date."
-        accessibleTable={
-          <table className="w-full text-left text-xs">
-            <thead>
-              <tr>
-                <th>Month</th>
-                <th>Profit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {monthlyTrendPoints.map((p) => (
-                <tr key={p.label}>
-                  <td>{p.label}</td>
-                  <td>{formatInr(p.netProfit)}</td>
+      <div className="-mt-2">
+        <ChartFrame
+          title="Monthly profit & margin"
+          subtitle="Net profit by month, trend to date."
+          accessibleTable={
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Profit</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        }
-      >
-        <TrendChart points={monthlyTrendPoints} />
-      </ChartFrame>
+              </thead>
+              <tbody>
+                {monthlyTrendPoints.map((p) => (
+                  <tr key={p.label}>
+                    <td>{p.label}</td>
+                    <td>{formatInr(p.netProfit)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          }
+        >
+          <TrendChart points={monthlyTrendPoints} />
+        </ChartFrame>
+      </div>
 
       {isAllBranches && (
         <>
-          <ChartFrame
-            title="Revenue contribution"
-            subtitle="Share of brand-wide net sales by branch. Click a slice to drill in."
-            accessibleTable={
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr>
-                    <th>Branch</th>
-                    <th>Net sales</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {themeRows.map((t) => (
-                    <tr key={t.code}>
-                      <td>{t.branchName}</td>
-                      <td>{formatInr(t.pnl.netSales)}</td>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <ChartFrame
+              title="Revenue contribution"
+              subtitle="Share of brand-wide net sales by branch. Click a slice to drill in."
+              accessibleTable={
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr>
+                      <th>Branch</th>
+                      <th>Net sales</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            }
-          >
-            <DonutChart
-              slices={themeRows.map((t) => ({
-                name: shortBranchName(t.branchName),
-                value: t.pnl.netSales,
-                color: branchColors[t.code],
-                key: t.code,
-              }))}
-              onSliceClick={(key) => openBranchDrilldown(key as BranchCode)}
-            />
-          </ChartFrame>
+                  </thead>
+                  <tbody>
+                    {themeRows.map((t) => (
+                      <tr key={t.code}>
+                        <td>{t.branchName}</td>
+                        <td>{formatInr(t.pnl.netSales)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              }
+            >
+              <DonutChart
+                slices={themeRows.map((t) => ({
+                  name: shortBranchName(t.branchName),
+                  value: t.pnl.netSales,
+                  color: branchColors[t.code],
+                  key: t.code,
+                }))}
+                onSliceClick={(key) => openBranchDrilldown(key as BranchCode)}
+              />
+            </ChartFrame>
+
+            <ChartFrame
+              title="Channel mix"
+              subtitle="Share of net sales by channel."
+              accessibleTable={
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr>
+                      <th>Channel</th>
+                      <th>Share</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {channelMix.map((c) => (
+                      <tr key={c.channel}>
+                        <td>{c.channel}</td>
+                        <td>{c.pct.toFixed(1)}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              }
+            >
+              <DonutChart
+                slices={channelMix.map((c, i) => ({
+                  name: c.channel,
+                  value: c.pct,
+                  color: goldRamp[i],
+                  key: c.channel,
+                }))}
+                valueIsPercent
+              />
+            </ChartFrame>
+          </div>
 
           <div>
             <h2 className="mb-3 px-1 font-heading text-lg font-semibold text-hiyya-champagne-ink">
