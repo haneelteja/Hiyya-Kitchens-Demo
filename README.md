@@ -65,11 +65,11 @@ Open <http://localhost:3000> — it redirects to `/overview` as the Brand Owner 
 - **`lib/calc/*`** is a pure, fully unit-tested calculation engine — P&L, SOP deviation, reorder status, ranking, fixed-cost overrides. The UI never computes a number inline.
 - **`lib/access/scope.ts`** is the one place access control lives: `resolveScopeToBranchCodes` (what a scope means) is deliberately separate from `accessibleBranchCodes` (what a persona is allowed to ask for), so a component can never accidentally widen its own access.
 - **Zustand** holds UI state and in-memory demo edits (fixed-cost overrides, purchases, wastage entries, SOP overrides) — only the motion-preference toggle persists across a reload; everything else resets, by design (no fake data survives a refresh).
-- **Apache ECharts** for every chart, **three.js/@react-three/fiber** for the procedural 3D throne stage behind the app shell (pauses on `prefers-reduced-motion`, the in-app motion toggle, or an inactive tab).
+- **Apache ECharts** for every chart. Two themes — dark (black-and-gold) and pastel (cream-and-terracotta) — switched via the header's theme toggle; every chart reads its palette through `useThemeColors()` rather than a fixed import, so switching themes repaints charts too.
 
 ## Accessibility & performance
 
-A dedicated Phase 7 pass: Lighthouse **Accessibility 100 / Best Practices 100 / SEO 91** on Overview (desktop). Fixed a genuine heading-order gap (KPI-card captions were marked as headings; several section headings skipped a level) and an unlabelled `<select>`. Every interactive control respects `prefers-reduced-motion`, not just the in-app "Pause motion" toggle. Splitting each tab into its own chunk cut the shared route's First Load JS from ~597 kB to ~193 kB.
+A dedicated Phase 7 pass: Lighthouse **Accessibility 100 / Best Practices 100 / SEO 91** on Overview (desktop). Fixed a genuine heading-order gap (KPI-card captions were marked as headings; several section headings skipped a level) and an unlabelled `<select>`. Every interactive control respects `prefers-reduced-motion`. Splitting each tab into its own chunk cut the shared route's First Load JS from ~597 kB to ~193 kB.
 
 ## Legacy artifact
 

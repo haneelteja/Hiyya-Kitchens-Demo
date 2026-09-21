@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import type { EChartsOption } from "echarts";
 import { Chart } from "@/components/charts/Chart";
 import { formatInr } from "@/lib/calc/format";
-import { hiyyaColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 export interface WaterfallStep {
   label: string;
@@ -15,6 +15,7 @@ export interface WaterfallStep {
 /** Sales → food cost at SOP → wastage & deviation → commission → fixed → royalty &
  * fund → net profit (Section 8). */
 export function WaterfallChart({ steps }: { steps: WaterfallStep[] }) {
+  const { hiyyaColors } = useThemeColors();
   const option = useMemo<EChartsOption>(() => {
     let running = 0;
     const base: number[] = [];
@@ -88,7 +89,7 @@ export function WaterfallChart({ steps }: { steps: WaterfallStep[] }) {
         },
       ],
     };
-  }, [steps]);
+  }, [steps, hiyyaColors]);
 
   return <Chart height={320} option={option} />;
 }

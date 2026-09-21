@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import type { EChartsOption } from "echarts";
 import { Chart } from "@/components/charts/Chart";
 import { formatInr } from "@/lib/calc/format";
-import { hiyyaColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 export interface TrendPoint {
   label: string;
@@ -41,6 +41,7 @@ export function TrendChart({
   branches?: BranchTrendSeries[];
   view?: "combined" | "branch";
 }) {
+  const { hiyyaColors } = useThemeColors();
   const option = useMemo<EChartsOption>(() => {
     if (view === "branch" && branches && branches.length > 0) {
       const series: NonNullable<EChartsOption["series"]> = [];
@@ -159,7 +160,7 @@ export function TrendChart({
         },
       ],
     };
-  }, [points, branches, view]);
+  }, [points, branches, view, hiyyaColors]);
 
   return <Chart height={320} option={option} notMerge />;
 }

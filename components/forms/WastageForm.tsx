@@ -71,7 +71,7 @@ export function WastageForm({ branchCode }: { branchCode: BranchCode }) {
         >
           <SelectTrigger
             id="wastage-ingredient"
-            className="border-hiyya-panel-2 bg-black/30"
+            className="border-hiyya-panel-2 bg-[var(--hiyya-well-strong)]"
           >
             <SelectValue />
           </SelectTrigger>
@@ -107,7 +107,7 @@ export function WastageForm({ branchCode }: { branchCode: BranchCode }) {
           <Select value={reason} onValueChange={(v) => setReason(v as WastageReason)}>
             <SelectTrigger
               id="wastage-reason"
-              className="border-hiyya-panel-2 bg-black/30"
+              className="border-hiyya-panel-2 bg-[var(--hiyya-well-strong)]"
             >
               <SelectValue />
             </SelectTrigger>

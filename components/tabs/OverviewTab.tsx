@@ -23,7 +23,7 @@ import {
 } from "@/lib/calc/format";
 import { growthPct } from "@/lib/calc/ranks";
 import { trimToFirstTrading } from "@/lib/calc/sales";
-import { branchColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import type { BranchRankRow, PnlSeriesPoint } from "@/lib/data/DataSource";
 import type { PnlResult } from "@/lib/calc/pnl";
 import type { BranchCode } from "@/lib/data/types";
@@ -41,6 +41,7 @@ export function OverviewTab() {
   const ds = useDataSource();
   const { persona, scope } = useAccessibleScope();
   const openBranchDrilldown = useAppStore((s) => s.openBranchDrilldown);
+  const { branchColors, hiyyaColors } = useThemeColors();
 
   const [summary, setSummary] = useState<PnlResult | null>(null);
   const [julySummary, setJulySummary] = useState<PnlResult | null>(null);
@@ -124,7 +125,7 @@ export function OverviewTab() {
           return {
             code: b.code,
             name: shortBranchName(b.name),
-            color: branchColors[b.code] ?? "#D4AF37",
+            color: branchColors[b.code] ?? hiyyaColors.gold,
             points: trimToFirstTrading(s).map((p) => ({
               label:
                 grain === "monthly" ? formatMonthLabel(p.period) : p.period.slice(-2),
@@ -141,7 +142,9 @@ export function OverviewTab() {
     return () => {
       cancelled = true;
     };
-  }, [ds, scope, grain, isAllBranches]);
+    // branchColors/hiyyaColors are included so a theme switch re-derives each
+    // branch's stored color too, not just the ones computed fresh at render time.
+  }, [ds, scope, grain, isAllBranches, branchColors, hiyyaColors]);
 
   useEffect(() => {
     let cancelled = false;
@@ -276,7 +279,7 @@ export function OverviewTab() {
   const leaderboardRows: LeaderboardRow[] = ranks.map((r) => ({
     code: r.branchCode,
     name: shortBranchName(r.branchName),
-    color: branchColors[r.branchCode] ?? "#D4AF37",
+    color: branchColors[r.branchCode] ?? hiyyaColors.gold,
     value: r.value,
   }));
   const isRankPercent = rankMetric === "marginPct" || rankMetric === "sopDeviationPct";
@@ -338,7 +341,7 @@ export function OverviewTab() {
               {attention.map((line, i) => (
                 <li
                   key={i}
-                  className="rounded-lg border border-hiyya-loss/30 border-l-4 bg-black/20 p-2.5 text-sm"
+                  className="rounded-lg border border-hiyya-loss/30 border-l-4 bg-[var(--hiyya-well)] p-2.5 text-sm"
                 >
                   {line}
                 </li>

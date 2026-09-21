@@ -53,8 +53,11 @@ const config: Config = {
         // HIYYA brand tokens, usable directly (bg-hiyya-gold, text-hiyya-champagne, etc.)
         hiyya: {
           bg: "var(--hiyya-bg)",
+          canvas: "rgb(var(--hiyya-bg-rgb) / <alpha-value>)",
           panel: "rgb(var(--hiyya-panel) / <alpha-value>)",
           "panel-2": "var(--hiyya-panel-2)",
+          ink: "rgb(var(--hiyya-ink) / <alpha-value>)",
+          highlight: "rgb(var(--hiyya-highlight-rgb) / <alpha-value>)",
           gold: "var(--hiyya-gold)",
           champagne: "var(--hiyya-champagne)",
           "deep-gold": "var(--hiyya-deep-gold)",

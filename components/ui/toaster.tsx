@@ -10,16 +10,17 @@ import {
   ToastTitle,
   ToastViewport,
 } from "@/components/ui/toast";
-import { hiyyaColors } from "@/lib/theme/tokens";
-
-const VARIANT_ICON = {
-  success: { Icon: CheckCircle2, color: hiyyaColors.gain },
-  info: { Icon: Info, color: hiyyaColors.gold },
-  warning: { Icon: AlertTriangle, color: hiyyaColors.warning },
-} as const;
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 export function Toaster() {
   const { toasts } = useToast();
+  const { hiyyaColors } = useThemeColors();
+
+  const VARIANT_ICON = {
+    success: { Icon: CheckCircle2, color: hiyyaColors.gain },
+    info: { Icon: Info, color: hiyyaColors.gold },
+    warning: { Icon: AlertTriangle, color: hiyyaColors.warning },
+  } as const;
 
   return (
     <ToastProvider>

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import type { EChartsOption } from "echarts";
 import { Chart } from "@/components/charts/Chart";
 import { formatInr } from "@/lib/calc/format";
-import { hiyyaColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 /** Gross margin bars vs. a dashed fixed-cost-per-day line — red on days below it
  * (Section 8). */
@@ -17,6 +17,7 @@ export function BreakEvenChart({
   grossMarginByDay: number[];
   fixedCostPerDay: number;
 }) {
+  const { hiyyaColors } = useThemeColors();
   const option = useMemo<EChartsOption>(
     () => ({
       tooltip: { trigger: "axis", valueFormatter: (v) => formatInr(Number(v)) },
@@ -49,7 +50,7 @@ export function BreakEvenChart({
         },
       ],
     }),
-    [labels, grossMarginByDay, fixedCostPerDay],
+    [labels, grossMarginByDay, fixedCostPerDay, hiyyaColors],
   );
 
   return <Chart height={280} option={option} />;

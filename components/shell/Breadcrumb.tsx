@@ -33,7 +33,7 @@ export function Breadcrumb() {
       {chips.map((chip) => (
         <span
           key={chip}
-          className="rounded-md border border-hiyya-panel-2 bg-white/[0.02] px-2 py-0.5 text-[11px] text-hiyya-muted"
+          className="rounded-md border border-hiyya-panel-2 bg-hiyya-highlight/[0.02] px-2 py-0.5 text-[11px] text-hiyya-muted"
         >
           {chip}
         </span>

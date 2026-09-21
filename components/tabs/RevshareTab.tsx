@@ -9,7 +9,7 @@ import { DonutChart } from "@/components/charts/DonutChart";
 import { StackedBarChart } from "@/components/charts/StackedBarChart";
 import { RevenueShareTable } from "@/components/tables/RevenueShareTable";
 import { formatInr, shortBranchName } from "@/lib/calc/format";
-import { branchColors, hiyyaColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import type { RevenueShareRow } from "@/lib/data/DataSource";
 
 const PERIOD = "2026-08";
@@ -17,6 +17,7 @@ const PERIOD = "2026-08";
 export function RevshareTab() {
   const ds = useDataSource();
   const { scope } = useAccessibleScope();
+  const { branchColors, hiyyaColors } = useThemeColors();
   const [rows, setRows] = useState<RevenueShareRow[]>([]);
 
   useEffect(() => {

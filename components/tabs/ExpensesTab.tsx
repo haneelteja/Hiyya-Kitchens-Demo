@@ -14,7 +14,7 @@ import { StackedBarChart } from "@/components/charts/StackedBarChart";
 import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import { formatInr, formatMonthLabel, shortBranchName } from "@/lib/calc/format";
 import { fixedCostPerDay } from "@/lib/calc/fixedCosts";
-import { goldRamp, hiyyaColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import type { BranchCode } from "@/lib/data/types";
 import type {
   BranchDaySales,
@@ -31,6 +31,7 @@ export function ExpensesTab() {
   const ds = useDataSource();
   const { scope } = useAccessibleScope();
   const openBranchDrilldown = useAppStore((s) => s.openBranchDrilldown);
+  const { goldRamp, hiyyaColors } = useThemeColors();
 
   const [summary, setSummary] = useState<PnlResult | null>(null);
   const [monthly, setMonthly] = useState<PnlSeriesPoint[]>([]);

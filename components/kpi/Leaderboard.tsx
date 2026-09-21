@@ -57,7 +57,7 @@ export function Leaderboard({
               onClick={() => onRowClick?.(r.code)}
               className={cn(
                 "flex w-full items-center gap-2.5 rounded-lg border px-2.5 py-2 text-left transition-colors",
-                MEDAL_ROW[rank] ?? "border-hiyya-panel-2 bg-black/20 hover:border-hiyya-gold/30",
+                MEDAL_ROW[rank] ?? "border-hiyya-panel-2 bg-[var(--hiyya-well)] hover:border-hiyya-gold/30",
               )}
             >
               <span

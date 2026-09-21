@@ -81,7 +81,7 @@ export function PurchaseForm({ branchCode }: { branchCode: BranchCode }) {
         >
           <SelectTrigger
             id="purchase-ingredient"
-            className="border-hiyya-panel-2 bg-black/30"
+            className="border-hiyya-panel-2 bg-[var(--hiyya-well-strong)]"
           >
             <SelectValue />
           </SelectTrigger>

@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import type { EChartsOption } from "echarts";
 import { Chart } from "@/components/charts/Chart";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 /** Deviation heatmap: branch × ingredient. Clicking a cell filters the ingredient
  * table (Section 8). */
@@ -17,6 +18,7 @@ export function HeatmapChart({
   values: [number, number, number][];
   onCellClick?: (ingredient: string, branch: string) => void;
 }) {
+  const { hiyyaColors } = useThemeColors();
   const option = useMemo<EChartsOption>(
     () => ({
       tooltip: {
@@ -32,7 +34,17 @@ export function HeatmapChart({
         min: -10,
         max: 20,
         show: false,
-        inRange: { color: ["#3E7D53", "#1B1813", "#8A6C2A", "#D8674F"] },
+        // Diverging scale: gain-green (under SOP) -> panel (roughly on SOP) ->
+        // deep-gold -> loss-coral (well over SOP). The neutral stop uses the
+        // theme's own panel color so a near-zero cell blends into the page.
+        inRange: {
+          color: [
+            hiyyaColors.gain,
+            hiyyaColors.panel2,
+            hiyyaColors.deepGold,
+            hiyyaColors.loss,
+          ],
+        },
       },
       series: [
         {
@@ -40,7 +52,7 @@ export function HeatmapChart({
           data: values,
           label: {
             show: true,
-            color: "#F3ECDC",
+            color: hiyyaColors.text,
             fontSize: 10,
             formatter: (p: unknown) =>
               `${(p as { data: [number, number, number] }).data[2]}%`,
@@ -48,7 +60,7 @@ export function HeatmapChart({
         },
       ],
     }),
-    [branches, ingredients, values],
+    [branches, ingredients, values, hiyyaColors],
   );
 
   return (

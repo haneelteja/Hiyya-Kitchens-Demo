@@ -9,7 +9,7 @@ import { LeakCard } from "@/components/kpi/LeakCard";
 import { Leaderboard, type LeaderboardRow } from "@/components/kpi/Leaderboard";
 import { LeagueTable } from "@/components/tables/LeagueTable";
 import { formatInr, shortBranchName } from "@/lib/calc/format";
-import { branchColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import type { BranchCode } from "@/lib/data/types";
 import type { LeagueTableRow } from "@/lib/data/DataSource";
 import type { PnlResult } from "@/lib/calc/pnl";
@@ -20,6 +20,7 @@ export function BranchesTab() {
   const ds = useDataSource();
   const { scope } = useAccessibleScope();
   const openBranchDrilldown = useAppStore((s) => s.openBranchDrilldown);
+  const { branchColors, hiyyaColors } = useThemeColors();
 
   const [league, setLeague] = useState<LeagueTableRow[]>([]);
   const [summary, setSummary] = useState<PnlResult | null>(null);
@@ -49,7 +50,7 @@ export function BranchesTab() {
   const leaderboardRows: LeaderboardRow[] = league.map((r) => ({
     code: r.branchCode,
     name: shortBranchName(r.branchName),
-    color: branchColors[r.branchCode] ?? "#D4AF37",
+    color: branchColors[r.branchCode] ?? hiyyaColors.gold,
     value: r.netSales,
   }));
 

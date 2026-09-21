@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/table";
 import { formatInr, shortBranchName } from "@/lib/calc/format";
 import { averagePerDay, bestDay } from "@/lib/calc/sales";
-import { branchColors, goldRamp, hiyyaColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import type { BranchDaySales, ChannelShareRow, TopItemRow } from "@/lib/data/DataSource";
 import type { Scope } from "@/lib/data/types";
 import { dataset } from "@/lib/data/mock/dataset";
@@ -34,6 +34,7 @@ function branchDisplayName(code: string): string {
 export function SalesTab() {
   const ds = useDataSource();
   const { scope } = useAccessibleScope();
+  const { branchColors, goldRamp, hiyyaColors } = useThemeColors();
 
   const [daily, setDaily] = useState<BranchDaySales[]>([]);
   const [topItems, setTopItems] = useState<TopItemRow[]>([]);
@@ -142,7 +143,7 @@ export function SalesTab() {
           categories={byDate.dates.map((d) => d.slice(-2))}
           series={byDate.branchCodes.map((c) => ({
             name: branchDisplayName(c),
-            color: branchColors[c] ?? "#D4AF37",
+            color: branchColors[c] ?? hiyyaColors.gold,
             data: byDate.dates.map(
               (date) =>
                 daily.find((d) => d.date === date && d.branchCode === c)?.netSales ?? 0,
@@ -269,6 +270,7 @@ function useWeekday(scope: Scope) {
 
 function WeekdayChart({ scope }: { scope: Scope }) {
   const data = useWeekday(scope);
+  const { hiyyaColors } = useThemeColors();
   const option = useMemo<EChartsOption>(
     () => ({
       tooltip: { valueFormatter: (v) => formatInr(Number(v)) },
@@ -291,7 +293,7 @@ function WeekdayChart({ scope }: { scope: Scope }) {
         },
       ],
     }),
-    [data],
+    [data, hiyyaColors],
   );
   return <Chart height={220} option={option} />;
 }

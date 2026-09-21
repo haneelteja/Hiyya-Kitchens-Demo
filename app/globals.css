@@ -4,15 +4,30 @@
 
 /*
   HIYYA Command Center — design tokens.
-  Strict black-and-gold palette per the build spec, Section 9. No light mode:
-  this is the only theme the app has, so tokens live directly on :root.
+  Two themes: "dark" (the original black-and-gold look, the default and the
+  :root fallback) and "pastel" (a warm cream-and-terracotta light theme),
+  switched by stamping data-theme="dark" | "pastel" on <html> (see
+  AppFrame.tsx). lib/theme/tokens.ts holds the JS-value twin of this palette
+  for anywhere a CSS variable can't reach (ECharts) — keep the two in sync
+  by hand when a palette changes.
 */
 @layer base {
-  :root {
+  :root,
+  :root[data-theme="dark"] {
     /* --- HIYYA brand tokens (source of truth; use these directly in app code) --- */
     --hiyya-bg: #000000;
-    --hiyya-panel: 17 15 12; /* rgb channels, composed with alpha as bg-panel/86 */
+    --hiyya-bg-rgb: 0 0 0; /* rgb channels of --hiyya-bg, for bg-hiyya-canvas/<alpha> gradient stops */
+    --hiyya-panel: 17 15 12; /* rgb channels, composed with alpha as bg-hiyya-panel/<alpha> */
     --hiyya-panel-2: #1b1813;
+    --hiyya-ink: 0 0 0; /* rgb channels of this theme's "shadow" color, for bg-hiyya-ink/<alpha> wells */
+    --hiyya-highlight-rgb: 255 255 255; /* lightens against a dark bg — hover/skeleton tints that flip direction per theme */
+    /* Precomposed (fixed-alpha) well tints — NOT the same alpha number as each
+       other across themes. The same opacity of black-on-black vs. ink-on-white
+       reads as wildly different visual weight (barely-there vs. a bold grey
+       block), so these bake in a per-theme alpha tuned to look equally subtle,
+       rather than sharing one bg-hiyya-ink/<alpha-value> utility. */
+    --hiyya-well: rgba(0, 0, 0, 0.2);
+    --hiyya-well-strong: rgba(0, 0, 0, 0.3);
     --hiyya-gold: #d4af37;
     --hiyya-champagne: #f2dfa7;
     --hiyya-deep-gold: #8a6c2a;
@@ -53,6 +68,51 @@
     --ring: var(--hiyya-gold);
     --radius: 0.75rem;
   }
+
+  /* Warm cream-and-terracotta light theme — deliberately kept in the same warm
+     family as the dark theme's gold rather than a generic cool pastel, so
+     switching themes still reads as HIYYA. */
+  :root[data-theme="pastel"] {
+    --hiyya-bg: #fbf7f1;
+    --hiyya-bg-rgb: 251 247 241;
+    --hiyya-panel: 255 255 255;
+    --hiyya-panel-2: #f4ede3;
+    --hiyya-ink: 58 50 41; /* matches --hiyya-text, used as this theme's "shadow" tint */
+    --hiyya-highlight-rgb: 58 50 41; /* darkens against a light bg — same idea as --hiyya-ink, opposite direction from dark theme */
+    --hiyya-well: rgba(58, 50, 41, 0.06);
+    --hiyya-well-strong: rgba(58, 50, 41, 0.09);
+    --hiyya-gold: #d9a857;
+    --hiyya-champagne: #f0c99a;
+    --hiyya-deep-gold: #b98a46;
+    --hiyya-bronze: #d48a6a;
+    --hiyya-platinum: #b9afa0;
+    --hiyya-text: #3a3229;
+    --hiyya-muted: #8b7f6e;
+    --hiyya-gain: #6fae84;
+    --hiyya-loss: #d96c5c;
+    --hiyya-warning: #e0a947;
+    --hiyya-border: #e6dccb;
+
+    --background: var(--hiyya-bg);
+    --foreground: var(--hiyya-text);
+    --card: var(--hiyya-panel);
+    --card-foreground: var(--hiyya-text);
+    --popover: var(--hiyya-panel);
+    --popover-foreground: var(--hiyya-text);
+    --primary: var(--hiyya-gold);
+    --primary-foreground: var(--hiyya-text);
+    --secondary: var(--hiyya-panel-2);
+    --secondary-foreground: var(--hiyya-text);
+    --muted: var(--hiyya-panel-2);
+    --muted-foreground: var(--hiyya-muted);
+    --accent: var(--hiyya-champagne);
+    --accent-foreground: var(--hiyya-text);
+    --destructive: var(--hiyya-loss);
+    --destructive-foreground: #ffffff;
+    --border: var(--hiyya-border);
+    --input: var(--hiyya-border);
+    --ring: var(--hiyya-gold);
+  }
 }
 
 @layer base {
@@ -70,12 +130,9 @@
   }
 }
 
-/* The in-app motion toggle (Header) and prefers-reduced-motion together pause the
-   3D throne stage (JS-level, in ThreeStageWrapper — a WebGL canvas can't be paused
-   from CSS). This handles everything CSS drives instead: toast/dialog
-   animate-in/out, tab and button hover/focus transitions. Phase 7 polish — the
-   throne stage already respected the OS setting; the small CSS transitions used
-   everywhere else didn't yet. */
+/* prefers-reduced-motion: zeroes every CSS-driven animation/transition —
+   toast/dialog animate-in/out, tab and button hover/focus transitions.
+   Phase 7 polish. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

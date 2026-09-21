@@ -2,7 +2,7 @@
 
 import { PersonaSwitcher } from "@/components/shell/PersonaSwitcher";
 import { ScopeSelect } from "@/components/shell/ScopeSelect";
-import { MotionToggle } from "@/components/shell/MotionToggle";
+import { ThemeToggle } from "@/components/shell/ThemeToggle";
 import { ResetDemoButton } from "@/components/shell/ResetDemoButton";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { getPersona } from "@/lib/access/personas";
@@ -27,7 +27,7 @@ export function Header() {
     .toUpperCase();
 
   return (
-    <header className="sticky top-0 z-20 border-b border-white/5 bg-black/85 px-6 py-2 backdrop-blur-xl">
+    <header className="sticky top-0 z-20 border-b border-hiyya-panel-2 bg-hiyya-canvas/85 px-6 py-2 backdrop-blur-xl">
       <div className="mx-auto flex max-w-[1480px] flex-wrap items-center gap-5">
         <div className="mr-auto flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-[11px] bg-gradient-to-br from-hiyya-champagne via-hiyya-gold to-hiyya-deep-gold font-heading text-lg font-bold text-black">
@@ -61,7 +61,7 @@ export function Header() {
           </div>
         </div>
 
-        <MotionToggle />
+        <ThemeToggle />
         <ResetDemoButton />
       </div>
     </header>

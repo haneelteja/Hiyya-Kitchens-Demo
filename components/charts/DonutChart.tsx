@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import type { EChartsOption } from "echarts";
 import { Chart } from "@/components/charts/Chart";
 import { formatInr } from "@/lib/calc/format";
-import { goldRamp } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 export interface DonutSlice {
   name: string;
@@ -24,6 +24,7 @@ export function DonutChart({
   valueIsPercent?: boolean;
   onSliceClick?: (key: string) => void;
 }) {
+  const { goldRamp } = useThemeColors();
   const option = useMemo<EChartsOption>(
     () => ({
       tooltip: {
@@ -51,7 +52,7 @@ export function DonutChart({
         },
       ],
     }),
-    [slices, valueIsPercent],
+    [slices, valueIsPercent, goldRamp],
   );
 
   return (

@@ -17,7 +17,7 @@ export function KpiCard({
   return (
     <div
       className={cn(
-        "rounded-xl border border-hiyya-panel-2 bg-gradient-to-br from-hiyya-panel-2/60 to-black/40 p-3",
+        "rounded-xl border border-hiyya-panel-2 bg-gradient-to-br from-hiyya-panel-2/60 to-hiyya-canvas/40 p-3",
         className,
       )}
     >

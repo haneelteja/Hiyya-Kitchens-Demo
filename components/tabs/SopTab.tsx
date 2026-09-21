@@ -13,7 +13,7 @@ import { DonutChart } from "@/components/charts/DonutChart";
 import { Chart } from "@/components/charts/Chart";
 import { IngredientVarianceTable } from "@/components/tables/IngredientVarianceTable";
 import { formatInr, shortBranchName } from "@/lib/calc/format";
-import { goldRamp, hiyyaColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import type { IngredientVarianceRow, WastageReasonRow } from "@/lib/data/DataSource";
 import { dataset } from "@/lib/data/mock/dataset";
 
@@ -28,6 +28,7 @@ export function SopTab() {
   const ds = useDataSource();
   const { scope } = useAccessibleScope();
   const openIngredientDrilldown = useAppStore((s) => s.openIngredientDrilldown);
+  const { goldRamp, hiyyaColors } = useThemeColors();
 
   const [rows, setRows] = useState<IngredientVarianceRow[]>([]);
   const [reasons, setReasons] = useState<WastageReasonRow[]>([]);
@@ -107,7 +108,7 @@ export function SopTab() {
         },
       ],
     }),
-    [leaks, showBranch],
+    [leaks, showBranch, hiyyaColors],
   );
 
   const filteredRows = ingredientFilter

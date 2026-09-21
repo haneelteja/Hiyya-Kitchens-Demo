@@ -16,7 +16,7 @@ export function HeroBand() {
   return (
     <div className="relative flex min-h-[44px] items-center px-6 py-2">
       {loading ? (
-        <div className="h-4 w-1/3 animate-pulse rounded bg-white/5" />
+        <div className="h-4 w-1/3 animate-pulse rounded bg-hiyya-highlight/5" />
       ) : (
         <h1 className="max-w-xl truncate text-sm font-semibold text-hiyya-muted [text-shadow:0_2px_10px_rgba(0,0,0,0.6)]">
           {headline}

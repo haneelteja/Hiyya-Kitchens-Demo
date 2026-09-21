@@ -1,31 +1,28 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
-
-const ThreeStageWrapper = dynamic(
-  () => import("@/components/three/ThreeStageWrapper").then((m) => m.ThreeStageWrapper),
-  { ssr: false },
-);
+import { BackgroundLayer } from "@/components/shell/BackgroundLayer";
+import { useAppStore } from "@/lib/store/useAppStore";
 
 /**
- * Root client wrapper (Section 9 layout): the fixed full-viewport 3D canvas at
- * z-0, a CSS veil gradient at z-1 so content stays legible over any frame, and
- * page content at z-2. Mounted once from app/layout.tsx (a Server Component, so
- * it keeps its `metadata` export) — this is the client boundary.
+ * Root client wrapper: a fixed full-viewport themed background at z-0, page
+ * content at z-[2]. Mounted once from app/layout.tsx (a Server Component, so
+ * it keeps its `metadata` export) — this is the client boundary. Also keeps
+ * `<html data-theme>` in sync with the store: the theme choice persists in
+ * localStorage, and the CSS in app/globals.css keys off that attribute to
+ * pick the right palette.
  */
 export function AppFrame({ children }: { children: React.ReactNode }) {
+  const theme = useAppStore((s) => s.theme);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
   return (
     <>
-      <ThreeStageWrapper />
-      <div
-        className="pointer-events-none fixed inset-0 z-[1]"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.72) 55%, rgba(0,0,0,0.92) 100%)",
-        }}
-        aria-hidden="true"
-      />
+      <BackgroundLayer />
       <div className="relative z-[2]">{children}</div>
       <Toaster />
     </>

@@ -1,9 +1,14 @@
 import type { ReactNode } from "react";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 /**
  * The "Lost to SOP deviation" hero card — the one signature decorative element
  * (Section 9): a subtle vertical gold bar texture, a nod to the jail concept.
- * Kept deliberately alone; every other card in the app stays plain.
+ * Kept deliberately alone; every other card in the app stays plain. The
+ * background gradient and texture color both come from the active theme —
+ * dark keeps the original near-black gradient, pastel gets a warm
+ * white-to-sand one instead of a literal black that would look like a hole
+ * punched in a light page.
  */
 export function LeakCard({
   label,
@@ -14,13 +19,18 @@ export function LeakCard({
   value: string;
   foot?: ReactNode;
 }) {
+  const { hiyyaColors } = useThemeColors();
   return (
-    <div className="relative overflow-hidden rounded-xl border border-hiyya-gold/40 bg-gradient-to-br from-[#241C0F] to-black p-3">
+    <div
+      className="relative overflow-hidden rounded-xl border border-hiyya-gold/40 p-3"
+      style={{
+        backgroundImage: `linear-gradient(135deg, ${hiyyaColors.panel2}, ${hiyyaColors.bg})`,
+      }}
+    >
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.16]"
         style={{
-          backgroundImage:
-            "repeating-linear-gradient(90deg, #D4AF37 0 3px, transparent 3px 14px)",
+          backgroundImage: `repeating-linear-gradient(90deg, ${hiyyaColors.gold} 0 3px, transparent 3px 14px)`,
           maskImage: "linear-gradient(180deg, black, transparent 85%)",
           WebkitMaskImage: "linear-gradient(180deg, black, transparent 85%)",
         }}

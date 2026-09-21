@@ -74,7 +74,7 @@ test("a hard reload always lands back on the Brand Owner default (persona is in-
   await page.getByLabel("View as").click();
   await page.getByRole("option", { name: /Satish/ }).click();
   await expect(page).toHaveURL(/\/today$/);
-  // Section 4/14: only the motion preference persists. A full reload — the only
+  // Section 4/14: only the theme preference persists. A full reload — the only
   // way to reach an arbitrary URL in this demo, since there's no server session —
   // always resets to the default persona, so it correctly lands on /overview
   // rather than staying on a tab a fresh Brand Owner load never requested.
@@ -95,17 +95,25 @@ test("Satish's tab bar never links to a brand-only tab like Revenue share", asyn
   await expect(page.getByRole("tab", { name: "Revenue share" })).toHaveCount(0);
 });
 
-test("the single throne control cycles play -> pause -> hidden -> play", async ({
+test("the theme toggle switches between dark and pastel, and persists across a reload", async ({
   page,
 }) => {
   await page.goto("/overview");
-  await expect(page.getByRole("button", { name: /pause motion/i })).toBeVisible();
-  await page.getByRole("button", { name: /pause motion/i }).click();
-  await expect(page.getByRole("button", { name: /remove throne/i })).toBeVisible();
-  await page.getByRole("button", { name: /remove throne/i }).click();
-  await expect(page.getByRole("button", { name: /^play motion/i })).toBeVisible();
-  await page.getByRole("button", { name: /^play motion/i }).click();
-  await expect(page.getByRole("button", { name: /pause motion/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /pastel theme/i })).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+
+  await page.getByRole("button", { name: /pastel theme/i }).click();
+  await expect(page.getByRole("button", { name: /dark theme/i })).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "pastel");
+
+  // Unlike persona/scope/demo edits, the theme choice is the one preference
+  // that survives a reload (Section 4/14).
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "pastel");
+  await expect(page.getByRole("button", { name: /dark theme/i })).toBeVisible();
+
+  await page.getByRole("button", { name: /dark theme/i }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 });
 
 test("reset demo shows a confirmation toast", async ({ page }) => {

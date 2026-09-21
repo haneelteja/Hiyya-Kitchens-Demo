@@ -45,7 +45,7 @@ const VarianceRow = memo(function VarianceRow({
           onRowClick(row.ingredientKey, row.ingredientName);
         }
       }}
-      className="cursor-pointer border-hiyya-panel-2 hover:bg-white/[0.03] focus-visible:bg-white/[0.06] focus-visible:outline-none"
+      className="cursor-pointer border-hiyya-panel-2 hover:bg-hiyya-highlight/[0.03] focus-visible:bg-hiyya-highlight/[0.06] focus-visible:outline-none"
     >
       <TableCell>{row.ingredientName}</TableCell>
       {showBranch && (

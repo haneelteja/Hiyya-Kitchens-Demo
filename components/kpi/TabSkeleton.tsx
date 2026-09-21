@@ -19,10 +19,10 @@ export function TabSkeleton({
         {Array.from({ length: kpis }).map((_, i) => (
           <div
             key={i}
-            className="rounded-xl border border-hiyya-panel-2 bg-gradient-to-br from-hiyya-panel-2/60 to-black/40 p-4"
+            className="rounded-xl border border-hiyya-panel-2 bg-gradient-to-br from-hiyya-panel-2/60 to-hiyya-canvas/40 p-4"
           >
-            <div className="h-2.5 w-16 animate-pulse rounded bg-white/5" />
-            <div className="mt-3 h-6 w-24 animate-pulse rounded bg-white/5" />
+            <div className="h-2.5 w-16 animate-pulse rounded bg-hiyya-highlight/5" />
+            <div className="mt-3 h-6 w-24 animate-pulse rounded bg-hiyya-highlight/5" />
           </div>
         ))}
       </div>

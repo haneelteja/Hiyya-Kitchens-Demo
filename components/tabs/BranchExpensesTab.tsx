@@ -10,7 +10,7 @@ import { DonutChart } from "@/components/charts/DonutChart";
 import { FixedCostGrid } from "@/components/forms/FixedCostGrid";
 import { TabSkeleton } from "@/components/kpi/TabSkeleton";
 import { formatInr } from "@/lib/calc/format";
-import { goldRamp } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import type { Branch, BranchCode, FixedCost } from "@/lib/data/types";
 import type { PnlResult } from "@/lib/calc/pnl";
 
@@ -26,6 +26,7 @@ export function BranchExpensesTab() {
   const ds = useDataSource();
   const { scope } = useAccessibleScope();
   const overrides = useAppStore((s) => s.demoEdits.fixedCostOverrides);
+  const { goldRamp } = useThemeColors();
 
   const [branches, setBranches] = useState<Branch[]>([]);
   const [selected, setSelected] = useState<BranchCode | null>(null);

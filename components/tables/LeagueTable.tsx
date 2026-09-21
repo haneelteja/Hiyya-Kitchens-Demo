@@ -12,7 +12,7 @@ import {
 import { Sparkline } from "@/components/tables/Sparkline";
 import { HealthPill } from "@/components/tables/StatusPill";
 import { formatInr } from "@/lib/calc/format";
-import { branchColors } from "@/lib/theme/tokens";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import type { LeagueTableRow } from "@/lib/data/DataSource";
 
 /**
@@ -30,6 +30,7 @@ const LeagueRow = memo(function LeagueRow({
   row: LeagueTableRow;
   onRowClick: (branchCode: string) => void;
 }) {
+  const { branchColors } = useThemeColors();
   return (
     <TableRow
       role="button"
@@ -41,7 +42,7 @@ const LeagueRow = memo(function LeagueRow({
           onRowClick(row.branchCode);
         }
       }}
-      className="cursor-pointer border-hiyya-panel-2 hover:bg-white/[0.03] focus-visible:bg-white/[0.06] focus-visible:outline-none"
+      className="cursor-pointer border-hiyya-panel-2 hover:bg-hiyya-highlight/[0.03] focus-visible:bg-hiyya-highlight/[0.06] focus-visible:outline-none"
     >
       <TableCell className="font-heading text-lg text-hiyya-champagne">
         {row.rank}

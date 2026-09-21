@@ -2,16 +2,13 @@
 
 import ReactECharts from "echarts-for-react";
 import type { EChartsOption } from "echarts";
-import {
-  registerHiyyaEchartsTheme,
-  HIYYA_ECHARTS_THEME_NAME,
-} from "@/lib/theme/echarts-theme";
-
-registerHiyyaEchartsTheme();
+import { useThemeColors } from "@/hooks/useThemeColors";
+import { registerHiyyaEchartsTheme, echartsThemeName } from "@/lib/theme/echarts-theme";
 
 /**
- * Thin shared wrapper: registers the "hiyya" theme once, fixes height, wires
- * click events. Every chart in components/charts/* renders through this.
+ * Thin shared wrapper: registers the active theme's ECharts palette (once per
+ * theme — see registerHiyyaEchartsTheme's guard), fixes height, wires click
+ * events. Every chart in components/charts/* renders through this.
  *
  * `notMerge` defaults to unset — every caller is expected to pass a
  * `useMemo`-stabilized `option` (see TrendChart etc.), so a genuinely
@@ -35,11 +32,14 @@ export function Chart({
   onClick?: (params: unknown) => void;
   notMerge?: boolean;
 }) {
+  const { theme } = useThemeColors();
+  registerHiyyaEchartsTheme(theme);
+
   return (
     <ReactECharts
       option={option}
       notMerge={notMerge}
-      theme={HIYYA_ECHARTS_THEME_NAME}
+      theme={echartsThemeName(theme)}
       style={{ height, width: "100%" }}
       onEvents={onClick ? { click: onClick } : undefined}
     />

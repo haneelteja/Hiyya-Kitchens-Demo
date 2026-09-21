@@ -164,7 +164,7 @@ function IngredientDrilldownBody({
 
 function MiniKpi({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-hiyya-panel-2 bg-black/30 p-3">
+    <div className="rounded-lg border border-hiyya-panel-2 bg-[var(--hiyya-well-strong)] p-3">
       <p className="text-[10px] font-bold uppercase tracking-wide text-hiyya-muted">
         {label}
       </p>

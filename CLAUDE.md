@@ -6,7 +6,7 @@ A role-based analytics portal for HIYYA Kitchens (themed mandi restaurants, Hyde
 
 ## Stack
 
-Next.js 14 (App Router), TypeScript strict, Tailwind CSS + shadcn/ui, Apache ECharts via `echarts-for-react`, three.js/@react-three/fiber/drei for the 3D throne stage, Zustand + Zod, date-fns (IST) + SheetJS, Framer Motion (panel/drawer transitions only), Vitest + Playwright, pnpm.
+Next.js 14 (App Router), TypeScript strict, Tailwind CSS + shadcn/ui, Apache ECharts via `echarts-for-react`, Zustand + Zod, date-fns (IST) + SheetJS, Framer Motion (panel/drawer transitions only), Vitest + Playwright, pnpm. No three.js/@react-three — the procedural 3D throne stage was removed in Phase 25 in favor of a static, theme-aware CSS background (`components/shell/BackgroundLayer.tsx`).
 
 ## Commands
 
@@ -31,7 +31,6 @@ Package manager: pnpm (already available in this environment; no global install 
 - `next@14.2.35`, `react@18.3.1` — spec-pinned.
 - `tailwindcss@^3.4` — pairs with Next 14-era shadcn/ui; not Tailwind v4.
 - `shadcn` CLI run at `@2.3.0` (`style: "new-york"`, individual `@radix-ui/react-*` packages, `cn()` via `clsx` + `tailwind-merge`) — the classic, widely-documented architecture, not the newer `base-nova`/`@base-ui/react` preset the latest CLI defaults to.
-- `@react-three/fiber@8` + `@react-three/drei@9` — the majors compatible with React 18 (`fiber@9`/`drei@10` require React 19 and would conflict with the Next-14 pin).
 - `vitest@1` — pairs with the `@types/node@20` that Next 14's scaffold installs (`vitest@5` requires `@types/node@22+`).
 
 If any of these move (a Next 15 upgrade, etc.), re-check the peer-dependency chain above before bumping just one package.
@@ -42,8 +41,8 @@ If any of these move (a Next 15 upgrade, etc.), re-check the peer-dependency cha
 - **Access control lives in `lib/access/scope.ts` and the data layer**, never only in a component. Branch Owners never see another branch's identifiable data (ranks only, never names/values). Branch Managers never see P&L.
 - **`DataSource` is an interface.** `MockDataSource` today, `SupabaseDataSource` later — same method signatures, scope- and period-aware.
 - Sentence case everywhere, active-verb button labels ("Save purchase", not "Submit").
-- Black-and-gold only; no light mode; red/green reserved for deltas, flags, and leak charts.
-- Demo edits (fixed costs, purchases, wastage, SOP overrides) live in the Zustand store, in memory only — never `localStorage`/`sessionStorage` for business data. Only the motion-preference toggle persists.
+- **Two themes, both warm.** Dark (black-and-gold, the original look) and pastel (cream-and-terracotta light theme) — switched via the header's theme toggle, persisted, and applied via `data-theme` on `<html>` (`app/globals.css`). Every chart reads its palette through `useThemeColors()` (`hooks/useThemeColors.ts`) rather than a static import from `lib/theme/tokens.ts`, so a theme switch repaints charts too — never import `hiyyaColors`/`branchColors`/`goldRamp` as a fixed constant. Red/green (gain/loss) stay reserved for deltas, flags, and leak charts in both themes.
+- Demo edits (fixed costs, purchases, wastage, SOP overrides) live in the Zustand store, in memory only — never `localStorage`/`sessionStorage` for business data. Only the theme preference persists.
 - Every chart: title, one-line subtitle, and an accessible alternative (a table or list a keyboard/screen-reader user can reach).
 
 ## Process rules (do not skip)

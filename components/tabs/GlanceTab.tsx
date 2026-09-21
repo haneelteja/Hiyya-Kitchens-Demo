@@ -241,7 +241,7 @@ export function GlanceTab() {
             {attention.map((line, i) => (
               <li
                 key={i}
-                className="rounded-lg border border-hiyya-loss/30 border-l-4 bg-black/20 p-2.5 text-sm"
+                className="rounded-lg border border-hiyya-loss/30 border-l-4 bg-[var(--hiyya-well)] p-2.5 text-sm"
               >
                 {line}
               </li>
